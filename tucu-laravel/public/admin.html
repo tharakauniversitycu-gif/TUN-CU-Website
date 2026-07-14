@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TUCU Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green: #3D1E96; --green-mid: #5B3FC4; --green-light: #0E8FD0;
+      --gold: #FFC700; --gold-light: #FCF103;
+      --bg: #F4F1FB; --white: #FFFFFF; --charcoal: #1C1C1C;
+      --slate: #6E6B95; --border: #E5DFF7;
+      --red: #C0392B; --blue: #0E8FD0; --orange: #D97706;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--charcoal); display: flex; min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    #sidebar {
+      width: 240px; min-height: 100vh; background: var(--green);
+      display: flex; flex-direction: column;
+      position: fixed; left: 0; top: 0; bottom: 0; z-index: 100;
+    }
+    .sidebar-brand {
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .sidebar-brand .logo { width: 44px; height: 44px; object-fit: contain; }
+    .sidebar-brand h2 { font-family: 'Playfair Display', serif; font-size: 1rem; color: #fff; margin-top: 10px; }
+    .sidebar-brand small { font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; }
+    .sidebar-nav { flex: 1; padding: 16px 0; }
+    .nav-section { padding: 12px 20px 6px; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 20px; cursor: pointer;
+      font-size: 0.84rem; color: rgba(255,255,255,0.65);
+      transition: background 0.15s, color 0.15s;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
+    .nav-item.active { background: rgba(255, 199, 0,0.12); color: var(--gold-light); border-left-color: var(--gold); }
+    .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+    .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .admin-badge { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .admin-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--green); flex-shrink: 0; }
+    .admin-name { font-size: 0.8rem; font-weight: 600; color: #fff; }
+    .admin-role { font-size: 0.65rem; color: rgba(255,255,255,0.4); }
+    .logout-btn { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); padding: 8px; border-radius: 4px; cursor: pointer; font-size: 0.78rem; font-family: 'Inter', sans-serif; transition: background 0.15s; }
+    .logout-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+    /* ── MAIN ── */
+    #main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; }
+    #topbar {
+      height: 60px; background: var(--white); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; position: sticky; top: 0; z-index: 50;
+    }
+    #topbar h1 { font-size: 1.1rem; font-weight: 700; color: var(--charcoal); }
+    #topbar .breadcrumb { font-size: 0.75rem; color: var(--slate); margin-top: 2px; }
+    .topbar-actions { display: flex; align-items: center; gap: 14px; }
+    .topbar-date { font-size: 0.78rem; color: var(--slate); }
+
+    /* ── LOGIN SCREEN ── */
+    #login-screen {
+      position: fixed; inset: 0; background: var(--green);
+      display: flex; align-items: center; justify-content: center; z-index: 1000;
+    }
+    .login-box {
+      background: #fff; border-radius: 8px; padding: 48px 40px;
+      width: 380px; box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+    }
+    .login-logo { text-align: center; margin-bottom: 28px; }
+    .login-logo img { width: 76px; height: 76px; object-fit: contain; margin: 0 auto; }
+    .login-logo h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--green); margin-top: 8px; }
+    .login-logo p { font-size: 0.78rem; color: var(--slate); margin-top: 4px; }
+    .login-field { margin-bottom: 18px; }
+    .login-field label { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
+    .login-field input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+    .login-field input:focus { border-color: var(--green-mid); }
+    .login-btn { width: 100%; background: var(--green); color: #fff; border: none; padding: 13px; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
+    .login-btn:hover { background: var(--green-mid); }
+    .login-error { color: var(--red); font-size: 0.8rem; margin-top: 10px; text-align: center; display: none; }
+
+    /* ── CONTENT ── */
+    #content { padding: 32px; flex: 1; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── STAT CARDS ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
+    .stat-card { background: var(--white); border-radius: 8px; padding: 24px; border-left: 4px solid var(--green); display: flex; align-items: center; gap: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .stat-card.gold { border-left-color: var(--gold); }
+    .stat-card.blue { border-left-color: var(--blue); }
+    .stat-card.red { border-left-color: var(--red); }
+    .stat-card.orange { border-left-color: var(--orange); }
+    .stat-icon { width: 48px; height: 48px; border-radius: 10px; background: rgba(61, 30, 150,0.08); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .stat-card.gold .stat-icon { background: rgba(255, 199, 0,0.1); }
+    .stat-card.blue .stat-icon { background: rgba(14, 143, 208,0.08); }
+    .stat-card.red .stat-icon { background: rgba(192,57,43,0.08); }
+    .stat-card.orange .stat-icon { background: rgba(217,119,6,0.08); }
+    .stat-val { font-size: 2rem; font-weight: 800; color: var(--charcoal); line-height: 1; }
+    .stat-label { font-size: 0.75rem; color: var(--slate); margin-top: 4px; font-weight: 500; }
+
+    /* ── TABLE ── */
+    .card { background: var(--white); border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
+    .card-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-header h3 { font-size: 0.95rem; font-weight: 700; color: var(--charcoal); }
+    .card-header .count-badge { background: var(--green); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+    .search-input { padding: 7px 14px; border: 1.5px solid var(--border); border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none; width: 220px; }
+    .search-input:focus { border-color: var(--green-mid); }
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 11px 16px; text-align: left; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); background: #F8F5FD; border-bottom: 1px solid var(--border); }
+    td { padding: 13px 16px; font-size: 0.82rem; color: var(--charcoal); border-bottom: 1px solid var(--border); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #F8F5FD; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+    .badge-green { background: rgba(61, 30, 150,0.1); color: var(--green); }
+    .badge-gold { background: rgba(255, 199, 0,0.1); color: #7A5C00; }
+    .badge-red { background: rgba(192,57,43,0.1); color: var(--red); }
+    .badge-blue { background: rgba(14, 143, 208,0.08); color: var(--blue); }
+    .action-btn { padding: 5px 12px; border-radius: 4px; border: none; cursor: pointer; font-size: 0.75rem; font-family: 'Inter', sans-serif; font-weight: 600; transition: opacity 0.15s; }
+    .action-btn:hover { opacity: 0.8; }
+    .btn-sm-green { background: var(--green); color: #fff; }
+    .btn-sm-gold { background: var(--gold); color: var(--green); }
+    .btn-sm-red { background: var(--red); color: #fff; }
+    .btn-sm-blue { background: var(--blue); color: #fff; }
+    .empty-row td { text-align: center; color: var(--slate); padding: 40px; font-style: italic; }
+    .loading-row td { text-align: center; color: var(--slate); padding: 40px; }
+
+    /* ── PRAYER EXPANDED ── */
+    .prayer-text-cell { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+    .prayer-text-cell:hover { white-space: normal; }
+
+    /* ── DASHBOARD RECENT ── */
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+
+    /* ── TOAST ── */
+    .admin-toast {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: var(--green); color: #fff; padding: 12px 22px;
+      border-radius: 6px; font-size: 0.84rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      border-left: 4px solid var(--gold);
+      animation: fadeInRight 0.3s ease;
+    }
+    @keyframes fadeInRight { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: none; } }
+    .admin-toast.error { background: var(--red); border-left-color: #E87070; }
+
+    /* ── MEMBER DETAIL MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      display: none; align-items: center; justify-content: center; z-index: 2000;
+      padding: 24px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: #fff; border-radius: 8px; width: 100%; max-width: 640px;
+      max-height: 88vh; overflow-y: auto; box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+    }
+    .modal-header {
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; background: #fff; z-index: 1;
+    }
+    .modal-header h3 { font-size: 1.05rem; color: var(--charcoal); }
+    .modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--slate); line-height: 1; }
+    .modal-body { padding: 24px; }
+    .modal-section { margin-bottom: 24px; }
+    .modal-section h4 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .modal-field label { display: block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); margin-bottom: 6px; }
+    .modal-field input, .modal-field select, .modal-field textarea {
+      width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 4px;
+      font-family: 'Inter', sans-serif; font-size: 0.85rem; outline: none;
+    }
+    .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { border-color: var(--green-mid); }
+    .modal-field.full { grid-column: span 2; }
+    .modal-list-item { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
+    .modal-list-item:last-child { border-bottom: none; }
+    .modal-empty { font-size: 0.8rem; color: var(--slate); font-style: italic; padding: 8px 0; }
+    .modal-save-btn {
+      background: var(--green); color: #fff; border: none; padding: 10px 24px;
+      border-radius: 4px; font-size: 0.84rem; font-weight: 700; cursor: pointer;
+      letter-spacing: 0.04em; text-transform: uppercase; transition: opacity 0.15s; margin-top: 8px;
+    }
+    .modal-save-btn:hover { opacity: 0.9; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="/images/tucu-logo.png" alt="TUCU Logo"/>
+      <h2>TUCU Admin Portal</h2>
+      <p>Tharaka University Christian Union</p>
+    </div>
+    <div class="login-field">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="admin" value="admin"/>
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="••••••••"/>
+    </div>
+    <button class="login-btn" id="login-submit">Sign In to Dashboard</button>
+    <p class="login-error" id="login-error">Invalid username or password.</p>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-brand">
+    <img class="logo" src="/images/tucu-logo.png" alt="TUCU Logo"/>
+    <h2>TUCU Admin</h2>
+    <small>Management Portal</small>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" data-page="dashboard"><span class="icon">📊</span> Dashboard</div>
+    <div class="nav-section">Ministry</div>
+    <div class="nav-item" data-page="members"><span class="icon">👥</span> Members</div>
+    <div class="nav-item" data-page="prayers"><span class="icon">🙏</span> Prayer Requests</div>
+    <div class="nav-item" data-page="events"><span class="icon">📅</span> Event Registrations</div>
+    <div class="nav-section">Communications</div>
+    <div class="nav-item" data-page="messages"><span class="icon">✉️</span> Messages</div>
+    <div class="nav-item" data-page="newsletter"><span class="icon">📧</span> Newsletter</div>
+    <div class="nav-section">Site</div>
+    <div class="nav-item" onclick="window.open('/','_blank')"><span class="icon">🌐</span> View Website</div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-badge">
+      <div class="admin-avatar" id="admin-initials">A</div>
+      <div><div class="admin-name" id="admin-display-name">Admin</div><div class="admin-role">Super Admin</div></div>
+    </div>
+    <button class="logout-btn" id="logout-btn">Sign Out</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="topbar">
+    <div>
+      <h1 id="page-title">Dashboard</h1>
+      <div class="breadcrumb">Tharaka University CU · Admin Portal</div>
+    </div>
+    <div class="topbar-actions">
+      <span class="topbar-date" id="topbar-date"></span>
+    </div>
+  </div>
+
+  <div id="content">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div><div class="stat-val" id="stat-members">—</div><div class="stat-label">Active Members</div></div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-icon">🙏</div>
+          <div><div class="stat-val" id="stat-prayers">—</div><div class="stat-label">Prayer Requests</div></div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-icon">📅</div>
+          <div><div class="stat-val" id="stat-registrations">—</div><div class="stat-label">Event Registrations</div></div>
+        </div>
+        <div class="stat-card orange">
+          <div class="stat-icon">🙏</div>
+          <div><div class="stat-val" id="stat-pending">—</div><div class="stat-label">Pending Prayers</div></div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-icon">✉️</div>
+          <div><div class="stat-val" id="stat-messages">—</div><div class="stat-label">Unread Messages</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📧</div>
+          <div><div class="stat-val" id="stat-subscribers">—</div><div class="stat-label">Newsletter Subs</div></div>
+        </div>
+      </div>
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header"><h3>Recent Members</h3><span class="count-badge" id="dash-member-count">0</span></div>
+          <table><thead><tr><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
+          <tbody id="dash-members-tbody"><tr class="loading-row"><td colspan="3">Loading...</td></tr></tbody></table>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Recent Prayer Requests</h3><span class="count-badge" id="dash-prayer-count">0</span></div>
+          <table><thead><tr><th>Name</th><th>Category</th><th>Status</th></tr></thead>
+          <tbody id="dash-prayers-tbody"><tr class="loading-row"><td colspan="3">Loading...</td></tr></tbody></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMBERS PAGE -->
+    <div class="page" id="page-members">
+      <div class="card">
+        <div class="card-header">
+          <h3>All Members <span class="count-badge" id="members-count">0</span></h3>
+          <input type="text" class="search-input" id="members-search" placeholder="Search by name or email..."/>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Full Name</th><th>Reg Number</th><th>Email</th><th>Course</th><th>Phone</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="members-tbody"><tr class="loading-row"><td colspan="9">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PRAYERS PAGE -->
+    <div class="page" id="page-prayers">
+      <div class="card">
+        <div class="card-header">
+          <h3>Prayer Requests <span class="count-badge" id="prayers-count">0</span></h3>
+          <input type="text" class="search-input" id="prayers-search" placeholder="Search by name or category..."/>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Name</th><th>Category</th><th>Request</th><th>Anonymous</th><th>Status</th><th>Submitted</th><th>Actions</th></tr></thead>
+          <tbody id="prayers-tbody"><tr class="loading-row"><td colspan="8">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EVENTS PAGE -->
+    <div class="page" id="page-events">
+      <div class="card">
+        <div class="card-header">
+          <h3>Event Registrations <span class="count-badge" id="events-count">0</span></h3>
+          <input type="text" class="search-input" id="events-search" placeholder="Search by name or event..."/>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Full Name</th><th>Event</th><th>Email</th><th>Phone</th><th>Reg No.</th><th>Registered</th></tr></thead>
+          <tbody id="events-tbody"><tr class="loading-row"><td colspan="7">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MESSAGES PAGE -->
+    <div class="page" id="page-messages">
+      <div class="card">
+        <div class="card-header">
+          <h3>Contact Messages <span class="count-badge" id="messages-count">0</span></h3>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Status</th><th>Sent</th><th>Action</th></tr></thead>
+          <tbody id="messages-tbody"><tr class="loading-row"><td colspan="8">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- NEWSLETTER PAGE -->
+    <div class="page" id="page-newsletter">
+      <div class="card">
+        <div class="card-header">
+          <h3>Newsletter Subscribers <span class="count-badge" id="newsletter-count">0</span></h3>
+        </div>
+        <table>
+          <thead><tr><th>#</th><th>Email Address</th><th>Subscribed</th></tr></thead>
+          <tbody id="newsletter-tbody"><tr class="loading-row"><td colspan="3">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MEMBER DETAIL MODAL -->
+<div class="modal-overlay" id="member-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>Member Profile</h3>
+      <button class="modal-close" onclick="closeMemberModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form id="member-edit-form">
+        <div class="modal-section">
+          <h4>Personal Information</h4>
+          <div class="modal-grid">
+            <div class="modal-field"><label>Full Name</label><input type="text" id="m-full_name"/></div>
+            <div class="modal-field"><label>Email</label><input type="email" id="m-email" disabled/></div>
+            <div class="modal-field"><label>Phone</label><input type="text" id="m-phone"/></div>
+            <div class="modal-field"><label>Reg. Number</label><input type="text" id="m-reg_number" disabled/></div>
+            <div class="modal-field"><label>Course / Department</label><input type="text" id="m-course"/></div>
+            <div class="modal-field"><label>Year of Study</label>
+              <select id="m-year_of_study">
+                <option value="">—</option>
+                <option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option><option>Year 5</option>
+              </select>
+            </div>
+            <div class="modal-field"><label>Ministry</label><input type="text" id="m-ministry"/></div>
+            <div class="modal-field"><label>Joined</label><input type="text" id="m-joined_at" disabled/></div>
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h4>Admin Controls</h4>
+          <div class="modal-grid">
+            <div class="modal-field"><label>Status</label>
+              <select id="m-status"><option value="active">Active</option><option value="inactive">Inactive</option></select>
+            </div>
+            <div class="modal-field"><label>Role</label>
+              <select id="m-role"><option value="member">Member</option><option value="leader">Leader</option><option value="committee">Committee</option></select>
+            </div>
+            <div class="modal-field full"><label>Admin Notes (visible to member)</label>
+              <textarea id="m-admin_notes" rows="2" placeholder="e.g. Welcome note, role assignment, reminders..."></textarea>
+            </div>
+          </div>
+          <button type="submit" class="modal-save-btn">Save Changes</button>
+        </div>
+      </form>
+
+      <div class="modal-section">
+        <h4>Event Registrations (<span id="m-events-count">0</span>)</h4>
+        <div id="m-events-list"></div>
+      </div>
+
+      <div class="modal-section">
+        <h4>Prayer Requests (<span id="m-prayers-count">0</span>)</h4>
+        <div id="m-prayers-list"></div>
+      </div>
+
+      <div class="modal-section">
+        <h4>Newsletter</h4>
+        <p style="font-size:0.85rem;color:var(--slate);">
+          Subscribed: <strong id="m-newsletter-status">—</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── LARAVEL API BASE URL ──
+  const API = 'http://localhost:8000/api';
+  let TOKEN = localStorage.getItem('tucu_admin_token');
+  let currentAdmin = JSON.parse(localStorage.getItem('tucu_admin_info') || 'null');
+  let allData = { members: [], prayers: [], events: [], messages: [], subscribers: [] };
+
+  function errorMessage(data, fallback = 'Something went wrong.') {
+    if (data?.errors) {
+      const first = Object.values(data.errors)[0];
+      if (Array.isArray(first)) return first[0];
+    }
+    return data?.message || data?.error || fallback;
+  }
+
+  // ── DATE ──
+  document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-KE', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+
+  // ── TOAST ──
+  function toast(msg) {
+    const t = document.createElement('div');
+    t.className = 'admin-toast'; t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3500);
+  }
+
+  // ── LOGIN ──
+  async function tryLogin() {
+    const username = document.getElementById('login-user').value.trim();
+    const password = document.getElementById('login-pass').value;
+    const btn = document.getElementById('login-submit');
+    btn.textContent = 'Signing in...'; btn.disabled = true;
+    try {
+      const res = await fetch(`${API}/admin/login`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        TOKEN = data.token;
+        currentAdmin = data.admin;
+        localStorage.setItem('tucu_admin_token', TOKEN);
+        localStorage.setItem('tucu_admin_info', JSON.stringify(currentAdmin));
+        document.getElementById('login-screen').style.display = 'none';
+        initDashboard();
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('login-error').textContent = errorMessage(data, 'Invalid username or password.');
+      }
+    } catch {
+      document.getElementById('login-error').style.display = 'block';
+      document.getElementById('login-error').textContent = 'Cannot reach server. Is it running?';
+    }
+    btn.textContent = 'Sign In to Dashboard'; btn.disabled = false;
+  }
+
+  document.getElementById('login-submit').addEventListener('click', tryLogin);
+  document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    try {
+      await fetch(`${API}/admin/logout`, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}` } });
+    } catch {}
+    localStorage.removeItem('tucu_admin_token');
+    localStorage.removeItem('tucu_admin_info');
+    TOKEN = null;
+    document.getElementById('login-screen').style.display = 'flex';
+  });
+
+  // ── AUTO-LOGIN ──
+  if (TOKEN) {
+    fetch(`${API}/admin/stats`, { headers: { Authorization: `Bearer ${TOKEN}` } })
+      .then(r => { if (r.ok) { document.getElementById('login-screen').style.display = 'none'; initDashboard(); }
+        else { localStorage.removeItem('tucu_admin_token'); localStorage.removeItem('tucu_admin_info'); } })
+      .catch(() => {});
+  }
+
+  // ── INIT ──
+  function initDashboard() {
+    if (currentAdmin) {
+      document.getElementById('admin-display-name').textContent = currentAdmin.username;
+      document.getElementById('admin-initials').textContent = currentAdmin.username[0].toUpperCase();
+    }
+    loadStats();
+    loadAllData();
+  }
+
+  async function apiFetch(path) {
+    const res = await fetch(`${API}${path}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    if (!res.ok) throw new Error(res.statusText);
+    return res.json();
+  }
+
+  async function loadStats() {
+    try {
+      const s = await apiFetch('/admin/stats');
+      document.getElementById('stat-members').textContent = s.members;
+      document.getElementById('stat-prayers').textContent = s.prayers;
+      document.getElementById('stat-registrations').textContent = s.event_registrations;
+      document.getElementById('stat-pending').textContent = s.prayers_pending;
+      document.getElementById('stat-messages').textContent = s.unread_messages;
+      document.getElementById('stat-subscribers').textContent = s.newsletter_subscribers;
+    } catch {}
+  }
+
+  async function loadAllData() {
+    try { allData.members = await apiFetch('/admin/members'); renderMembers(); renderDashMembers(); } catch {}
+    try { allData.prayers = await apiFetch('/admin/prayers'); renderPrayers(); renderDashPrayers(); } catch {}
+    try { allData.events = await apiFetch('/admin/registrations'); renderEvents(); } catch {}
+    try { allData.messages = await apiFetch('/admin/messages'); renderMessages(); } catch {}
+    try { allData.subscribers = await apiFetch('/admin/subscribers'); renderNewsletter(); } catch {}
+  }
+
+  // ── NAVIGATION ──
+  const pageTitles = { dashboard:'Dashboard', members:'Members', prayers:'Prayer Requests', events:'Event Registrations', messages:'Contact Messages', newsletter:'Newsletter Subscribers' };
+  document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      item.classList.add('active');
+      const page = item.dataset.page;
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(`page-${page}`).classList.add('active');
+      document.getElementById('page-title').textContent = pageTitles[page] || page;
+    });
+  });
+
+  // ── HELPERS ──
+  function fmtDate(str) { if (!str) return '—'; return new Date(str).toLocaleDateString('en-KE', { day:'2-digit', month:'short', year:'numeric' }); }
+
+  // ── MEMBERS ──
+  function renderMembers(filter = '') {
+    const tbody = document.getElementById('members-tbody');
+    let data = allData.members;
+    if (filter) data = data.filter(m => m.full_name?.toLowerCase().includes(filter) || m.email?.toLowerCase().includes(filter));
+    document.getElementById('members-count').textContent = data.length;
+    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No members found.</td></tr>'; return; }
+    tbody.innerHTML = data.map((m, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td><strong>${m.full_name}</strong></td>
+        <td>${m.reg_number || '—'}</td>
+        <td>${m.email}</td>
+        <td>${m.course || '—'}</td>
+        <td>${m.phone || '—'}</td>
+        <td><span class="badge badge-${m.status === 'active' ? 'green' : 'red'}">${m.status}</span></td>
+        <td>${fmtDate(m.joined_at)}</td>
+        <td>
+          <button class="action-btn btn-sm-blue" onclick="viewMember(${m.id})">View</button>
+          <button class="action-btn btn-sm-red" onclick="deleteMember(${m.id})">Remove</button>
+        </td>
+      </tr>`).join('');
+  }
+
+  function renderDashMembers() {
+    const tbody = document.getElementById('dash-members-tbody');
+    const recent = allData.members.slice(0, 5);
+    document.getElementById('dash-member-count').textContent = allData.members.length;
+    if (!recent.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No members yet.</td></tr>'; return; }
+    tbody.innerHTML = recent.map(m => `<tr><td><strong>${m.full_name}</strong></td><td>${m.email}</td><td>${fmtDate(m.joined_at)}</td></tr>`).join('');
+  }
+
+  async function deleteMember(id) {
+    if (!confirm('Remove this member from the database?')) return;
+    await fetch(`${API}/admin/members/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${TOKEN}` } });
+    allData.members = allData.members.filter(m => m.id !== id);
+    renderMembers(); renderDashMembers(); loadStats();
+    toast('Member removed.');
+  }
+
+  document.getElementById('members-search').addEventListener('input', e => renderMembers(e.target.value.toLowerCase()));
+
+  // ── PRAYERS ──
+  function renderPrayers(filter = '') {
+    const tbody = document.getElementById('prayers-tbody');
+    let data = allData.prayers;
+    if (filter) data = data.filter(p => p.name?.toLowerCase().includes(filter) || p.category?.toLowerCase().includes(filter));
+    document.getElementById('prayers-count').textContent = data.length;
+    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No prayer requests yet.</td></tr>'; return; }
+    tbody.innerHTML = data.map((p, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${p.name || 'Anonymous'}</td>
+        <td><span class="badge badge-blue">${p.category}</span></td>
+        <td class="prayer-text-cell" title="${p.request?.replace(/"/g,"'")}">${p.request}</td>
+        <td>${p.is_anonymous ? '✅ Yes' : 'No'}</td>
+        <td><span class="badge badge-${p.status === 'prayed' ? 'green' : 'gold'}">${p.status}</span></td>
+        <td>${fmtDate(p.submitted_at)}</td>
+        <td>
+          ${p.status !== 'prayed' ? `<button class="action-btn btn-sm-green" onclick="markPrayed(${p.id})">Mark Prayed</button>` : '<span style="color:var(--green);font-size:0.75rem;">✓ Done</span>'}
+        </td>
+      </tr>`).join('');
+  }
+
+  function renderDashPrayers() {
+    const tbody = document.getElementById('dash-prayers-tbody');
+    const recent = allData.prayers.slice(0, 5);
+    document.getElementById('dash-prayer-count').textContent = allData.prayers.length;
+    if (!recent.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No requests yet.</td></tr>'; return; }
+    tbody.innerHTML = recent.map(p => `<tr><td>${p.name || 'Anonymous'}</td><td>${p.category}</td><td><span class="badge badge-${p.status==='prayed'?'green':'gold'}">${p.status}</span></td></tr>`).join('');
+  }
+
+  async function markPrayed(id) {
+    await fetch(`${API}/admin/prayers/${id}/status`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` }, body: JSON.stringify({ status: 'prayed' }) });
+    const p = allData.prayers.find(x => x.id === id);
+    if (p) p.status = 'prayed';
+    renderPrayers(); renderDashPrayers(); loadStats();
+    toast('Prayer request marked as prayed! 🙏');
+  }
+
+  document.getElementById('prayers-search').addEventListener('input', e => renderPrayers(e.target.value.toLowerCase()));
+
+  // ── EVENTS ──
+  function renderEvents(filter = '') {
+    const tbody = document.getElementById('events-tbody');
+    let data = allData.events;
+    if (filter) data = data.filter(e => e.full_name?.toLowerCase().includes(filter) || e.event_name?.toLowerCase().includes(filter));
+    document.getElementById('events-count').textContent = data.length;
+    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No event registrations yet.</td></tr>'; return; }
+    tbody.innerHTML = data.map((e, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td><strong>${e.full_name}</strong></td>
+        <td>${e.event_name}</td>
+        <td>${e.email}</td>
+        <td>${e.phone || '—'}</td>
+        <td>${e.reg_number || '—'}</td>
+        <td>${fmtDate(e.registered_at)}</td>
+      </tr>`).join('');
+  }
+
+  document.getElementById('events-search').addEventListener('input', e => renderEvents(e.target.value.toLowerCase()));
+
+  // ── MESSAGES ──
+  function renderMessages() {
+    const tbody = document.getElementById('messages-tbody');
+    const data = allData.messages;
+    document.getElementById('messages-count').textContent = data.length;
+    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No messages yet.</td></tr>'; return; }
+    tbody.innerHTML = data.map((m, i) => `
+      <tr style="${!m.read_status ? 'font-weight:600;' : ''}">
+        <td>${i+1}</td>
+        <td>${m.name}</td>
+        <td>${m.email}</td>
+        <td>${m.subject || '—'}</td>
+        <td class="prayer-text-cell" title="${m.message?.replace(/"/g,"'")}">${m.message}</td>
+        <td><span class="badge badge-${m.read_status ? 'green' : 'gold'}">${m.read_status ? 'Read' : 'Unread'}</span></td>
+        <td>${fmtDate(m.sent_at)}</td>
+        <td>${!m.read_status ? `<button class="action-btn btn-sm-green" onclick="markRead(${m.id})">Mark Read</button>` : '—'}</td>
+      </tr>`).join('');
+  }
+
+  async function markRead(id) {
+    await fetch(`${API}/admin/messages/${id}/read`, { method: 'PUT', headers: { Authorization: `Bearer ${TOKEN}` } });
+    const m = allData.messages.find(x => x.id === id);
+    if (m) m.read_status = 1;
+    renderMessages(); loadStats();
+    toast('Message marked as read.');
+  }
+
+  // ── NEWSLETTER ──
+  function renderNewsletter() {
+    const tbody = document.getElementById('newsletter-tbody');
+    const data = allData.subscribers;
+    document.getElementById('newsletter-count').textContent = data.length;
+    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No subscribers yet.</td></tr>'; return; }
+    tbody.innerHTML = data.map((s, i) => `<tr><td>${i+1}</td><td>${s.email}</td><td>${fmtDate(s.subscribed_at)}</td></tr>`).join('');
+  }
+
+  // ── MEMBER DETAIL MODAL ──
+  let currentMemberId = null;
+
+  function viewMember(id) {
+    const m = allData.members.find(x => x.id === id);
+    if (!m) return;
+    currentMemberId = id;
+
+    document.getElementById('m-full_name').value = m.full_name || '';
+    document.getElementById('m-email').value = m.email || '';
+    document.getElementById('m-phone').value = m.phone || '';
+    document.getElementById('m-reg_number').value = m.reg_number || '—';
+    document.getElementById('m-course').value = m.course || '';
+    document.getElementById('m-year_of_study').value = m.year_of_study || '';
+    document.getElementById('m-ministry').value = m.ministry || '';
+    document.getElementById('m-joined_at').value = fmtDate(m.joined_at);
+    document.getElementById('m-status').value = m.status || 'active';
+    document.getElementById('m-role').value = m.role || 'member';
+    document.getElementById('m-admin_notes').value = m.admin_notes || '';
+
+    // Event registrations (nested via Laravel eager-loading)
+    const events = m.event_registrations || m.eventRegistrations || [];
+    document.getElementById('m-events-count').textContent = events.length;
+    const evList = document.getElementById('m-events-list');
+    evList.innerHTML = events.length
+      ? events.map(ev => `<div class="modal-list-item"><strong>${ev.event_name}</strong> — <span class="badge badge-${ev.status==='cancelled'?'red':'green'}">${ev.status}</span><br/><span style="color:var(--slate);font-size:0.75rem;">${fmtDate(ev.registered_at)}</span></div>`).join('')
+      : '<div class="modal-empty">No event registrations yet.</div>';
+
+    // Prayer requests
+    const prayers = m.prayer_requests || m.prayerRequests || [];
+    document.getElementById('m-prayers-count').textContent = prayers.length;
+    const prList = document.getElementById('m-prayers-list');
+    prList.innerHTML = prayers.length
+      ? prayers.map(p => `<div class="modal-list-item"><span class="badge badge-blue">${p.category}</span> <span class="badge badge-${p.status==='prayed'?'green':'gold'}">${p.status}</span><br/>${p.request}<br/><span style="color:var(--slate);font-size:0.75rem;">${fmtDate(p.submitted_at)}</span></div>`).join('')
+      : '<div class="modal-empty">No prayer requests yet.</div>';
+
+    // Newsletter
+    const nl = m.newsletter_subscription || m.newsletterSubscription;
+    document.getElementById('m-newsletter-status').textContent = nl?.is_subscribed ? 'Yes ✅' : 'No';
+
+    document.getElementById('member-modal').classList.add('active');
+  }
+
+  function closeMemberModal() {
+    document.getElementById('member-modal').classList.remove('active');
+    currentMemberId = null;
+  }
+
+  document.getElementById('member-edit-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!currentMemberId) return;
+
+    const payload = {
+      full_name: document.getElementById('m-full_name').value.trim(),
+      phone: document.getElementById('m-phone').value.trim(),
+      course: document.getElementById('m-course').value.trim(),
+      year_of_study: document.getElementById('m-year_of_study').value,
+      ministry: document.getElementById('m-ministry').value.trim(),
+      status: document.getElementById('m-status').value,
+      role: document.getElementById('m-role').value,
+      admin_notes: document.getElementById('m-admin_notes').value.trim(),
+    };
+
+    try {
+      const res = await fetch(`${API}/admin/members/${currentMemberId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast('Member updated successfully.');
+        // Update local cache
+        const idx = allData.members.findIndex(x => x.id === currentMemberId);
+        if (idx !== -1) allData.members[idx] = { ...allData.members[idx], ...payload };
+        renderMembers(document.getElementById('members-search').value.toLowerCase());
+        closeMemberModal();
+      } else {
+        toast(errorMessage(data, 'Update failed.'), 'error');
+      }
+    } catch {
+      toast('Server error.', 'error');
+    }
+  });
+</script>
+</body>
+</html>

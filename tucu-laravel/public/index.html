@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tharaka University Christian Union</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-deep: #3D1E96;
+      --green-mid: #5B3FC4;
+      --green-light: #0E8FD0;
+      --gold: #FFC700;
+      --gold-light: #FCF103;
+      --ivory: #F8F6FC;
+      --ivory-dark: #ECE7F7;
+      --charcoal: #1C1C1C;
+      --slate: #6E6B95;
+      --white: #FFFFFF;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--ivory);
+      color: var(--charcoal);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(61, 30, 150, 0.97);
+      backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 64px;
+      border-bottom: 1px solid rgba(255, 199, 0, 0.3);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .nav-logo {
+      width: 42px; height: 42px;
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .nav-logo img {
+      width: 100%; height: 100%; object-fit: contain;
+    }
+    .nav-brand span {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+    .nav-brand small {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--gold-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex; gap: 28px; list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.82);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--green-deep) !important;
+      font-weight: 600 !important;
+      padding: 7px 18px;
+      border-radius: 4px;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold-light) !important; color: var(--green-deep) !important; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #170B45 0%, var(--green-deep) 50%, #2A1670 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 80px 5% 60px;
+    }
+    /* Ambient light rays */
+    #hero::before {
+      content: '';
+      position: absolute; top: -20%; left: 50%;
+      width: 2px; height: 140%;
+      background: linear-gradient(to bottom, transparent, rgba(255, 199, 0,0.18) 30%, rgba(255, 199, 0,0.08) 70%, transparent);
+      transform: translateX(-50%);
+    }
+    #hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 50% 20%, rgba(255, 199, 0,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 20% 80%, rgba(14, 143, 208,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 60% at 80% 80%, rgba(14, 143, 208,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* CSS Cross */
+    .hero-cross {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -58%);
+      opacity: 0.06;
+    }
+    .hero-cross .v-bar {
+      width: 6px; height: 260px;
+      background: linear-gradient(to bottom, var(--gold), var(--gold-light));
+      border-radius: 3px;
+      margin: 0 auto;
+    }
+    .hero-cross .h-bar {
+      width: 130px; height: 6px;
+      background: linear-gradient(to right, var(--gold), var(--gold-light));
+      border-radius: 3px;
+      margin-top: -185px;
+      margin-left: auto; margin-right: auto;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center;
+      max-width: 780px;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      padding: 6px 18px;
+      border: 1px solid rgba(255, 199, 0,0.4);
+      border-radius: 2px;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    .hero-verse {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.65);
+      font-style: italic;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+    .hero-verse-ref {
+      font-size: 0.78rem;
+      color: var(--gold);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      margin-bottom: 42px;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: 14px; justify-content: center;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--green-deep);
+      border: none;
+      padding: 13px 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      padding: 13px 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    .hero-scroll {
+      position: absolute; bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    .hero-scroll::after {
+      content: '↓'; font-size: 1rem;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── SCRIPTURE TICKER ── */
+    .scripture-bar {
+      background: var(--green-deep);
+      padding: 14px 5%;
+      display: flex; align-items: center; gap: 20px;
+      border-bottom: 2px solid var(--gold);
+    }
+    .scripture-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .scripture-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.92rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.85);
+    }
+    .scripture-ref {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gold);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 90px 5%;
+    }
+    .section-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      color: var(--green-deep);
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--slate);
+      line-height: 1.7;
+      max-width: 600px;
+    }
+    .section-header { margin-bottom: 56px; }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--white);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-text p {
+      font-size: 0.97rem;
+      color: #444;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+    .about-values {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 36px;
+    }
+    .value-card {
+      padding: 22px;
+      background: var(--ivory);
+      border-left: 3px solid var(--gold);
+      border-radius: 2px;
+    }
+    .value-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--green-deep);
+      margin-bottom: 6px;
+    }
+    .value-card p {
+      font-size: 0.8rem;
+      color: var(--slate);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-image-placeholder {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: linear-gradient(145deg, var(--green-deep) 0%, var(--green-mid) 100%);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      padding: 40px;
+    }
+    .about-image-placeholder img {
+      width: 100%; max-width: 280px;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.25));
+    }
+    .about-image-placeholder p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.5);
+      font-style: italic;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .about-stat-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      background: var(--green-deep);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: -40px;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 8px 32px rgba(61, 30, 150,0.25);
+    }
+    .stat-item {
+      padding: 28px 20px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 6px;
+      display: block;
+    }
+
+    /* ── EVENTS ── */
+    #events {
+      background: var(--ivory);
+    }
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .event-card {
+      background: var(--white);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .event-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(61, 30, 150,0.12);
+    }
+    .event-date-bar {
+      background: var(--green-deep);
+      padding: 18px 22px 14px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .event-date-box {
+      background: var(--gold);
+      width: 52px; height: 56px;
+      border-radius: 3px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .event-date-box .day {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--green-deep);
+      line-height: 1;
+    }
+    .event-date-box .month {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green-deep);
+    }
+    .event-meta .category {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .event-meta .time {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+    }
+    .event-body {
+      padding: 22px;
+    }
+    .event-body h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--green-deep);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .event-body p {
+      font-size: 0.82rem;
+      color: var(--slate);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .event-location {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.76rem;
+      color: var(--slate);
+      margin-bottom: 18px;
+    }
+    .event-location::before { content: '📍'; font-size: 0.78rem; }
+    .event-register {
+      display: block;
+      text-align: center;
+      background: var(--green-deep);
+      color: var(--white);
+      padding: 10px;
+      border-radius: 3px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .event-register:hover { background: var(--green-mid); }
+
+    /* ── MINISTRIES ── */
+    #ministries {
+      background: var(--white);
+    }
+    .ministries-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .ministry-card {
+      padding: 32px 24px;
+      background: var(--ivory);
+      border-radius: 4px;
+      text-align: center;
+      transition: background 0.25s, transform 0.25s;
+      cursor: pointer;
+    }
+    .ministry-card:hover {
+      background: var(--green-deep);
+      transform: translateY(-4px);
+    }
+    .ministry-card:hover .ministry-icon { background: rgba(255,255,255,0.1); }
+    .ministry-card:hover h3 { color: var(--white); }
+    .ministry-card:hover p { color: rgba(255,255,255,0.65); }
+    .ministry-icon {
+      width: 60px; height: 60px;
+      background: rgba(61, 30, 150,0.08);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 18px;
+      transition: background 0.25s;
+    }
+    .ministry-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--green-deep);
+      margin-bottom: 10px;
+      transition: color 0.25s;
+    }
+    .ministry-card p {
+      font-size: 0.78rem;
+      color: var(--slate);
+      line-height: 1.6;
+      transition: color 0.25s;
+    }
+
+    /* ── PRAYER ── */
+    #prayer {
+      background: linear-gradient(135deg, var(--green-deep) 0%, #2A1670 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #prayer::before {
+      content: '✝';
+      position: absolute; top: 50%; right: 5%;
+      transform: translateY(-50%);
+      font-size: 20rem;
+      color: rgba(255,255,255,0.03);
+      pointer-events: none;
+      font-family: serif;
+    }
+    #prayer .section-eyebrow { color: var(--gold); }
+    #prayer .section-title { color: var(--white); }
+    #prayer .section-subtitle { color: rgba(255,255,255,0.65); max-width: 500px; }
+    .prayer-form {
+      max-width: 620px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .form-group {
+      display: flex; flex-direction: column; gap: 8px;
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 3px;
+      padding: 12px 16px;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.3); }
+    .form-group select option { background: var(--green-deep); color: var(--white); }
+    .anon-check {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 24px;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+    }
+    .anon-check input[type=checkbox] { accent-color: var(--gold); width: 16px; height: 16px; }
+
+    /* ── SERMONS ── */
+    #sermons {
+      background: var(--ivory);
+    }
+    .sermons-list {
+      display: flex; flex-direction: column; gap: 16px;
+      max-width: 860px;
+    }
+    .sermon-item {
+      background: var(--white);
+      border-radius: 4px;
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: 60px 1fr auto;
+      gap: 22px;
+      align-items: center;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+      transition: box-shadow 0.2s;
+    }
+    .sermon-item:hover { box-shadow: 0 4px 20px rgba(61, 30, 150,0.1); }
+    .sermon-play {
+      width: 52px; height: 52px;
+      background: var(--green-deep);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+    .sermon-play:hover { background: var(--green-mid); }
+    .sermon-info h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green-deep);
+      margin-bottom: 5px;
+    }
+    .sermon-info .sermon-meta {
+      font-size: 0.76rem;
+      color: var(--slate);
+    }
+    .sermon-info .sermon-meta span { margin-right: 14px; }
+    .sermon-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      background: rgba(91, 63, 196,0.1);
+      padding: 5px 12px;
+      border-radius: 2px;
+    }
+
+    /* ── LEADERSHIP ── */
+    #leadership {
+      background: var(--white);
+    }
+    .leadership-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+    }
+    .leader-card {
+      text-align: center;
+    }
+    .leader-photo {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: var(--ivory-dark);
+      margin: 0 auto 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem;
+      border: 3px solid var(--ivory-dark);
+      transition: border-color 0.2s;
+      overflow: hidden;
+    }
+    .leader-card:hover .leader-photo { border-color: var(--gold); }
+    .leader-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.97rem;
+      font-weight: 700;
+      color: var(--green-deep);
+      margin-bottom: 4px;
+    }
+    .leader-role {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .leader-bio {
+      font-size: 0.78rem;
+      color: var(--slate);
+      line-height: 1.6;
+    }
+
+    /* ── TESTIMONIES ── */
+    #testimonies {
+      background: var(--ivory);
+      overflow: hidden;
+    }
+    .testimonies-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .testimony-card {
+      background: var(--white);
+      border-radius: 4px;
+      padding: 32px 28px;
+      position: relative;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .testimony-card::before {
+      content: '"';
+      position: absolute; top: 18px; left: 22px;
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      color: var(--gold);
+      opacity: 0.25;
+      line-height: 1;
+    }
+    .testimony-text {
+      font-size: 0.9rem;
+      color: #444;
+      line-height: 1.75;
+      margin-bottom: 24px;
+      padding-top: 12px;
+    }
+    .testimony-author {
+      display: flex; align-items: center; gap: 12px;
+      border-top: 1px solid var(--ivory-dark);
+      padding-top: 18px;
+    }
+    .testimony-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--green-deep);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .testimony-name {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--green-deep);
+    }
+    .testimony-cohort {
+      font-size: 0.72rem;
+      color: var(--slate);
+    }
+    .testimony-type {
+      margin-left: auto;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(255, 199, 0,0.1);
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    /* ── BLOG ── */
+    #blog {
+      background: var(--white);
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 28px;
+    }
+    .blog-card {
+      background: var(--ivory);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.22s;
+    }
+    .blog-card:hover { transform: translateY(-4px); }
+    .blog-thumb {
+      height: 180px;
+      background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+    }
+    .blog-thumb.featured { height: 240px; font-size: 3rem; }
+    .blog-body {
+      padding: 24px;
+    }
+    .blog-category {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      margin-bottom: 10px;
+    }
+    .blog-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--green-deep);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .blog-card.featured h3 { font-size: 1.3rem; }
+    .blog-card p {
+      font-size: 0.8rem;
+      color: var(--slate);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+    .blog-read {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--green-mid);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .blog-read:hover { color: var(--gold); }
+
+    /* ── GIVING ── */
+    #giving {
+      background: var(--green-deep);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    #giving::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255, 199, 0,0.06) 0%, transparent 70%);
+    }
+    #giving .section-eyebrow { color: var(--gold); }
+    #giving .section-title { color: var(--white); max-width: 580px; margin-inline: auto; }
+    #giving .section-subtitle { color: rgba(255,255,255,0.6); max-width: 520px; margin-inline: auto margin-bottom: 48px; }
+    .giving-options {
+      display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
+      margin: 48px 0;
+    }
+    .giving-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 32px 28px;
+      width: 200px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .giving-card:hover {
+      background: rgba(255, 199, 0,0.1);
+      border-color: rgba(255, 199, 0,0.4);
+    }
+    .giving-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+    .giving-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .giving-card p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.5;
+    }
+    .mpesa-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 14px 28px;
+      border-radius: 4px;
+      margin-top: 16px;
+    }
+    .mpesa-badge span {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+    }
+    .mpesa-badge strong {
+      font-size: 1rem;
+      color: var(--gold);
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* ── JOIN ── */
+    #join {
+      background: var(--ivory);
+      text-align: center;
+    }
+    .join-inner {
+      max-width: 580px;
+      margin: 0 auto;
+    }
+    .join-inner .section-title { font-size: clamp(1.8rem, 3vw, 2.4rem); }
+    .join-inner .section-subtitle { margin-inline: auto; text-align: center; margin-bottom: 40px; }
+    .join-form {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .join-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .join-input {
+      background: var(--white);
+      border: 1.5px solid var(--ivory-dark);
+      border-radius: 3px;
+      padding: 13px 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .join-input:focus { border-color: var(--green-mid); }
+    .join-input::placeholder { color: #aaa; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--charcoal);
+      padding: 60px 5% 28px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-brand p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.75;
+      margin: 16px 0;
+    }
+    .footer-social {
+      display: flex; gap: 12px;
+    }
+    .social-link {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .social-link:hover { background: var(--gold); color: var(--charcoal); }
+    .footer-col h5 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul a {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-bottom p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.25);
+    }
+    .footer-verse {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-visual { order: -1; max-width: 480px; margin: 0 auto; }
+      .about-image-placeholder { aspect-ratio: 16/9; }
+      .ministries-grid { grid-template-columns: repeat(2, 1fr); }
+      .leadership-grid { grid-template-columns: repeat(2, 1fr); }
+      .blog-grid { grid-template-columns: 1fr 1fr; }
+      .blog-card.featured { grid-column: span 2; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 5%; }
+      .nav-links { display: none; }
+      section { padding: 64px 5%; }
+      .events-grid { grid-template-columns: 1fr; }
+      .testimonies-grid { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .blog-card.featured { grid-column: span 1; }
+      .form-row { grid-template-columns: 1fr; }
+      .about-stat-strip { grid-template-columns: repeat(3, 1fr); }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .join-row { grid-template-columns: 1fr; }
+    }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo"><img src="/images/tucu-logo.png" alt="TUCU Logo"/></div>
+    <span>Tharaka University CU
+      <small>Christian Union</small>
+    </span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#ministries">Ministries</a></li>
+    <li><a href="#sermons">Sermons</a></li>
+    <li><a href="#prayer">Prayer</a></li>
+    <li><a href="#blog">Blog</a></li>
+    <li><a href="#join" class="nav-cta">Join CU</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-cross">
+    <div class="v-bar"></div>
+    <div class="h-bar"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Tharaka University — Est. Fellowship</span>
+    <h1 class="hero-title">Rooted in Faith,<br><em>Growing Together</em></h1>
+    <p class="hero-verse">"Let no one look down on your youthfulness, but rather in speech, conduct, love, faith and purity, show yourself an example of those who believe."</p>
+    <p class="hero-verse-ref">— 1 Timothy 4:12</p>
+    <div class="hero-actions">
+      <a href="#join" class="btn-primary">Join the CU</a>
+      <a href="#prayer" class="btn-outline">Submit Prayer Request</a>
+      <a href="#sermons" class="btn-outline">Watch Sermons</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- SCRIPTURE BAR -->
+<div class="scripture-bar">
+  <span class="scripture-label">📖 This Week's Verse</span>
+  <span class="scripture-text">"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future."</span>
+  <span class="scripture-ref">Jeremiah 29:11</span>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text fade-in">
+      <p class="section-eyebrow">Who We Are</p>
+      <h2 class="section-title">A Community Built on the Word</h2>
+      <p>The Tharaka University Christian Union is a vibrant fellowship of students, staff, and faculty who are committed to knowing Christ and making Him known on campus and beyond. We believe that faith and academic excellence go hand in hand.</p>
+      <p>Founded on the principles of Scripture, we provide a space for every student to encounter God, grow in discipleship, and serve their generation. Whether you're a committed believer or just beginning to explore faith — you belong here.</p>
+      <div class="about-values">
+        <div class="value-card">
+          <h4>Discipleship</h4>
+          <p>Walking with students from salvation to maturity in Christ.</p>
+        </div>
+        <div class="value-card">
+          <h4>Fellowship</h4>
+          <p>Building authentic community that supports one another.</p>
+        </div>
+        <div class="value-card">
+          <h4>Evangelism</h4>
+          <p>Sharing the Good News across Tharaka campus and beyond.</p>
+        </div>
+        <div class="value-card">
+          <h4>Prayer</h4>
+          <p>Sustaining all ministry through fervent, believing prayer.</p>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual fade-in">
+      <div class="about-image-placeholder">
+        <img src="/images/tucu-logo.png" alt="Tharaka University Christian Union Logo"/>
+        <p>Tharaka University Christian Union</p>
+      </div>
+      <div class="about-stat-strip">
+        <div class="stat-item">
+          <span class="stat-num">400+</span>
+          <span class="stat-label">Members</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">8</span>
+          <span class="stat-label">Ministries</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">12+</span>
+          <span class="stat-label">Years Active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events">
+  <div class="section-header fade-in">
+    <p class="section-eyebrow">Calendar</p>
+    <h2 class="section-title">Upcoming Events</h2>
+    <p class="section-subtitle">Join us for worship, prayer, Bible study, conferences, and more. There's always something happening in the CU.</p>
+  </div>
+  <div class="events-grid">
+    <div class="event-card fade-in">
+      <div class="event-date-bar">
+        <div class="event-date-box"><span class="day">14</span><span class="month">Jun</span></div>
+        <div class="event-meta">
+          <div class="category">Weekly Fellowship</div>
+          <div class="time">Friday · 4:00 PM – 6:30 PM</div>
+        </div>
+      </div>
+      <div class="event-body">
+        <h3>Friday Evening Fellowship</h3>
+        <p>Our weekly gathering for worship, Word, and community. All students warmly welcome to attend and participate.</p>
+        <div class="event-location">Main Chapel, Tharaka University</div>
+        <a href="#join" class="event-register">Register Free</a>
+      </div>
+    </div>
+    <div class="event-card fade-in">
+      <div class="event-date-bar">
+        <div class="event-date-box"><span class="day">20</span><span class="month">Jun</span></div>
+        <div class="event-meta">
+          <div class="category">Prayer Vigil</div>
+          <div class="time">Friday · 10:00 PM – 4:00 AM</div>
+        </div>
+      </div>
+      <div class="event-body">
+        <h3>End of Semester Night of Prayer</h3>
+        <p>Come before the Lord as exams approach. A powerful night of intercession, worship, and declaration over the campus.</p>
+        <div class="event-location">CU Prayer Room, Block C</div>
+        <a href="#join" class="event-register">Sign Up</a>
+      </div>
+    </div>
+    <div class="event-card fade-in">
+      <div class="event-date-bar">
+        <div class="event-date-box"><span class="day">28</span><span class="month">Jun</span></div>
+        <div class="event-meta">
+          <div class="category">Conference</div>
+          <div class="time">Saturday · 8:00 AM – 5:00 PM</div>
+        </div>
+      </div>
+      <div class="event-body">
+        <h3>Campus Missions & Evangelism Day</h3>
+        <p>A full day of outreach, training, and street evangelism. Learn how to share your faith boldly and effectively.</p>
+        <div class="event-location">University Grounds & Surrounding Area</div>
+        <a href="#join" class="event-register">Register Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MINISTRIES -->
+<section id="ministries">
+  <div class="section-header fade-in">
+    <p class="section-eyebrow">Get Involved</p>
+    <h2 class="section-title">Our Ministry Departments</h2>
+    <p class="section-subtitle">Every member has a role to play. Find where your gifts fit within the body of Christ at Tharaka.</p>
+  </div>
+  <div class="ministries-grid">
+    <div class="ministry-card fade-in">
+      <div class="ministry-icon">🎶</div>
+      <h3>Praise & Worship</h3>
+      <p>Leading the congregation into God's presence through Spirit-filled worship and music.</p>
+    </div>
+    <div class="ministry-card fade-in">
+      <div class="ministry-icon">📢</div>
+      <h3>Evangelism</h3>
+      <p>Taking the Gospel to campus halls, hostels, and the surrounding community.</p>
+    </div>
+    <div class="ministry-card fade-in">
+      <div class="ministry-icon">🙏</div>
+      <h3>Intercessory Prayer</h3>
+      <p>Covering the CU, campus, and nation through persistent, strategic intercession.</p>
+    </div>
+    <div class="ministry-card fade-in">
+      <div class="ministry-icon">📚</div>
+      <h3>Discipleship</h3>
+      <p>One-on-one and small group mentoring that grounds new believers in the Word.</p>
+    </div>
+    <div class="ministry-card fade-in">
+      <div class="ministry-icon">🎥</div>
+      <h3>Media & Technology</h3>
+      <p>Capturing, broadcasting, and distributing CU content to members and the world.</p>
+    </div>
+    <div class="ministry-card fade-in">
+      <div class="ministry-icon">🤝</div>
+      <h3>Hospitality</h3>
+      <p>Welcoming every person who walks through our doors with warmth and love.</p>
+    </div>
+    <div class="ministry-card fade-in">
+      <div class="ministry-icon">💼</div>
+      <h3>Career & Mentorship</h3>
+      <p>Connecting students with Christian professionals for guidance, internships, and CVs.</p>
+    </div>
+    <div class="ministry-card fade-in">
+      <div class="ministry-icon">🌍</div>
+      <h3>Missions</h3>
+      <p>Short-term mission trips, community service, and global prayer partnerships.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRAYER -->
+<section id="prayer">
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; max-width:1200px;">
+    <div class="fade-in">
+      <p class="section-eyebrow">Prayer Request</p>
+      <h2 class="section-title">How Can We Pray for You?</h2>
+      <p class="section-subtitle">You don't have to carry your burdens alone. Our prayer team intercedes daily for every request submitted — confidentially and with care.</p>
+      <br/><br/>
+      <p style="font-family:'Playfair Display',serif; font-size:1.3rem; font-style:italic; color:rgba(255,255,255,0.5); line-height:1.6;">"Cast all your anxiety on Him because He cares for you."<br/><span style="font-family:'Inter',sans-serif; font-size:0.78rem; letter-spacing:0.1em; color:var(--gold); font-style:normal; font-weight:600;">— 1 Peter 5:7</span></p>
+    </div>
+    <div class="fade-in">
+      <div class="prayer-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Your name"/>
+          </div>
+          <div class="form-group">
+            <label>Course / Year</label>
+            <input type="text" placeholder="e.g. BCom Year 2"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select>
+            <option>Health & Healing</option>
+            <option>Academic Breakthrough</option>
+            <option>Family Situation</option>
+            <option>Spiritual Growth</option>
+            <option>Financial Need</option>
+            <option>Relationship</option>
+            <option>Career & Future</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Your Prayer Request</label>
+          <textarea placeholder="Share what's on your heart. This is a safe space."></textarea>
+        </div>
+        <label class="anon-check">
+          <input type="checkbox"/> Keep this anonymous
+        </label>
+        <button class="btn-primary" style="width:100%; padding:14px;">Submit Prayer Request 🙏</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERMONS -->
+<section id="sermons">
+  <div class="section-header fade-in">
+    <p class="section-eyebrow">Media Library</p>
+    <h2 class="section-title">Sermons & Teachings</h2>
+    <p class="section-subtitle">Revisit powerful messages from our fellowships, conferences, and special services. Download notes or stream anytime.</p>
+  </div>
+  <div class="sermons-list">
+    <div class="sermon-item fade-in">
+      <div class="sermon-play">▶️</div>
+      <div class="sermon-info">
+        <h4>Walking in Purpose: God's Plan for Your Student Years</h4>
+        <div class="sermon-meta">
+          <span>📅 June 7, 2026</span>
+          <span>👤 Chaplain David Mwangi</span>
+          <span>⏱ 48 min</span>
+        </div>
+      </div>
+      <span class="sermon-tag">Purpose</span>
+    </div>
+    <div class="sermon-item fade-in">
+      <div class="sermon-play">▶️</div>
+      <div class="sermon-info">
+        <h4>Faith Under Pressure: Passing Exams God's Way</h4>
+        <div class="sermon-meta">
+          <span>📅 May 30, 2026</span>
+          <span>👤 Sis. Grace Nkirote</span>
+          <span>⏱ 36 min</span>
+        </div>
+      </div>
+      <span class="sermon-tag">Academic Life</span>
+    </div>
+    <div class="sermon-item fade-in">
+      <div class="sermon-play">▶️</div>
+      <div class="sermon-info">
+        <h4>The Armor of God — Spiritual Warfare for Every Believer</h4>
+        <div class="sermon-meta">
+          <span>📅 May 16, 2026</span>
+          <span>👤 Bro. Samuel Kariuki</span>
+          <span>⏱ 52 min</span>
+        </div>
+      </div>
+      <span class="sermon-tag">Spiritual Warfare</span>
+    </div>
+    <div class="sermon-item fade-in">
+      <div class="sermon-play">▶️</div>
+      <div class="sermon-info">
+        <h4>Relationships, Purity, and God's Design for Love</h4>
+        <div class="sermon-meta">
+          <span>📅 April 25, 2026</span>
+          <span>👤 Bro. Peter Muriuki</span>
+          <span>⏱ 44 min</span>
+        </div>
+      </div>
+      <span class="sermon-tag">Relationships</span>
+    </div>
+  </div>
+  <div style="margin-top:36px; fade-in">
+    <a href="#sermons" class="btn-primary">View Full Sermon Archive</a>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section id="leadership">
+  <div class="section-header fade-in">
+    <p class="section-eyebrow">Our Team</p>
+    <h2 class="section-title">CU Leadership 2025/2026</h2>
+    <p class="section-subtitle">Servant leaders committed to shepherding the CU family with humility, vision, and integrity.</p>
+  </div>
+  <div class="leadership-grid">
+    <div class="leader-card fade-in">
+      <div class="leader-photo">👤</div>
+      <h4>Emmanuel Kariuki</h4>
+      <div class="leader-role">Chairperson</div>
+      <p class="leader-bio">Third year Bachelor of Education student. Passionate about discipleship and campus transformation.</p>
+    </div>
+    <div class="leader-card fade-in">
+      <div class="leader-photo">👤</div>
+      <h4>Joy Wambui</h4>
+      <div class="leader-role">Vice Chairperson</div>
+      <p class="leader-bio">Leading the women's fellowship and driving outreach initiatives across campus departments.</p>
+    </div>
+    <div class="leader-card fade-in">
+      <div class="leader-photo">👤</div>
+      <h4>Collins Mutembei</h4>
+      <div class="leader-role">Secretary General</div>
+      <p class="leader-bio">Ensuring smooth operations, minutes, correspondence, and member communication for the CU.</p>
+    </div>
+    <div class="leader-card fade-in">
+      <div class="leader-photo">👤</div>
+      <h4>Mercy Njagi</h4>
+      <div class="leader-role">Treasurer</div>
+      <p class="leader-bio">Managing all finances, welfare funds, and donor relations with transparency and diligence.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIES -->
+<section id="testimonies">
+  <div class="section-header fade-in">
+    <p class="section-eyebrow">His Faithfulness</p>
+    <h2 class="section-title">Testimonies from the Family</h2>
+    <p class="section-subtitle">God is moving in the lives of students at Tharaka University. These are their stories.</p>
+  </div>
+  <div class="testimonies-grid">
+    <div class="testimony-card fade-in">
+      <p class="testimony-text">I came to Tharaka feeling completely lost spiritually. Within my first semester, the CU discipleship program changed my life. I found not just faith, but purpose, community, and clarity for my future.</p>
+      <div class="testimony-author">
+        <div class="testimony-avatar">🙏</div>
+        <div>
+          <div class="testimony-name">Brian Mwenda</div>
+          <div class="testimony-cohort">BSc Computer Science, Year 2</div>
+        </div>
+        <span class="testimony-type">Salvation</span>
+      </div>
+    </div>
+    <div class="testimony-card fade-in">
+      <p class="testimony-text">I was told I would fail my exams. I had missed too many classes. But the CU prayer team stood with me and I passed all four units. God is real and He intervenes in academic situations.</p>
+      <div class="testimony-author">
+        <div class="testimony-avatar">📖</div>
+        <div>
+          <div class="testimony-name">Lydia Gitonga</div>
+          <div class="testimony-cohort">BCom Finance, Year 3</div>
+        </div>
+        <span class="testimony-type">Academic</span>
+      </div>
+    </div>
+    <div class="testimony-card fade-in">
+      <p class="testimony-text">I had been struggling with depression for two years before I joined the CU. The genuine love of the members and the Word taught every week slowly restored my joy. I am whole today.</p>
+      <div class="testimony-author">
+        <div class="testimony-avatar">❤️</div>
+        <div>
+          <div class="testimony-name">Naomi Murungi</div>
+          <div class="testimony-cohort">BA Education, Year 4</div>
+        </div>
+        <span class="testimony-type">Healing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-header fade-in">
+    <p class="section-eyebrow">Articles & Devotionals</p>
+    <h2 class="section-title">From Our Writers</h2>
+    <p class="section-subtitle">Reflections on faith, campus life, relationships, career, and what it means to follow Jesus today.</p>
+  </div>
+  <div class="blog-grid">
+    <div class="blog-card featured fade-in">
+      <div class="blog-thumb featured">📖</div>
+      <div class="blog-body">
+        <div class="blog-category">Christian Living</div>
+        <h3>What Does It Mean to Be a Christian Student in 2026?</h3>
+        <p>Navigating social media, academic pressure, moral compromise, and identity in the most defining years of your life. A frank conversation every campus Christian must have.</p>
+        <a href="#blog" class="blog-read">Read Article →</a>
+      </div>
+    </div>
+    <div class="blog-card fade-in">
+      <div class="blog-thumb">🎓</div>
+      <div class="blog-body">
+        <div class="blog-category">Career & Faith</div>
+        <h3>5 Ways to Honor God in Your Job Search</h3>
+        <p>Your career is a ministry. Here's how to approach interviews, CVs, and ambition through a biblical lens.</p>
+        <a href="#blog" class="blog-read">Read Article →</a>
+      </div>
+    </div>
+    <div class="blog-card fade-in">
+      <div class="blog-thumb">💑</div>
+      <div class="blog-body">
+        <div class="blog-category">Relationships</div>
+        <h3>Purity, Friendship, and Godly Boundaries on Campus</h3>
+        <p>Practical wisdom for navigating friendships and romantic relationships with grace and conviction.</p>
+        <a href="#blog" class="blog-read">Read Article →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GIVING -->
+<section id="giving">
+  <p class="section-eyebrow">Support the Ministry</p>
+  <h2 class="section-title">Give to Advance the Kingdom on Campus</h2>
+  <p class="section-subtitle" style="color:rgba(255,255,255,0.6); max-width:520px; margin:16px auto 0;">Your giving directly funds missions, student welfare, events, and discipleship materials for hundreds of students.</p>
+  <div class="giving-options">
+    <div class="giving-card fade-in">
+      <span class="giving-icon">🌍</span>
+      <h4>Missions Fund</h4>
+      <p>Send students on short-term mission trips and outreach.</p>
+    </div>
+    <div class="giving-card fade-in">
+      <span class="giving-icon">📚</span>
+      <h4>Discipleship Materials</h4>
+      <p>Purchase Bibles, study guides, and devotionals for new believers.</p>
+    </div>
+    <div class="giving-card fade-in">
+      <span class="giving-icon">🎤</span>
+      <h4>Events & Conferences</h4>
+      <p>Cover costs for campus fellowships and guest speakers.</p>
+    </div>
+    <div class="giving-card fade-in">
+      <span class="giving-icon">🤲</span>
+      <h4>Student Welfare</h4>
+      <p>Support members facing financial hardship and emergencies.</p>
+    </div>
+  </div>
+  <div class="mpesa-badge fade-in">
+    <span>Send M-Pesa to Paybill:</span>
+    <strong>TUCU · 4XXXXXX</strong>
+    <span>· Account: Your Name</span>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section id="join">
+  <div class="join-inner">
+    <p class="section-eyebrow" style="text-align:center;">Membership</p>
+    <h2 class="section-title">Join the Tharaka University CU</h2>
+    <p class="section-subtitle" style="text-align:center;">Take the first step. Register as a member today and get instant access to your personal CU portal — track events, prayer requests, and more.</p>
+    <div class="join-form fade-in">
+      <div class="join-row">
+        <input type="text" class="join-input" id="join-name" placeholder="Full Name"/>
+        <input type="text" class="join-input" id="join-reg" placeholder="Reg. Number"/>
+      </div>
+      <div class="join-row">
+        <input type="email" class="join-input" id="join-email" placeholder="Email Address"/>
+        <input type="tel" class="join-input" id="join-phone" placeholder="Phone Number"/>
+      </div>
+      <div class="join-row">
+        <input type="text" class="join-input" id="join-course" placeholder="Course / Department"/>
+        <select class="join-input" id="join-year">
+          <option value="">Year of Study</option>
+          <option>Year 1</option>
+          <option>Year 2</option>
+          <option>Year 3</option>
+          <option>Year 4</option>
+          <option>Year 5</option>
+        </select>
+      </div>
+      <div class="join-row">
+        <input type="password" class="join-input" id="join-password" placeholder="Create Password (min. 6 characters)"/>
+        <input type="password" class="join-input" id="join-password-confirm" placeholder="Confirm Password"/>
+      </div>
+      <button class="btn-primary" style="width:100%; padding:15px; font-size:0.92rem;">Register as a CU Member ✝</button>
+      <p style="text-align:center; font-size:0.82rem; color:var(--slate); margin-top:14px;">
+        Already a member? <a href="/member.html" style="color:var(--green-mid); font-weight:600; text-decoration:none;">Sign in to your portal →</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:4px;">
+        <img src="/images/tucu-logo.png" alt="TUCU Logo" style="width:32px;height:32px;object-fit:contain;"/>
+        <span style="font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--white);">Tharaka University CU</span>
+      </div>
+      <p>A fellowship of students pursuing Christ on campus. We exist to know God, make Him known, and serve the Tharaka University community through love and truth.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">f</a>
+        <a href="#" class="social-link">▶</a>
+        <a href="#" class="social-link">tw</a>
+        <a href="#" class="social-link">wa</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Ministry</h5>
+      <ul>
+        <li><a href="#about">About TUCU</a></li>
+        <li><a href="#ministries">Ministries</a></li>
+        <li><a href="#leadership">Leadership</a></li>
+        <li><a href="#testimonies">Testimonies</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="#sermons">Sermons</a></li>
+        <li><a href="#blog">Blog & Devotionals</a></li>
+        <li><a href="#prayer">Prayer Requests</a></li>
+        <li><a href="#events">Events</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact Us</h5>
+      <ul>
+        <li><a href="#">📍 Tharaka University, Gatunga Campus</a></li>
+        <li><a href="#">📧 cu@tharaka.ac.ke</a></li>
+        <li><a href="#">📞 +254 700 000 000</a></li>
+        <li><a href="#join">Join the CU →</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Tharaka University Christian Union. All rights reserved.</p>
+    <p class="footer-verse">"As for me and my house, we will serve the Lord." — Joshua 24:15</p>
+  </div>
+</footer>
+
+<script>
+  // ── LARAVEL API BASE URL ──
+  // Update this to your deployed Laravel backend's URL in production.
+  const API = 'http://localhost:8000/api';
+
+  // If the visitor is a logged-in member (token saved by member.html),
+  // we attach it so prayer requests / event registrations / newsletter
+  // signups made from the main site are automatically linked to their portal.
+  const MEMBER_TOKEN = localStorage.getItem('tucu_member_token');
+
+  function authHeaders(extra = {}) {
+    const headers = { 'Content-Type': 'application/json', ...extra };
+    if (MEMBER_TOKEN) headers['Authorization'] = `Bearer ${MEMBER_TOKEN}`;
+    return headers;
+  }
+
+  // Extracts a readable message from Laravel's validation error format
+  // { message: "...", errors: { field: ["msg1", "msg2"] } }
+  function errorMessage(data, fallback = 'Something went wrong. Please try again.') {
+    if (data?.errors) {
+      const first = Object.values(data.errors)[0];
+      if (Array.isArray(first)) return first[0];
+    }
+    return data?.message || data?.error || fallback;
+  }
+
+  // ── SCROLL FADE-IN ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── NAV ACTIVE ──
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.getAttribute('id'); });
+    navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold-light)' : ''; });
+  });
+
+  // ── TOAST NOTIFICATION ──
+  function showToast(message, type = 'success') {
+    const existing = document.querySelector('.tucu-toast');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.className = 'tucu-toast';
+    toast.innerHTML = `
+      <span style="font-size:1.2rem">${type === 'success' ? '✅' : '❌'}</span>
+      <span>${message}</span>`;
+    toast.style.cssText = `
+      position:fixed; bottom:32px; left:50%; transform:translateX(-50%);
+      background:${type === 'success' ? '#3D1E96' : '#8B1A1A'};
+      color:#fff; padding:14px 28px; border-radius:6px;
+      display:flex; align-items:center; gap:12px;
+      font-family:'Inter',sans-serif; font-size:0.88rem; font-weight:500;
+      box-shadow:0 8px 32px rgba(0,0,0,0.3); z-index:9999;
+      border-left:4px solid ${type === 'success' ? '#FFC700' : '#E87070'};
+      animation: slideUp 0.3s ease;`;
+    document.head.insertAdjacentHTML('beforeend', `<style>@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}</style>`);
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 5000);
+  }
+
+  function setLoading(btn, loading, loadingText = 'Please wait...') {
+    if (loading) {
+      btn._orig = btn.textContent;
+      btn.textContent = loadingText;
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+    } else {
+      btn.textContent = btn._orig;
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+  }
+
+  // ── MEMBER REGISTRATION ──
+  // Registering here creates the member's account AND their personal
+  // portal in one step. On success we store the auth token and send
+  // them straight to member.html, already logged in.
+  const joinSection = document.getElementById('join');
+  const joinForm = joinSection.querySelector('.join-form');
+  const joinBtn = joinForm.querySelector('.btn-primary');
+
+  joinBtn.addEventListener('click', async () => {
+    const full_name = document.getElementById('join-name')?.value.trim();
+    const reg_number = document.getElementById('join-reg')?.value.trim();
+    const email = document.getElementById('join-email')?.value.trim();
+    const phone = document.getElementById('join-phone')?.value.trim();
+    const course = document.getElementById('join-course')?.value.trim();
+    const year_of_study = document.getElementById('join-year')?.value;
+    const password = document.getElementById('join-password')?.value;
+    const password_confirmation = document.getElementById('join-password-confirm')?.value;
+
+    if (!full_name || !email) return showToast('Please enter your name and email.', 'error');
+    if (!password || password.length < 6) return showToast('Please choose a password with at least 6 characters.', 'error');
+    if (password !== password_confirmation) return showToast('Passwords do not match.', 'error');
+
+    setLoading(joinBtn, true, 'Creating your portal...');
+    try {
+      const res = await fetch(`${API}/members/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name, reg_number: reg_number || null, email,
+          phone: phone || null, course: course || null,
+          year_of_study: year_of_study || null,
+          password, password_confirmation
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        // Save the auth token so member.html opens straight into the portal
+        localStorage.setItem('tucu_member_token', data.token);
+        localStorage.setItem('tucu_member_id', data.member.id);
+        showToast(data.message);
+        joinForm.querySelectorAll('.join-input').forEach(i => i.value = '');
+        setTimeout(() => { window.location.href = '/member.html'; }, 1200);
+        return;
+      } else {
+        showToast(errorMessage(data), 'error');
+      }
+    } catch {
+      showToast('Could not reach the server. Please try again.', 'error');
+    }
+    setLoading(joinBtn, false);
+  });
+
+  // ── PRAYER REQUEST ──
+  const prayerForm = document.querySelector('.prayer-form');
+  const prayerInputs = prayerForm.querySelectorAll('input[type=text]');
+  prayerInputs[0]?.setAttribute('id', 'prayer-name');
+  prayerInputs[1]?.setAttribute('id', 'prayer-course');
+  const prayerSelect = prayerForm.querySelector('select');
+  prayerSelect?.setAttribute('id', 'prayer-category');
+  const prayerTextarea = prayerForm.querySelector('textarea');
+  prayerTextarea?.setAttribute('id', 'prayer-request');
+  const prayerAnon = prayerForm.querySelector('input[type=checkbox]');
+  const prayerBtn = prayerForm.querySelector('.btn-primary');
+
+  prayerBtn.addEventListener('click', async () => {
+    const name = document.getElementById('prayer-name')?.value.trim();
+    const course = document.getElementById('prayer-course')?.value.trim();
+    const category = document.getElementById('prayer-category')?.value;
+    const request = document.getElementById('prayer-request')?.value.trim();
+    const is_anonymous = prayerAnon?.checked || false;
+
+    if (!request) return showToast('Please describe your prayer request.', 'error');
+
+    setLoading(prayerBtn, true);
+    try {
+      // authHeaders() automatically attaches the member's token (if logged in)
+      // so this prayer request appears in their portal.
+      const res = await fetch(`${API}/prayer`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ name, course, category, request, is_anonymous })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(data.message);
+        if (prayerTextarea) prayerTextarea.value = '';
+        if (!is_anonymous && prayerInputs[0]) prayerInputs[0].value = '';
+      } else {
+        showToast(errorMessage(data), 'error');
+      }
+    } catch {
+      showToast('Could not reach the server. Please try again.', 'error');
+    }
+    setLoading(prayerBtn, false);
+  });
+
+  // ── EVENT REGISTRATION ──
+  document.querySelectorAll('.event-register').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const card = btn.closest('.event-card');
+      const event_name = card.querySelector('h3').textContent;
+
+      let full_name = '';
+      let email = '';
+      let phone = '';
+
+      // If logged in, we can register without prompting
+      if (!MEMBER_TOKEN) {
+        full_name = prompt('Your full name:');
+        if (!full_name) return;
+        email = prompt('Your email address:');
+        if (!email) return;
+        phone = prompt('Phone number (optional):') || '';
+      }
+
+      const origText = btn.textContent;
+      btn.textContent = 'Registering...';
+      btn.style.opacity = '0.7';
+
+      try {
+        const res = await fetch(`${API}/events/register`, {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({ event_name, full_name, email, phone })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast(data.message);
+          btn.textContent = '✓ Registered';
+          btn.style.background = 'var(--green-light)';
+        } else {
+          showToast(errorMessage(data), 'error');
+          btn.textContent = origText;
+          btn.style.opacity = '1';
+        }
+      } catch {
+        showToast('Could not connect to server.', 'error');
+        btn.textContent = origText;
+        btn.style.opacity = '1';
+      }
+    });
+  });
+
+  // ── FOOTER NEWSLETTER ──
+  const footerBrand = document.querySelector('.footer-brand');
+  if (footerBrand) {
+    const nlDiv = document.createElement('div');
+    nlDiv.style.marginTop = '16px';
+    nlDiv.innerHTML = `
+      <p style="font-size:0.72rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Weekly Newsletter</p>
+      <div style="display:flex;gap:8px;">
+        <input id="nl-email" type="email" placeholder="Your email" style="flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:3px;padding:9px 12px;color:#fff;font-family:'Inter',sans-serif;font-size:0.8rem;outline:none;"/>
+        <button id="nl-btn" style="background:var(--gold);color:var(--green-deep);border:none;padding:9px 16px;border-radius:3px;font-size:0.78rem;font-weight:700;cursor:pointer;">Subscribe</button>
+      </div>`;
+    footerBrand.appendChild(nlDiv);
+    document.getElementById('nl-btn').addEventListener('click', async () => {
+      const email = document.getElementById('nl-email').value.trim();
+      if (!email) return showToast('Please enter your email.', 'error');
+      const btn = document.getElementById('nl-btn');
+      btn.textContent = '...';
+      try {
+        const res = await fetch(`${API}/newsletter/subscribe`, {
+          method: 'POST', headers: authHeaders(),
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if (res.ok) { showToast(data.message); document.getElementById('nl-email').value = ''; btn.textContent = '✓'; }
+        else { showToast(errorMessage(data), 'error'); btn.textContent = 'Subscribe'; }
+      } catch { showToast('Server error.', 'error'); btn.textContent = 'Subscribe'; }
+    });
+  }
+
+  // ── MEMBER PORTAL & ADMIN LINKS IN FOOTER ──
+  const footerBottom = document.querySelector('.footer-bottom');
+  if (footerBottom) {
+    const portalLink = document.createElement('a');
+    portalLink.href = '/member.html';
+    portalLink.style.cssText = 'font-size:0.7rem;color:rgba(255,255,255,0.2);text-decoration:none;margin-right:14px;';
+    portalLink.textContent = MEMBER_TOKEN ? 'My Portal' : 'Member Login';
+    footerBottom.appendChild(portalLink);
+
+    const adminLink = document.createElement('a');
+    adminLink.href = '/admin.html';
+    adminLink.style.cssText = 'font-size:0.7rem;color:rgba(255,255,255,0.2);text-decoration:none;';
+    adminLink.textContent = 'Admin';
+    footerBottom.appendChild(adminLink);
+  }
+</script>
+</body>
+</html>
