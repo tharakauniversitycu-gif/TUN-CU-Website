@@ -31,3 +31,7 @@ Route::get('/member', function () {
 Route::get('/admin', function () {
     return response()->file(public_path('admin.html'));
 });
+
+Route::get('/library', fn () => response()->file(public_path('library.html')));
+Route::get('/library/books/{book}', fn () => response()->file(public_path('library.html')))->whereNumber('book');
+Route::get('/library/books/{book}/read', fn () => response()->file(public_path('library.html')))->whereNumber('book');

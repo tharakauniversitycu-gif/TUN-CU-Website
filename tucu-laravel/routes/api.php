@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Api\AdminAuthController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\AdminLibraryController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\DocketController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\MemberAuthController;
 use App\Http\Controllers\Api\MemberPortalController;
@@ -14,15 +16,14 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-|
-| All routes are prefixed with /api automatically by Laravel's
-| RouteServiceProvider (bootstrap/app.php in Laravel 11).
-|
 */
 
 // ── PUBLIC ROUTES ──────────────────────────────────────────────
-Route::post('/members/register', [MemberAuthController::class, 'register']);
-Route::post('/members/login', [MemberAuthController::class, 'login']);
+Route::get('/dockets', [DocketController::class, 'index']);
+Route::get('/calendars/current', [DocketController::class, 'calendars']);
+
+Route::post('/members/register', [MemberAuthController::class, 'register'])->middleware('throttle:member-login');
+Route::post('/members/login', [MemberAuthController::class, 'login'])->middleware('throttle:member-login');
 
 Route::get('/events', [EventController::class, 'index']);
 Route::post('/events/register', [EventController::class, 'register'])
@@ -38,6 +39,22 @@ Route::post('/contact', [ContactController::class, 'store']);
 
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
+Route::prefix('library')->middleware(\App\Http\Middleware\LibraryAccess::class)->group(function () {
+    $c = \App\Http\Controllers\Api\LibraryController::class;
+    Route::get('categories', [$c, 'categories']);
+    Route::get('books', [$c, 'index']);
+    Route::get('books/{book}', [$c, 'show'])->whereNumber('book');
+    Route::get('books/{book}/cover', [$c, 'cover'])->whereNumber('book');
+    Route::middleware(['auth:sanctum', \App\Http\Middleware\LibraryAccess::class.':member', 'throttle:library-member'])->group(function () use ($c) {
+        Route::get('me/books', [$c, 'shelf']);
+        Route::get('me/books/{book}', [$c, 'memberBook'])->whereNumber('book');
+        Route::match(['put', 'delete'], 'me/books/{book}/like', [$c, 'like'])->whereNumber('book');
+        Route::put('me/books/{book}/progress', [$c, 'progress'])->whereNumber('book');
+        Route::get('books/{book}/content', [$c, 'content'])->whereNumber('book');
+        Route::post('books/{book}/download', [$c, 'download'])->whereNumber('book');
+    });
+});
+
 
 // ── MEMBER PORTAL ROUTES (protected — member can only access own data) ──
 Route::middleware('auth:sanctum')->prefix('members')->group(function () {
@@ -46,6 +63,17 @@ Route::middleware('auth:sanctum')->prefix('members')->group(function () {
     Route::get('/{id}/profile', [MemberPortalController::class, 'profile'])
         ->where('id', '[0-9]+');
     Route::put('/{id}/profile', [MemberPortalController::class, 'updateProfile'])
+        ->where('id', '[0-9]+');
+
+    Route::post('/{id}/confirm-year', [MemberPortalController::class, 'confirmYear'])
+        ->where('id', '[0-9]+');
+
+    Route::get('/{id}/announcements', [MemberPortalController::class, 'announcements'])
+        ->where('id', '[0-9]+');
+    Route::post('/{id}/announcements', [MemberPortalController::class, 'storeAnnouncement'])
+        ->where('id', '[0-9]+');
+
+    Route::get('/{id}/associate-hub', [MemberPortalController::class, 'associateHub'])
         ->where('id', '[0-9]+');
 
     Route::get('/{id}/events', [MemberPortalController::class, 'events'])
@@ -64,6 +92,16 @@ Route::middleware('auth:admin-sanctum')->prefix('admin')->group(function () {
     Route::post('/logout', [AdminAuthController::class, 'logout']);
 
     Route::get('/stats', [AdminController::class, 'stats']);
+
+    Route::get('/library', [AdminLibraryController::class, 'index']);
+    Route::post('/library/categories', [AdminLibraryController::class, 'storeCategory']);
+    Route::post('/library/books', [AdminLibraryController::class, 'store']);
+    Route::put('/library/books/bulk-status', [AdminLibraryController::class, 'bulkStatus']);
+    Route::put('/library/books/{book}', [AdminLibraryController::class, 'update'])->whereNumber('book');
+    Route::post('/library/books/{book}/editions', [AdminLibraryController::class, 'addEdition'])->whereNumber('book');
+    Route::put('/library/books/{book}/status', [AdminLibraryController::class, 'setStatus'])->whereNumber('book');
+
+    Route::post('/academic-years/rollover', [AdminController::class, 'academicYearRollover']);
 
     Route::get('/members', [AdminController::class, 'members']);
     Route::get('/members/{id}', [AdminController::class, 'memberShow']);

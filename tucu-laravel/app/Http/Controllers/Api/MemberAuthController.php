@@ -24,25 +24,61 @@ class MemberAuthController extends Controller
     {
         $validated = $request->validated();
 
+        $membershipCategory = $validated['membership_category'] ?? 'full';
+        $yearOfStudy = isset($validated['year_of_study']) ? (int) $validated['year_of_study'] : 1;
+        $role = 'member';
+        $status = 'active';
+        $becameAssociateAt = null;
+
+        if ($membershipCategory === 'associate' || $yearOfStudy === 0) {
+            $membershipCategory = 'associate';
+            $role = 'associate';
+            $status = 'associate';
+            $yearOfStudy = 0;
+            $becameAssociateAt = now();
+        }
+
         $member = Member::create([
-            'full_name'     => $validated['full_name'],
-            'email'         => $validated['email'],
-            'password'      => Hash::make($validated['password']),
-            'reg_number'    => $validated['reg_number'] ?? null,
-            'phone'         => $validated['phone'] ?? null,
-            'course'        => $validated['course'] ?? null,
-            'year_of_study' => $validated['year_of_study'] ?? null,
-            'ministry'      => $validated['ministry'] ?? 'General',
-            'joined_at'     => now(),
+            'full_name'           => $validated['full_name'],
+            'email'               => $validated['email'],
+            'password'            => Hash::make($validated['password']),
+            'reg_number'          => $validated['reg_number'] ?? null,
+            'phone'               => $validated['phone'] ?? null,
+            'course'              => $validated['course'] ?? null,
+            'course_duration'     => $validated['course_duration'] ?? 4,
+            'year_of_study'       => $yearOfStudy,
+            'membership_category' => $membershipCategory,
+            'role'                => $role,
+            'status'              => $status,
+            'is_year_confirmed'   => true,
+            'year_confirmed_at'   => now(),
+            'became_associate_at' => $becameAssociateAt,
+            'joined_at'           => now(),
         ]);
 
-        // Every member gets a (default: subscribed) newsletter record,
-        // so the dashboard can show subscription status immediately.
+        // Attach up to 3 ministries
+        if (! empty($validated['ministry_ids'])) {
+            $member->ministries()->sync($validated['ministry_ids']);
+        }
+
+        // Record initial year progression entry
+        $currentAcademicYear = \App\Models\AcademicYear::current();
+        \App\Models\MemberYearHistory::create([
+            'member_id'        => $member->id,
+            'academic_year_id' => $currentAcademicYear?->id,
+            'year_of_study'    => $yearOfStudy,
+            'action'           => $membershipCategory === 'associate' ? 'joined_as_associate' : 'registered',
+            'notes'            => 'Initial registration',
+            'confirmed_at'     => now(),
+        ]);
+
+        // Every member gets a (default: subscribed) newsletter record
         NewsletterSubscriber::firstOrCreate(
             ['email' => $member->email],
             ['member_id' => $member->id, 'is_subscribed' => true, 'subscribed_at' => now()]
         );
 
+        $member->load(['ministries.docket']);
         $token = $member->createToken('member-portal')->plainTextToken;
 
         return response()->json([
@@ -63,7 +99,7 @@ class MemberAuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        $member = Member::where('email', $request->email)->first();
+        $member = Member::with(['ministries.docket'])->where('email', $request->email)->first();
 
         if (! $member || ! Hash::check($request->password, $member->password)) {
             throw ValidationException::withMessages([
@@ -71,9 +107,9 @@ class MemberAuthController extends Controller
             ]);
         }
 
-        if ($member->status !== 'active') {
+        if ($member->status === 'inactive' || $member->status === 'suspended') {
             throw ValidationException::withMessages([
-                'email' => ['Your account is inactive. Please contact the CU leadership.'],
+                'email' => ['Your account is currently inactive or suspended. Please contact the CU leadership.'],
             ]);
         }
 

@@ -12,10 +12,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Enable Sanctum's stateful API middleware for SPA/cookie auth (optional;
-        // bearer tokens work without this too).
-        $middleware->statefulApi();
-
         // Allow CORS for the frontend (configure allowed origins in config/cors.php)
         $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
     })

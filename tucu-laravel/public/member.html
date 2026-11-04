@@ -3,849 +3,711 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Portal — Tharaka University CU</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --green-deep: #3D1E96;
-      --green-mid: #5B3FC4;
-      --green-light: #0E8FD0;
-      --gold: #FFC700;
-      --gold-light: #FCF103;
-      --ivory: #F8F6FC;
-      --ivory-dark: #ECE7F7;
-      --charcoal: #1C1C1C;
-      --slate: #6E6B95;
-      --white: #FFFFFF;
-      --red: #C0392B;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--ivory);
-      color: var(--charcoal);
-      min-height: 100vh;
-    }
-
-    /* ── AUTH SCREENS (Login / Register toggle) ── */
-    #auth-screen {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, #170B45 0%, var(--green-deep) 50%, #2A1670 100%);
-      padding: 24px;
-      position: relative;
-      overflow: hidden;
-    }
-    #auth-screen::before {
-      content: '✝';
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 28rem;
-      color: rgba(255,255,255,0.025);
-      pointer-events: none;
-    }
-    .auth-box {
-      background: var(--white);
-      border-radius: 8px;
-      padding: 44px 40px;
-      width: 100%; max-width: 440px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.3);
-      position: relative; z-index: 2;
-    }
-    .auth-logo { text-align: center; margin-bottom: 28px; }
-    .auth-logo img { width: 76px; height: 76px; object-fit: contain; margin: 0 auto; }
-    .auth-logo h1 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--green-deep); margin-top: 10px; }
-    .auth-logo p { font-size: 0.8rem; color: var(--slate); margin-top: 4px; }
-
-    .auth-tabs { display: flex; border-bottom: 1px solid var(--ivory-dark); margin-bottom: 24px; }
-    .auth-tab {
-      flex: 1; text-align: center; padding: 12px; cursor: pointer;
-      font-size: 0.85rem; font-weight: 600; color: var(--slate);
-      border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
-    }
-    .auth-tab.active { color: var(--green-deep); border-color: var(--gold); }
-
-    .auth-form { display: none; flex-direction: column; gap: 16px; }
-    .auth-form.active { display: flex; }
-    .auth-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .field label { display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin-bottom: 6px; }
-    .field input, .field select {
-      width: 100%; padding: 11px 14px; border: 1.5px solid var(--ivory-dark);
-      border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.88rem;
-      outline: none; transition: border-color 0.2s; color: var(--charcoal);
-    }
-    .field input:focus, .field select:focus { border-color: var(--green-mid); }
-
-    .auth-btn {
-      background: var(--green-deep); color: #fff; border: none;
-      padding: 13px; border-radius: 4px; font-family: 'Inter', sans-serif;
-      font-size: 0.9rem; font-weight: 700; cursor: pointer;
-      letter-spacing: 0.04em; text-transform: uppercase;
-      transition: background 0.2s; margin-top: 6px;
-    }
-    .auth-btn:hover { background: var(--green-mid); }
-    .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .auth-error { color: var(--red); font-size: 0.8rem; text-align: center; display: none; padding: 8px; background: rgba(192,57,43,0.06); border-radius: 4px; }
-    .auth-success { color: var(--green-deep); font-size: 0.8rem; text-align: center; display: none; padding: 8px; background: rgba(14, 143, 208,0.1); border-radius: 4px; }
-
-    .auth-back {
-      display: block; text-align: center; margin-top: 18px;
-      font-size: 0.8rem; color: var(--slate); text-decoration: none;
-    }
-    .auth-back:hover { color: var(--green-mid); }
-
-    /* ── PORTAL LAYOUT ── */
-    #portal { display: none; min-height: 100vh; }
-
-    header.portal-header {
-      background: var(--green-deep);
-      padding: 0 5%;
-      height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 2px solid var(--gold);
-      position: sticky; top: 0; z-index: 100;
-    }
-    .portal-brand { display: flex; align-items: center; gap: 12px; }
-    .portal-brand img { width: 34px; height: 34px; object-fit: contain; flex-shrink: 0; }
-    .portal-brand span { font-family: 'Playfair Display', serif; font-weight: 700; color: #fff; font-size: 1rem; }
-    .portal-brand small { display: block; font-size: 0.62rem; color: var(--gold-light); letter-spacing: 0.1em; text-transform: uppercase; }
-    .portal-actions { display: flex; align-items: center; gap: 16px; }
-    .portal-actions a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.82rem; }
-    .portal-actions a:hover { color: var(--gold-light); }
-    #logout-btn {
-      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-      color: #fff; padding: 7px 16px; border-radius: 4px; font-size: 0.78rem;
-      cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s;
-    }
-    #logout-btn:hover { background: rgba(255,255,255,0.16); }
-
-    /* ── HERO / WELCOME ── */
-    .portal-hero {
-      background: linear-gradient(135deg, var(--green-deep), #2A1670);
-      padding: 48px 5% 90px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .portal-hero::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(255, 199, 0,0.08) 0%, transparent 70%);
-    }
-    .portal-hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      color: #fff; position: relative; z-index: 2;
-    }
-    .portal-hero h1 em { color: var(--gold-light); font-style: italic; }
-    .portal-hero p { color: rgba(255,255,255,0.6); margin-top: 8px; font-size: 0.9rem; position: relative; z-index: 2; }
-
-    /* ── CONTENT ── */
-    .portal-content {
-      max-width: 1000px; margin: -56px auto 0; padding: 0 5% 60px;
-      position: relative; z-index: 3;
-    }
-
-    /* ── PROFILE SUMMARY CARD ── */
-    .profile-card {
-      background: var(--white); border-radius: 8px; padding: 28px;
-      box-shadow: 0 8px 32px rgba(61, 30, 150,0.12);
-      display: flex; align-items: center; gap: 24px; margin-bottom: 28px;
-      flex-wrap: wrap;
-    }
-    .profile-avatar {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700;
-      color: var(--gold-light); flex-shrink: 0;
-    }
-    .profile-info h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--green-deep); }
-    .profile-info p { font-size: 0.85rem; color: var(--slate); margin-top: 2px; }
-    .profile-badges { display: flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
-    .pbadge {
-      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 5px 12px; border-radius: 20px; background: rgba(61, 30, 150,0.08); color: var(--green-deep);
-    }
-    .pbadge.gold { background: rgba(255, 199, 0,0.12); color: #7A5C00; }
-    .pbadge.green { background: rgba(14, 143, 208,0.15); color: var(--green-mid); }
-
-    /* ── STAT STRIP ── */
-    .portal-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
-    .pstat { background: var(--white); border-radius: 8px; padding: 22px; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.05); border-top: 3px solid var(--gold); }
-    .pstat .num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; color: var(--green-deep); }
-    .pstat .label { font-size: 0.75rem; color: var(--slate); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
-
-    /* ── TABS ── */
-    .tabs { display: flex; gap: 4px; background: var(--ivory-dark); padding: 4px; border-radius: 8px; margin-bottom: 20px; overflow-x: auto; }
-    .tab {
-      flex: 1; text-align: center; padding: 11px 16px; border-radius: 6px;
-      cursor: pointer; font-size: 0.84rem; font-weight: 600; color: var(--slate);
-      transition: background 0.2s, color 0.2s; white-space: nowrap;
-    }
-    .tab.active { background: var(--white); color: var(--green-deep); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* ── CARD ── */
-    .card { background: var(--white); border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
-    .card-header { padding: 18px 24px; border-bottom: 1px solid var(--ivory-dark); display: flex; align-items: center; justify-content: space-between; }
-    .card-header h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--green-deep); }
-    .card-body { padding: 24px; }
-
-    /* ── PROFILE FORM ── */
-    .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-    .profile-grid .field.full { grid-column: span 2; }
-    .save-btn {
-      background: var(--green-deep); color: #fff; border: none; padding: 12px 28px;
-      border-radius: 4px; font-size: 0.85rem; font-weight: 700; cursor: pointer;
-      letter-spacing: 0.04em; text-transform: uppercase; transition: background 0.2s; margin-top: 8px;
-    }
-    .save-btn:hover { background: var(--green-mid); }
-
-    .readonly-note { font-size: 0.75rem; color: var(--slate); background: var(--ivory); padding: 10px 14px; border-radius: 4px; margin-bottom: 18px; border-left: 3px solid var(--gold); }
-
-    /* ── LIST ITEMS ── */
-    .list-item {
-      padding: 16px 24px; border-bottom: 1px solid var(--ivory-dark);
-      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
-    }
-    .list-item:last-child { border-bottom: none; }
-    .list-item-main h4 { font-size: 0.92rem; font-weight: 700; color: var(--green-deep); margin-bottom: 4px; }
-    .list-item-main p { font-size: 0.78rem; color: var(--slate); }
-    .list-item-main .req-text { font-size: 0.85rem; color: #444; margin-top: 6px; line-height: 1.6; max-width: 500px; }
-    .status-pill { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; }
-    .status-pill.pending { background: rgba(255, 199, 0,0.12); color: #7A5C00; }
-    .status-pill.prayed, .status-pill.attended, .status-pill.registered { background: rgba(14, 143, 208,0.15); color: var(--green-mid); }
-    .status-pill.cancelled { background: rgba(192,57,43,0.08); color: var(--red); }
-
-    .empty-state { text-align: center; padding: 48px 24px; color: var(--slate); }
-    .empty-state .icon { font-size: 2.4rem; margin-bottom: 12px; opacity: 0.3; }
-    .empty-state p { font-size: 0.88rem; }
-    .empty-state a { color: var(--green-mid); font-weight: 600; text-decoration: none; }
-
-    /* ── NEWSLETTER TOGGLE ── */
-    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; }
-    .toggle-row h4 { font-size: 0.95rem; color: var(--green-deep); margin-bottom: 4px; }
-    .toggle-row p { font-size: 0.8rem; color: var(--slate); max-width: 400px; }
-    .switch { position: relative; width: 50px; height: 28px; flex-shrink: 0; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; inset: 0; background: var(--ivory-dark); border-radius: 28px; transition: 0.3s; }
-    .slider::before { content: ''; position: absolute; height: 20px; width: 20px; left: 4px; bottom: 4px; background: white; border-radius: 50%; transition: 0.3s; }
-    input:checked + .slider { background: var(--green-mid); }
-    input:checked + .slider::before { transform: translateX(22px); }
-
-    /* ── TOAST ── */
-    .toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      background: var(--green-deep); color: #fff; padding: 13px 26px;
-      border-radius: 6px; font-size: 0.85rem; box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-      border-left: 4px solid var(--gold); z-index: 9999;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .toast.error { border-left-color: var(--red); }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .auth-row, .profile-grid { grid-template-columns: 1fr; }
-      .profile-grid .field.full { grid-column: span 1; }
-      .portal-stats { grid-template-columns: 1fr; }
-      .profile-card { flex-direction: column; text-align: center; }
-      .profile-badges { margin-left: 0; justify-content: center; }
-      .tabs { flex-wrap: nowrap; }
-      .list-item { flex-direction: column; align-items: flex-start; }
-    }
-  </style>
+  <title>Portal — Tharaka University Christian Union</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"/>
+  
+  <link rel="stylesheet" href="/css/member-base.css"/>
+  <link rel="stylesheet" href="/css/member.css"/>
+<link rel="stylesheet" href="/css/member-library.css">
+  <link rel="stylesheet" href="/css/library-preview.css">
+<link rel="stylesheet" href="/css/portal-theme.css">
 </head>
 <body>
+<a class="skip-link" href="#portal-content">Skip to content</a>
 
-<!-- ══════════════ AUTH SCREEN ══════════════ -->
+<!-- ══════════════════════════════════════════════════
+     AUTH SCREEN (LOGIN / NEW MEMBER REGISTRATION)
+══════════════════════════════════════════════════ -->
 <div id="auth-screen">
-  <div class="auth-box">
-    <div class="auth-logo">
-      <img src="/images/tucu-logo.png" alt="TUCU Logo"/>
-      <h1>My CU Portal</h1>
-      <p>Tharaka University Christian Union</p>
+  <div class="auth-container">
+
+    <!-- Left Showcase Hero (Inspiring Union Heritage) -->
+    <div class="auth-showcase">
+      <div>
+        <div class="auth-brand">
+          <img src="/images/tucu-logo.png" alt="TUCU Crest"/>
+          <div>
+            <h2>Tharaka University CU</h2>
+            <span>A community to grow with</span>
+          </div>
+        </div>
+
+        <div class="auth-quote-card">
+          <div class="auth-quote-pill">
+            Rooted in faith. Growing together.
+          </div>
+          <h1 class="auth-quote-text">Find your people.<br/>Grow in faith.<br/><em>Serve with purpose.</em></h1><p class="auth-intro">Your place to stay connected with the Tharaka University Christian Union, on campus and beyond.</p>
+          <div class="auth-quote-ref">“Come now, let us reason together.” — Isaiah 1:18</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="auth-pillars-grid"><div class="auth-pillar"><div class="auth-pillar-num">Faith</div><div class="auth-pillar-lbl">Rooted in Christ</div></div><div class="auth-pillar"><div class="auth-pillar-num">Fellowship</div><div class="auth-pillar-lbl">A place to belong</div></div><div class="auth-pillar"><div class="auth-pillar-num">Service</div><div class="auth-pillar-lbl">Put faith into action</div></div></div></div></div>
     </div>
 
-    <div class="auth-tabs">
-      <div class="auth-tab active" data-tab="login">Member Login</div>
-      <div class="auth-tab" data-tab="register">New Member</div>
-    </div>
+    <!-- Right Interactive Vault (Login & Register Forms) -->
+    <div class="auth-vault">
+      <div class="auth-nav-tabs">
+        <button class="auth-tab-btn active" id="tab-login-btn" data-form="login">Sign in</button>
+        <button class="auth-tab-btn" id="tab-register-btn" data-form="register">Join the community</button>
+      </div>
 
-    <!-- LOGIN FORM -->
-    <form class="auth-form active" id="login-form">
-      <div class="field">
-        <label>Email Address</label>
-        <input type="email" id="login-email" required placeholder="you@example.com"/>
-      </div>
-      <div class="field">
-        <label>Password</label>
-        <input type="password" id="login-password" required placeholder="••••••••"/>
-      </div>
-      <p class="auth-error" id="login-error"></p>
-      <button type="submit" class="auth-btn" id="login-btn">Sign In to My Portal</button>
-    </form>
+      <!-- 1. LOGIN FORM -->
+      <form class="auth-form active" id="login-form">
+        <div class="form-title-wrap">
+          <h3>Welcome back</h3>
+          <p>Sign in to catch up with your CU community.</p>
+        </div>
 
-    <!-- REGISTER FORM -->
-    <form class="auth-form" id="register-form">
-      <div class="field">
-        <label>Full Name</label>
-        <input type="text" id="reg-name" required placeholder="Your full name"/>
-      </div>
-      <div class="auth-row">
-        <div class="field">
-          <label>Email</label>
-          <input type="email" id="reg-email" required placeholder="you@example.com"/>
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" autocomplete="username" required placeholder="your.name@student.ke"/>
         </div>
-        <div class="field">
-          <label>Phone</label>
-          <input type="tel" id="reg-phone" placeholder="07XXXXXXXX"/>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" autocomplete="current-password" required placeholder="••••••••"/>
         </div>
-      </div>
-      <div class="auth-row">
-        <div class="field">
-          <label>Reg. Number</label>
-          <input type="text" id="reg-regno" placeholder="e.g. T123/0001/2024"/>
+
+        <div class="auth-alert-msg" id="login-error" role="alert"></div>
+
+        <button type="submit" class="btn-executive" id="login-submit-btn">
+          <span>Sign in</span>
+          <span>→</span>
+        </button>
+      </form>
+
+      <!-- 2. REGISTER FORM -->
+      <form class="auth-form" id="register-form">
+        <div class="form-title-wrap">
+          <h3>Make yourself at home</h3>
+          <p>Register as an active student member or alumni associate.</p>
         </div>
-        <div class="field">
-          <label>Year of Study</label>
+
+        <div class="form-group">
+          <label for="reg-name">Full name</label>
+          <input type="text" id="reg-name" autocomplete="name" required placeholder="e.g. Grace Wanjiku Kariuki"/>
+        </div>
+
+        <div class="auth-row">
+          <div class="form-group">
+            <label for="reg-email">Email Address</label>
+            <input type="email" id="reg-email" autocomplete="email" required placeholder="you@example.com"/>
+          </div>
+          <div class="form-group">
+            <label for="reg-phone">Phone Number</label>
+            <input type="tel" id="reg-phone" autocomplete="tel" placeholder="07XXXXXXXX"/>
+          </div>
+        </div>
+
+        <div class="auth-row">
+          <div class="form-group">
+            <label for="reg-regno">Registration Number</label>
+            <input type="text" id="reg-regno" placeholder="e.g. T123/0001/2024"/>
+          </div>
+          <div class="form-group">
+            <label for="reg-category">Membership Category</label>
+            <select id="reg-category">
+              <option value="full">Full Member (Undergraduate)</option>
+              <option value="special">Special Member (Postgraduate / Part-time)</option>
+              <option value="associate">Associate Member (Alumni)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="auth-row">
+          <div class="form-group">
+            <label for="reg-course">Course / Programme</label>
+            <input type="text" id="reg-course" placeholder="e.g. BSc Computer Science"/>
+          </div>
+          <div class="form-group">
+            <label for="reg-duration">Course Duration</label>
+            <select id="reg-duration">
+              <option value="4">4-Year Degree</option>
+              <option value="5">5-Year Degree (Engineering, etc.)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="reg-year-wrap">
+          <label for="reg-year">Current Year of Study</label>
           <select id="reg-year">
-            <option value="">Select year</option>
-            <option>Year 1</option>
-            <option>Year 2</option>
-            <option>Year 3</option>
-            <option>Year 4</option>
-            <option>Year 5</option>
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3">Year 3</option>
+            <option value="4">Year 4</option>
+            <option value="5">Year 5 (5-year programs)</option>
           </select>
         </div>
-      </div>
-      <div class="field">
-        <label>Course / Department</label>
-        <input type="text" id="reg-course" placeholder="e.g. BSc Computer Science"/>
-      </div>
-      <div class="auth-row">
-        <div class="field">
-          <label>Password</label>
-          <input type="password" id="reg-password" required placeholder="Min. 6 characters"/>
-        </div>
-        <div class="field">
-          <label>Confirm Password</label>
-          <input type="password" id="reg-password-confirm" required placeholder="Repeat password"/>
-        </div>
-      </div>
-      <p class="auth-error" id="register-error"></p>
-      <p class="auth-success" id="register-success"></p>
-      <button type="submit" class="auth-btn" id="register-btn">Create My Portal</button>
-    </form>
 
-    <a href="/" class="auth-back">← Back to main website</a>
+        <!-- Ministries Multi-Selector (Max 3) -->
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <label style="margin:0;">Select Ministries to Serve (Max 3)</label>
+            <span style="font-size:0.75rem; font-weight:700; color:#64748B;">
+              <span id="reg-selected-count">0</span> / 3 chosen
+            </span>
+          </div>
+          <div class="ministries-picker-panel" id="reg-ministries-box">
+            <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:12px;">Loading ministries...</p>
+          </div>
+        </div>
+
+        <div class="auth-row">
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password" autocomplete="new-password" required placeholder="Min. 6 characters"/>
+          </div>
+          <div class="form-group">
+            <label for="reg-password-confirm">Confirm Password</label>
+            <input type="password" id="reg-password-confirm" autocomplete="new-password" required placeholder="Repeat password"/>
+          </div>
+        </div>
+
+        <div class="auth-alert-msg" id="register-error" role="alert"></div>
+        <div class="auth-alert-msg ok" id="register-success"></div>
+
+        <button type="submit" class="btn-executive" id="register-submit-btn">
+          <span>Complete Registration</span>
+          <span>✓</span>
+        </button>
+      </form>
+
+      <a href="/" class="auth-return-link">← Back to the CU website</a>
+    </div>
+
   </div>
 </div>
 
-<!-- ══════════════ MEMBER PORTAL ══════════════ -->
+<!-- ══════════════════════════════════════════════════
+     MEMBER PORTAL (EXECUTIVE DASHBOARD SUITE)
+══════════════════════════════════════════════════ -->
 <div id="portal">
-  <header class="portal-header">
-    <div class="portal-brand">
-      <img src="/images/tucu-logo.png" alt="TUCU Logo"/>
-      <span>TUCU Member Portal
-        <small>Tharaka University CU</small>
-      </span>
+
+  <!-- Top Glass Bar -->
+  <header class="portal-navbar">
+    <div class="nav-brand-cluster">
+      <img src="/images/tucu-logo.png" alt="TUCU Crest"/>
+      <div class="nav-titles">
+        <h1>Tharaka University Christian Union</h1>
+        <span>Member portal</span>
+      </div>
     </div>
-    <div class="portal-actions">
-      <a href="/">Main Site</a>
-      <button id="logout-btn">Sign Out</button>
+    <div class="nav-user-suite">
+      <a href="/" class="nav-site-link">Public Website</a>
+      <button class="btn-signout" id="logout-btn">
+        <span>Sign Out</span>
+      </button>
     </div>
   </header>
 
-  <div class="portal-hero">
-    <h1>Welcome back, <em id="welcome-name">Friend</em></h1>
-    <p>"As for me and my house, we will serve the Lord." — Joshua 24:15</p>
-  </div>
-
-  <div class="portal-content">
-
-    <!-- PROFILE SUMMARY -->
-    <div class="profile-card">
-      <div class="profile-avatar" id="avatar-initials">U</div>
-      <div class="profile-info">
-        <h2 id="profile-fullname">—</h2>
-        <p id="profile-emailcourse">—</p>
+    <nav class="workspace-tabs-bar" aria-label="Member navigation"><span class="nav-section-label">YOUR COMMUNITY</span>
+<button class="ws-tab-btn" data-panel="bookshelf"><span>▤</span> My bookshelf</button>
+<button class="ws-tab-btn active" data-panel="overview"><span>⌂</span> Overview</button>
+      <button class="ws-tab-btn" data-panel="profile">
+        <span>👤</span> My profile
+      </button>
+      <button class="ws-tab-btn" data-panel="updates">
+        <span>📢</span> Updates <span class="tab-counter-badge" id="updates-count" style="display:none;">0</span>
+      </button>
+      <button class="ws-tab-btn" data-panel="events">
+        <span>📅</span> My events
+      </button>
+      <button class="ws-tab-btn" data-panel="prayers">
+        <span>🙏</span> Prayer requests
+      </button>
+      <button class="ws-tab-btn" data-panel="executive" id="tab-executive" style="display:none;">
+        <span>👑</span> Leadership desk
+      </button>
+      <button class="ws-tab-btn" data-panel="associate" id="tab-associate" style="display:none;">
+        <span>🎓</span> Associates
+      </button>
+      <button class="ws-tab-btn" data-panel="library">
+        <span>📚</span> CU Library
+      </button>
+      <button class="ws-tab-btn" data-panel="newsletter">
+        <span>📧</span> Newsletter
+      </button>
+    <div class="sidebar-note"><span class="sidebar-cross">✝</span><strong>One faith. One family.</strong><p>Growing together in Christ.</p><a href="/">Visit the CU website ↗</a></div></nav>
+  <!-- Ambient Masthead & Spiritual Theme -->
+  <section class="portal-masthead" aria-label="Welcome">
+    <div class="masthead-inner">
+      <div>
+        <div class="theme-capsule-badge" id="spiritual-capsule">
+          <div class="theme-pulse-dot"></div>
+          <span>Spiritual Year <span id="s-year">—</span> Theme: "<strong id="s-theme">—</strong>"</span>
+        </div>
+        <h2 class="masthead-welcome-title">Welcome back, <em id="welcome-name">Friend</em></h2>
+        <p class="masthead-sub-text" id="portal-hero-sub">"Come now, let us reason together." — Isaiah 1:18</p>
       </div>
-      <div class="profile-badges">
-        <span class="pbadge gold" id="badge-ministry">General</span>
-        <span class="pbadge" id="badge-status">Active</span>
-        <span class="pbadge green" id="badge-role">Member</span>
+
+      <div class="executive-seal-pill">
+        <div class="seal-icon-box">✝</div>
+        <div class="seal-text-meta">
+          <div>Current session</div>
+          <strong id="seal-academic-year">Academic Cycle 2025/2026</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workspace Container -->
+  <main class="portal-main-wrapper" id="portal-content" tabindex="-1">
+<div id="portal-load-error" class="portal-load-error" role="alert" hidden>We couldn’t load your account. Check your connection and <button type="button" id="retry-portal">try again</button>.</div>
+<div class="tab-panel-container" id="panel-bookshelf"><section class="executive-card"><div class="card-header-bar"><div><span class="eyebrow">YOUR PERSONAL LIBRARY</span><h2>Your bookshelf</h2></div><a class="text-action" href="/library">Explore books →</a></div><div class="member-shelf-tabs" aria-label="Bookshelf collections"><button data-shelf="in_progress" aria-pressed="true">Continue reading</button><button data-shelf="liked" aria-pressed="false">Liked books</button><button data-shelf="completed" aria-pressed="false">Completed</button><button data-shelf="downloads" aria-pressed="false">Downloads</button></div><div id="member-books" aria-live="polite"></div><div id="member-books-pages"></div><button class="text-action" id="refresh-books">Refresh bookshelf</button></section></div>
+<div class="tab-panel-container active" id="panel-overview">
+<div class="section-heading"><div><span class="eyebrow">YOUR SPACE TO BELONG</span><h2>A little closer to your community.</h2></div><span class="today-label" id="today-label"></span></div>
+
+    <!-- ── 1. DIGITAL MEMBERSHIP PASSPORT (LUXURY IDENTITY CARD) ── -->
+    <div class="digital-member-passport">
+      <div class="passport-header-row">
+        <div class="passport-identity">
+          <div class="passport-avatar" id="avatar-initials">TU</div>
+          <div class="passport-details">
+            <h2 id="profile-fullname">—</h2>
+            <p>
+              <span id="profile-emailcourse">—</span>
+              <span class="passport-regno-chip" id="profile-regno-display">—</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="passport-status-chips">
+          <span class="chip-badge gold" id="badge-year">Year 1</span>
+          <span class="chip-badge purple" id="badge-category">Full Member</span>
+          <span class="chip-badge emerald" id="badge-status">● Active Member</span>
+          <span class="chip-badge gold" id="badge-role" style="display:none;">Member</span>
+        </div>
+      </div>
+
+      <!-- Affiliated Ministries Row -->
+      <div class="passport-ministries-deck" id="member-ministries-strip">
+        <span class="passport-deck-label">Active Ministries:</span>
+        <span style="font-size:0.85rem; color:#CBD5E1;">Loading ministry enrollments...</span>
       </div>
     </div>
 
-    <!-- STATS -->
-    <div class="portal-stats">
-      <div class="pstat"><div class="num" id="stat-events">0</div><div class="label">Events Joined</div></div>
-      <div class="pstat"><div class="num" id="stat-prayers">0</div><div class="label">Prayer Requests</div></div>
-      <div class="pstat"><div class="num" id="stat-newsletter">—</div><div class="label">Newsletter</div></div>
+    <!-- ── 2. QUICK METRICS OVERVIEW ── -->
+    <div class="metrics-grid-strip">
+      <div class="metric-capsule mc-gold">
+        <div class="metric-num" id="stat-ministries">0</div>
+        <div class="metric-label">My ministries</div>
+      </div>
+      <div class="metric-capsule mc-slate">
+        <div class="metric-num" id="stat-events">0</div>
+        <div class="metric-label">Event registrations</div>
+      </div>
+      <div class="metric-capsule mc-emerald">
+        <div class="metric-num" id="stat-prayers">0</div>
+        <div class="metric-label">Prayer Requests</div>
+      </div>
+      <div class="metric-capsule mc-amber">
+        <div class="metric-num" id="stat-newsletter">—</div>
+        <div class="metric-label">Newsletter</div>
+      </div>
     </div>
 
-    <!-- TABS -->
-    <div class="tabs">
-      <div class="tab active" data-panel="profile">👤 Profile</div>
-      <div class="tab" data-panel="events">📅 My Events</div>
-      <div class="tab" data-panel="prayers">🙏 Prayer Requests</div>
-      <div class="tab" data-panel="newsletter">📧 Newsletter</div>
+    <div class="overview-grid">
+      <section class="executive-card overview-updates"><div class="card-header-bar"><div><span class="eyebrow">IN THE LOOP</span><h3>Latest updates</h3></div><button class="text-action" data-open-panel="updates">View all →</button></div><div id="overview-updates"><p class="overview-empty">Loading your community updates…</p></div></section>
+      <section class="community-invite"><span class="eyebrow">FAITH IN ACTION</span><div class="invite-symbol" aria-hidden="true">✳</div><h3>There’s a place<br/>for your gifts.</h3><p>Find a ministry where you can grow, connect, and serve alongside others.</p><button class="light-action" data-open-panel="profile">Explore my ministries <span>↗</span></button></section>
+    </div>
+    <section class="executive-card library-overview-card"><div class="card-header-bar"><h3>Continue reading</h3><button class="text-action" data-open-panel="bookshelf">View bookshelf →</button></div><div id="reading-overview" aria-live="polite"></div></section>
+    <div class="quick-links"><a href="/#events"><span class="quick-icon">↗</span><div><strong>Find your next fellowship</strong><span>Explore CU events and gatherings</span></div><span>→</span></a><a href="/#prayer"><span class="quick-icon">♡</span><div><strong>Let’s pray together</strong><span>Share a prayer request with the CU</span></div><span>→</span></a><a href="/library"><span class="quick-icon">&#x1F4DA;</span><div><strong>CU E-Book Library</strong><span>Browse &amp; download Christian e-books</span></div><span>&#8594;</span></a></div>
+    <footer class="portal-footer"><span>Tharaka University Christian Union</span><span>Unity · Integrity · Stewardship · Accountability · Excellence</span></footer>
     </div>
 
-    <!-- PROFILE PANEL -->
-    <div class="tab-panel active" id="panel-profile">
-      <div class="card">
-        <div class="card-header"><h3>My Information</h3></div>
-        <div class="card-body">
-          <div class="readonly-note">📌 Email and registration number cannot be changed here. Contact CU leadership for corrections.</div>
-          <form id="profile-form" class="profile-grid">
-            <div class="field">
-              <label>Full Name</label>
-              <input type="text" id="p-fullname"/>
+
+    <!-- ── 4. PANELS WORKSPACE ── -->
+
+    <!-- TAB 1: PROFILE & SERVICE -->
+    <div class="tab-panel-container" id="panel-profile">
+      <div class="executive-card">
+        <div class="card-header-bar">
+          <h3>Your profile</h3>
+        </div>
+        <div class="card-body-content">
+          <div class="form-instruction-banner">
+            <span>📌</span>
+            <span>Need to change your email or registration number? Please contact the CU Secretary.</span>
+          </div>
+
+          <form id="profile-form">
+            <!-- 1. PERSONAL IDENTITY -->
+            <div class="profile-section">
+              <div class="profile-section-header">
+                <span class="profile-section-title">Personal Identity</span>
+                <span class="profile-section-desc">Your basic contact details and union identification.</span>
+              </div>
+              <div class="profile-grid-2col">
+                <div class="form-group full-span">
+                  <label for="p-fullname">Full Name</label>
+                  <input type="text" id="p-fullname" required autocomplete="name" placeholder="Full name"/>
+                </div>
+                <div class="form-group">
+                  <label for="p-phone">Phone number</label>
+                  <input type="tel" id="p-phone" autocomplete="tel" placeholder="07XXXXXXXX"/>
+                </div>
+                <div class="form-group">
+                  <label for="p-email">Email address</label>
+                  <input type="email" id="p-email" disabled style="background:#F1F5F9; cursor:not-allowed;"/>
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label>Email (read-only)</label>
-              <input type="email" id="p-email" disabled/>
+
+            <!-- 2. ACADEMIC PROGRAMME & ENROLLMENT -->
+            <div class="profile-section">
+              <div class="profile-section-header">
+                <span class="profile-section-title">Academic & Enrollment</span>
+                <span class="profile-section-desc">University enrollment details, programme and progression.</span>
+              </div>
+              <div class="profile-grid-2col">
+                <div class="form-group">
+                  <label for="p-regno">Registration number</label>
+                  <input type="text" id="p-regno" disabled style="background:#F1F5F9; cursor:not-allowed;"/>
+                </div>
+                <div class="form-group">
+                  <label for="p-course">Course / Programme of Study</label>
+                  <input type="text" id="p-course" placeholder="e.g. BSc Computer Science"/>
+                </div>
+                <div class="form-group">
+                  <label for="p-duration">Degree Duration</label>
+                  <select id="p-duration">
+                    <option value="4">4-Year Degree</option>
+                    <option value="5">5-Year Degree</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="p-year-display">Current Status / Year</label>
+                  <input type="text" id="p-year-display" disabled style="background:#F1F5F9; cursor:not-allowed;"/>
+                </div>
+                <div class="form-group full-span">
+                  <label for="p-joined">Member Since</label>
+                  <input type="text" id="p-joined" disabled style="background:#F1F5F9; cursor:not-allowed; max-width:320px;"/>
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label>Phone</label>
-              <input type="tel" id="p-phone"/>
+
+            <!-- 3. CALLING & MINISTRIES -->
+            <div class="profile-section">
+              <div class="profile-section-header">
+                <span class="profile-section-title">Service & Ministries</span>
+                <span class="profile-section-desc">Select up to 3 ministries where you wish to serve actively.</span>
+              </div>
+              <div class="form-group">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <label style="margin:0;">Active ministry callings</label>
+                  <span style="font-size:0.75rem; font-weight:700; color:#64748B;">
+                    <span id="p-selected-count">0</span> / 3 Selected
+                  </span>
+                </div>
+                <div class="ministries-picker-panel" id="p-ministries-box"></div>
+              </div>
             </div>
-            <div class="field">
-              <label>Reg. Number (read-only)</label>
-              <input type="text" id="p-regno" disabled/>
+
+            <!-- 4. LEADERSHIP & PRIVILEGES (CONDITIONAL) -->
+            <div class="profile-section" id="admin-notes-wrap" style="display:none;">
+              <div class="profile-section-header">
+                <span class="profile-section-title">Executive Remarks</span>
+                <span class="profile-section-desc">Leadership notes regarding union service or appointment.</span>
+              </div>
+              <div class="form-group">
+                <label for="p-notes">📋 Leadership Remarks</label>
+                <input type="text" id="p-notes" disabled style="background:#FEF9C3; color:#854D0E; font-weight:600;"/>
+              </div>
             </div>
-            <div class="field">
-              <label>Course / Department</label>
-              <input type="text" id="p-course"/>
-            </div>
-            <div class="field">
-              <label>Year of Study</label>
-              <select id="p-year">
-                <option value="">Select year</option>
-                <option>Year 1</option>
-                <option>Year 2</option>
-                <option>Year 3</option>
-                <option>Year 4</option>
-                <option>Year 5</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>Ministry</label>
-              <input type="text" id="p-ministry" placeholder="e.g. Praise & Worship"/>
-            </div>
-            <div class="field">
-              <label>Member Since</label>
-              <input type="text" id="p-joined" disabled/>
-            </div>
-            <div class="field full" id="admin-notes-wrap" style="display:none;">
-              <label>📋 Note from CU Leadership</label>
-              <input type="text" id="p-notes" disabled/>
-            </div>
-            <div class="field full">
-              <button type="submit" class="save-btn">Save Changes</button>
+
+            <div style="margin-top:24px;">
+              <button type="submit" class="btn-executive" style="max-width:280px;">
+                <span>Save changes</span>
+                <span>✓</span>
+              </button>
             </div>
           </form>
 
-          <hr style="margin:24px 0;border:none;border-top:1px solid var(--ivory-dark);"/>
+          <hr style="margin:34px 0; border:none; border-top:1px solid var(--surface-border);"/>
 
-          <h3 style="font-family:'Playfair Display',serif;color:var(--green-deep);font-size:1rem;margin-bottom:14px;">Change Password</h3>
-          <form id="password-form" class="profile-grid">
-            <div class="field">
-              <label>New Password</label>
-              <input type="password" id="p-newpass" placeholder="Leave blank to keep current"/>
+          <!-- Password update -->
+          <h4 style="font-family:'Playfair Display',serif; font-size:1.15rem; color:#0F172A; margin-bottom:16px;">
+            Change password
+          </h4>
+          <form id="password-form" class="profile-form-grid">
+            <div class="form-group">
+              <label for="p-newpass">New Password</label>
+              <input type="password" id="p-newpass" autocomplete="new-password" placeholder="Min. 6 characters"/>
             </div>
-            <div class="field">
-              <label>Confirm New Password</label>
-              <input type="password" id="p-newpass-confirm" placeholder="Repeat new password"/>
+            <div class="form-group">
+              <label for="p-newpass-confirm">Confirm New Password</label>
+              <input type="password" id="p-newpass-confirm" autocomplete="new-password" placeholder="Repeat new password"/>
             </div>
-            <div class="field full">
-              <button type="submit" class="save-btn">Update Password</button>
+            <div class="form-group full-span">
+              <button type="submit" class="btn-executive" style="max-width:240px;">
+                <span>Update Password</span>
+              </button>
             </div>
           </form>
+
+          <hr style="margin:34px 0; border:none; border-top:1px solid var(--surface-border);"/>
+
+          <!-- Academic Progression History -->
+          <h4 style="font-family:'Playfair Display',serif; font-size:1.15rem; color:#0F172A; margin-bottom:12px;">
+            Your academic journey
+          </h4>
+          <div id="progression-history-list">
+            <p style="color:var(--text-muted); font-size:0.85rem;">Loading progression record...</p>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- EVENTS PANEL -->
-    <div class="tab-panel" id="panel-events">
-      <div class="card">
-        <div class="card-header"><h3>My Event Registrations</h3><span id="events-total" style="font-size:0.75rem;color:var(--slate);"></span></div>
+    <!-- TAB 2: MINISTRY BULLETINS & ANNOUNCEMENTS -->
+    <div class="tab-panel-container" id="panel-updates">
+      <div class="executive-card">
+        <div class="card-header-bar">
+          <h3>Union & Updates</h3>
+          <span id="announcements-total" style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"></span>
+        </div>
+        <div class="card-body-content" style="padding-bottom:14px;">
+          <!-- Filter Pills -->
+          <div class="announcements-filter-bar" id="announcement-filters">
+            <button class="filter-chip-btn active" data-filter="all">All Updates</button>
+            <button class="filter-chip-btn" data-filter="union">🌐 Union-Wide</button>
+            <button class="filter-chip-btn" data-filter="docket">📂 My Dockets</button>
+            <button class="filter-chip-btn" data-filter="ministry">👥 My Ministries</button>
+            <button class="filter-chip-btn" data-filter="associates" id="filter-associates-btn" style="display:none;">🎓 Associates</button>
+          </div>
+        </div>
+        <div id="announcements-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: EVENTS REGISTER -->
+    <div class="tab-panel-container" id="panel-events">
+      <div class="executive-card">
+        <div class="card-header-bar">
+          <h3>Your event registrations</h3>
+          <span id="events-total" style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"></span>
+        </div>
         <div id="events-list"></div>
       </div>
     </div>
 
-    <!-- PRAYERS PANEL -->
-    <div class="tab-panel" id="panel-prayers">
-      <div class="card">
-        <div class="card-header"><h3>My Prayer Requests</h3><span id="prayers-total" style="font-size:0.75rem;color:var(--slate);"></span></div>
+    <!-- TAB 4: INTERCESSION & PRAYER -->
+    <div class="tab-panel-container" id="panel-prayers">
+      <div class="executive-card">
+        <div class="card-header-bar">
+          <h3>Your prayer requests</h3>
+          <span id="prayers-total" style="font-size:0.8rem; color:var(--text-muted); font-weight:600;"></span>
+        </div>
         <div id="prayers-list"></div>
       </div>
     </div>
 
-    <!-- NEWSLETTER PANEL -->
-    <div class="tab-panel" id="panel-newsletter">
-      <div class="card">
-        <div class="card-header"><h3>Newsletter Subscription</h3></div>
-        <div class="card-body">
-          <div class="toggle-row">
-            <div>
-              <h4>Weekly Devotionals & Updates</h4>
-              <p>Receive devotionals, event announcements, and prayer points directly in your inbox every week.</p>
+    <!-- TAB 5: EXECUTIVE CABINET DESK (CONDITIONAL FOR EC LEADERS) -->
+    <div class="tab-panel-container" id="panel-executive">
+      <div class="executive-card">
+        <div class="card-header-bar">
+          <h3 id="ec-desk-title">👑 Executive Committee Cabinet Desk</h3>
+        </div>
+        <div class="card-body-content">
+          <div class="executive-command-box">
+            <div class="executive-command-header">
+              <span>📢</span>
+              <h4>Publish Official Union Announcement</h4>
             </div>
-            <label class="switch">
-              <input type="checkbox" id="newsletter-toggle"/>
-              <span class="slider"></span>
-            </label>
+            <p class="executive-lead-text">
+              As an Executive Committee leader, you can broadcast official ministry schedules, practices, and union directives directly to members' feeds.
+            </p>
+
+            <form id="ec-announcement-form" class="profile-form-grid">
+              <div class="form-group full-span">
+                <label for="ec-title">Announcement Headline</label>
+                <input type="text" id="ec-title" required placeholder="e.g. Wednesday Praise & Worship Rehearsal and Prayer Vigil"/>
+              </div>
+              <div class="form-group">
+                <label for="ec-target-type">Target Audience</label>
+                <select id="ec-target-type">
+                  <option value="all">Union-Wide (All Members)</option>
+                  <option value="docket">My docket</option>
+                  <option value="ministry">Specific Ministry</option>
+                  <option value="associates">Associates</option>
+                </select>
+              </div>
+              <div class="form-group" id="ec-ministry-field" style="display:none;">
+                <label for="ec-target-ministry">Select Target Ministry</label>
+                <select id="ec-target-ministry"></select>
+              </div>
+              <div class="form-group full-span">
+                <label for="ec-content">Message Content & Instructions</label>
+                <textarea id="ec-content" rows="4" required placeholder="Provide clear instructions, venue, time, attire, or agenda details..."></textarea>
+              </div>
+              <div class="form-group full-span" style="display:flex; align-items:center; gap:8px;">
+                <input type="checkbox" id="ec-pinned" style="width:18px; height:18px; cursor:pointer; accent-color:#D97706;"/>
+                <label for="ec-pinned" style="margin:0; text-transform:none; cursor:pointer; font-size:0.88rem; font-weight:600;">
+                  Pin this announcement to the top of members' feeds
+                </label>
+              </div>
+              <div class="form-group full-span">
+                <button type="submit" class="btn-executive" id="ec-post-btn" style="max-width:320px;">
+                  <span>Publish announcement</span>
+                  <span>🚀</span>
+                </button>
+              </div>
+            </form>
           </div>
-          <p style="font-size:0.78rem;color:var(--slate);">Subscribed since: <strong id="newsletter-since">—</strong></p>
         </div>
       </div>
     </div>
 
+    <!-- TAB 6: ASSOCIATES HUB (CONDITIONAL FOR ALUMNI) -->
+    <div class="tab-panel-container" id="panel-associate">
+      <div class="executive-card">
+        <div class="card-header-bar">
+          <h3>🎓 TUCU Associates & Alumni Fellowship Hub</h3>
+        </div>
+        <div class="card-body-content">
+          <div class="associates-hero-box">
+            <h4>Welcome Home, Associate!</h4>
+            <p>
+              Once a member, always family. TUCU Associates continue to inspire current campus generations through prayer support, career mentorship, and partnership in gospel ministry.
+            </p>
+          </div>
+
+          <!-- Spiritual Journey Timeline -->
+          <h4 style="font-family:'Playfair Display',serif; color:#0F172A; font-size:1.25rem;">
+            My Spiritual & Service Journey in TUCU
+          </h4>
+          <div class="journey-timeline-track" id="associate-timeline">
+            <p style="color:var(--text-muted); font-size:0.85rem;">Retrieving your journey...</p>
+          </div>
+
+          <hr style="margin:30px 0; border:none; border-top:1px solid var(--surface-border);"/>
+
+          <!-- Support & Giving Channels -->
+          <h4 style="font-family:'Playfair Display',serif; color:#0F172A; font-size:1.25rem;">
+            Partner with Ongoing Campus Ministries
+          </h4>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">
+            Support student welfare, meals, and mission activities. Contact CU leadership for confirmed giving details.
+          </p>
+
+          <div class="giving-partners-deck">
+            <div class="giving-channel-card">
+              <div class="giving-channel-icon">🤝</div>
+              <h5>Helping Kitty</h5>
+              <p>Temporary support with food and basic needs for members facing hardship.</p>
+              <div class="giving-paybill-box">Contact the CU Treasurer for giving details.</div>
+            </div>
+            <div class="giving-channel-card">
+              <div class="giving-channel-icon">🍲</div>
+              <h5>CU Canteen Project</h5>
+              <p>Subsidized nutritional meals and practical ministry employment for students.</p>
+              <div class="giving-paybill-box">Contact the CU Treasurer for giving details.</div>
+            </div>
+            <div class="giving-channel-card">
+              <div class="giving-channel-icon">🌍</div>
+              <h5>Annual Missions</h5>
+              <p>Evangelism missions across Tharaka Nithi, high school outreach, and hospital ministry.</p>
+              <div class="giving-paybill-box">Contact the CU Treasurer for giving details.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CU LIBRARY -->
+    <div class="tab-panel-container" id="panel-library">
+      <div class="executive-card">
+        <div class="card-header-bar library-panel-heading">
+          <div><span class="eyebrow">READ, REFLECT, GROW</span><h3>CU E-Book Library</h3></div>
+          <a href="/library" class="text-action">Explore the library →</a>
+        </div>
+        <div class="library-panel-body">
+          <p class="library-panel-intro">Explore Christian books curated for the CU community. Search by title or author, browse topics, and pick up where you left off from your bookshelf.</p>
+          <form class="library-panel-search" action="/library" role="search">
+            <label class="sr-only" for="lib-search">Search books by title or author</label>
+            <input id="lib-search" name="q" type="search" maxlength="200" placeholder="Search books by title or author">
+            <button class="btn-executive" type="submit">Search library <span aria-hidden="true">→</span></button>
+          </form>
+          <div class="library-preview-heading"><h4>From the collection</h4><a href="/library">Browse all books ↗</a></div>
+          <div id="lib-preview" class="library-preview-grid" aria-live="polite"><p role="status">Loading featured books…</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: DEVOTIONALS & NEWSLETTER -->
+    <div class="tab-panel-container" id="panel-newsletter">
+      <div class="executive-card">
+        <div class="card-header-bar">
+          <h3>Newsletter preferences</h3>
+        </div>
+        <div class="card-body-content">
+          <div class="newsletter-subscription-row">
+            <div>
+              <h4>CU newsletter</h4>
+              <p>Receive spiritual reflections, weekly intercession bullet points, and key announcements directly in your mailbox.</p>
+            </div>
+            <label class="switch-ui">
+              <input type="checkbox" id="newsletter-toggle" aria-label="Subscribe to the CU newsletter"/>
+              <span class="switch-ui-slider"></span>
+            </label>
+          </div>
+          <p style="font-size:0.8rem; color:var(--text-muted); margin-top:8px;">
+            Subscription Status: <strong id="newsletter-since">—</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     YEAR PROGRESSION CONFIRMATION DIALOG MODAL
+══════════════════════════════════════════════════ -->
+<div id="year-modal-backdrop">
+  <div class="modal-vault-window">
+    <div class="modal-crest-badge">🎓</div>
+    <h2>Confirm your year of study</h2>
+    <p id="year-modal-msg">
+      Welcome to the new academic year! The union has updated your record to <strong>Year 2</strong>. Please verify if this is accurate or adjust your status.
+    </p>
+
+    <button class="btn-modal-confirm" id="btn-quick-confirm-year">Confirm Current Record</button>
+    <button class="btn-modal-adjust" id="btn-toggle-year-options">Need to adjust year or have you graduated?</button>
+
+    <div id="year-custom-form" style="display:none; margin-top:20px; border-top:1px solid var(--surface-border); padding-top:20px;">
+      <form id="year-custom-submit-form" style="display:flex; flex-direction:column; gap:14px;">
+        <div class="form-group">
+          <label for="modal-select-year">Select Accurate Year / Status</label>
+          <select id="modal-select-year">
+            <option value="1">Year 1</option>
+            <option value="2">Year 2</option>
+            <option value="3">Year 3</option>
+            <option value="4">Year 4</option>
+            <option value="5">Year 5 (5-year programs)</option>
+            <option value="graduate">I have completed my studies (Graduate to Associate)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="modal-year-notes">Explanation (Optional)</label>
+          <input type="text" id="modal-year-notes" placeholder="e.g. Repeated semester, deferred, or graduated"/>
+        </div>
+        <button type="submit" class="btn-executive">
+          <span>Save & Continue</span>
+        </button>
+      </form>
+    </div>
   </div>
 </div>
 
-<script>
-  const API = 'http://localhost:8000/api'; // Laravel backend base URL — update for production
-
-  let TOKEN = localStorage.getItem('tucu_member_token');
-  let MEMBER_ID = localStorage.getItem('tucu_member_id');
-  let memberData = null;
-
-  // ── TOAST ──
-  function toast(msg, type = 'success') {
-    const existing = document.querySelector('.toast');
-    if (existing) existing.remove();
-    const t = document.createElement('div');
-    t.className = 'toast' + (type === 'error' ? ' error' : '');
-    t.innerHTML = `<span>${type === 'error' ? '❌' : '✅'}</span><span>${msg}</span>`;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 4000);
-  }
-
-  // ── AUTH TAB SWITCHING ──
-  document.querySelectorAll('.auth-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(`${tab.dataset.tab}-form`).classList.add('active');
-    });
-  });
-
-  // ── LOGIN ──
-  document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    const btn = document.getElementById('login-btn');
-    const errEl = document.getElementById('login-error');
-    errEl.style.display = 'none';
-    btn.textContent = 'Signing in...'; btn.disabled = true;
-
-    try {
-      const res = await fetch(`${API}/members/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        TOKEN = data.token;
-        MEMBER_ID = data.member.id;
-        localStorage.setItem('tucu_member_token', TOKEN);
-        localStorage.setItem('tucu_member_id', MEMBER_ID);
-        showPortal();
-      } else {
-        errEl.textContent = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Login failed.');
-        errEl.style.display = 'block';
-      }
-    } catch {
-      errEl.textContent = 'Cannot reach server. Please try again.';
-      errEl.style.display = 'block';
-    }
-    btn.textContent = 'Sign In to My Portal'; btn.disabled = false;
-  });
-
-  // ── REGISTER ──
-  document.getElementById('register-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const errEl = document.getElementById('register-error');
-    const okEl = document.getElementById('register-success');
-    errEl.style.display = 'none'; okEl.style.display = 'none';
-
-    const password = document.getElementById('reg-password').value;
-    const passwordConfirm = document.getElementById('reg-password-confirm').value;
-
-    if (password !== passwordConfirm) {
-      errEl.textContent = 'Passwords do not match.';
-      errEl.style.display = 'block';
-      return;
-    }
-
-    const payload = {
-      full_name: document.getElementById('reg-name').value.trim(),
-      email: document.getElementById('reg-email').value.trim(),
-      phone: document.getElementById('reg-phone').value.trim(),
-      reg_number: document.getElementById('reg-regno').value.trim(),
-      year_of_study: document.getElementById('reg-year').value,
-      course: document.getElementById('reg-course').value.trim(),
-      password,
-      password_confirmation: passwordConfirm
-    };
-
-    const btn = document.getElementById('register-btn');
-    btn.textContent = 'Creating your portal...'; btn.disabled = true;
-
-    try {
-      const res = await fetch(`${API}/members/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (res.ok) {
-        TOKEN = data.token;
-        MEMBER_ID = data.member.id;
-        localStorage.setItem('tucu_member_token', TOKEN);
-        localStorage.setItem('tucu_member_id', MEMBER_ID);
-        okEl.textContent = 'Welcome to TUCU! Redirecting to your portal...';
-        okEl.style.display = 'block';
-        setTimeout(showPortal, 1000);
-      } else {
-        errEl.textContent = data.errors ? Object.values(data.errors)[0][0] : (data.message || 'Registration failed.');
-        errEl.style.display = 'block';
-      }
-    } catch {
-      errEl.textContent = 'Cannot reach server. Please try again.';
-      errEl.style.display = 'block';
-    }
-    btn.textContent = 'Create My Portal'; btn.disabled = false;
-  });
-
-  // ── LOGOUT ──
-  document.getElementById('logout-btn').addEventListener('click', async () => {
-    try {
-      await fetch(`${API}/members/logout`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${TOKEN}` }
-      });
-    } catch {}
-    localStorage.removeItem('tucu_member_token');
-    localStorage.removeItem('tucu_member_id');
-    TOKEN = null; MEMBER_ID = null;
-    document.getElementById('portal').style.display = 'none';
-    document.getElementById('auth-screen').style.display = 'flex';
-  });
-
-  // ── SHOW PORTAL & LOAD DATA ──
-  async function showPortal() {
-    document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('portal').style.display = 'block';
-    await loadProfile();
-    await loadEvents();
-    await loadPrayers();
-  }
-
-  async function apiGet(path) {
-    const res = await fetch(`${API}${path}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
-    if (res.status === 401 || res.status === 403) {
-      // token invalid/expired — force re-login
-      localStorage.removeItem('tucu_member_token');
-      localStorage.removeItem('tucu_member_id');
-      document.getElementById('portal').style.display = 'none';
-      document.getElementById('auth-screen').style.display = 'flex';
-      throw new Error('Unauthorized');
-    }
-    return res.json();
-  }
-
-  // ── PROFILE ──
-  async function loadProfile() {
-    try {
-      const data = await apiGet(`/members/${MEMBER_ID}/profile`);
-      memberData = data.member;
-      const m = memberData;
-
-      document.getElementById('welcome-name').textContent = m.full_name.split(' ')[0];
-      document.getElementById('avatar-initials').textContent = m.full_name.split(' ').map(n => n[0]).slice(0,2).join('').toUpperCase();
-      document.getElementById('profile-fullname').textContent = m.full_name;
-      document.getElementById('profile-emailcourse').textContent = `${m.email}${m.course ? ' · ' + m.course : ''}`;
-      document.getElementById('badge-ministry').textContent = m.ministry || 'General';
-      document.getElementById('badge-status').textContent = m.status === 'active' ? '● Active' : '○ Inactive';
-      document.getElementById('badge-status').style.color = m.status === 'active' ? 'var(--green-mid)' : 'var(--red)';
-      document.getElementById('badge-role').textContent = (m.role || 'member').charAt(0).toUpperCase() + (m.role || 'member').slice(1);
-
-      // Profile form
-      document.getElementById('p-fullname').value = m.full_name || '';
-      document.getElementById('p-email').value = m.email || '';
-      document.getElementById('p-phone').value = m.phone || '';
-      document.getElementById('p-regno').value = m.reg_number || '—';
-      document.getElementById('p-course').value = m.course || '';
-      document.getElementById('p-year').value = m.year_of_study || '';
-      document.getElementById('p-ministry').value = m.ministry || '';
-      document.getElementById('p-joined').value = m.joined_at ? new Date(m.joined_at).toLocaleDateString('en-KE', { year:'numeric', month:'long', day:'numeric' }) : '—';
-
-      if (m.admin_notes) {
-        document.getElementById('admin-notes-wrap').style.display = 'block';
-        document.getElementById('p-notes').value = m.admin_notes;
-      }
-
-      // Stats
-      document.getElementById('stat-events').textContent = data.summary.events_count;
-      document.getElementById('stat-prayers').textContent = data.summary.prayers_count;
-
-      // Newsletter
-      const sub = data.newsletter.is_subscribed;
-      document.getElementById('stat-newsletter').textContent = sub ? 'On' : 'Off';
-      document.getElementById('newsletter-toggle').checked = sub;
-      document.getElementById('newsletter-since').textContent = data.newsletter.subscribed_at
-        ? new Date(data.newsletter.subscribed_at).toLocaleDateString('en-KE', { year:'numeric', month:'long', day:'numeric' })
-        : 'Not subscribed';
-
-    } catch (e) {
-      if (e.message !== 'Unauthorized') toast('Could not load your profile.', 'error');
-    }
-  }
-
-  // ── PROFILE UPDATE ──
-  document.getElementById('profile-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const payload = {
-      full_name: document.getElementById('p-fullname').value.trim(),
-      phone: document.getElementById('p-phone').value.trim(),
-      course: document.getElementById('p-course').value.trim(),
-      year_of_study: document.getElementById('p-year').value,
-      ministry: document.getElementById('p-ministry').value.trim(),
-    };
-    try {
-      const res = await fetch(`${API}/members/${MEMBER_ID}/profile`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if (res.ok) { toast('Profile updated successfully!'); loadProfile(); }
-      else toast(data.message || 'Update failed.', 'error');
-    } catch { toast('Server error.', 'error'); }
-  });
-
-  // ── PASSWORD UPDATE ──
-  document.getElementById('password-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const newpass = document.getElementById('p-newpass').value;
-    const confirm = document.getElementById('p-newpass-confirm').value;
-    if (!newpass) return toast('Enter a new password first.', 'error');
-    if (newpass !== confirm) return toast('Passwords do not match.', 'error');
-    if (newpass.length < 6) return toast('Password must be at least 6 characters.', 'error');
-
-    try {
-      const res = await fetch(`${API}/members/${MEMBER_ID}/profile`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
-        body: JSON.stringify({ password: newpass, password_confirmation: confirm })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        toast('Password updated successfully!');
-        document.getElementById('p-newpass').value = '';
-        document.getElementById('p-newpass-confirm').value = '';
-      } else toast(data.message || 'Update failed.', 'error');
-    } catch { toast('Server error.', 'error'); }
-  });
-
-  // ── EVENTS ──
-  async function loadEvents() {
-    try {
-      const data = await apiGet(`/members/${MEMBER_ID}/events`);
-      const list = document.getElementById('events-list');
-      document.getElementById('events-total').textContent = `${data.count} total`;
-      if (!data.events.length) {
-        list.innerHTML = `<div class="empty-state"><div class="icon">📅</div><p>You haven't registered for any events yet.<br/><a href="/#events">Browse upcoming events →</a></p></div>`;
-        return;
-      }
-      list.innerHTML = data.events.map(ev => `
-        <div class="list-item">
-          <div class="list-item-main">
-            <h4>${ev.event_name}</h4>
-            <p>Registered ${new Date(ev.registered_at).toLocaleDateString('en-KE', { day:'2-digit', month:'short', year:'numeric' })}</p>
-          </div>
-          <span class="status-pill ${ev.status}">${ev.status}</span>
-        </div>`).join('');
-    } catch (e) {
-      if (e.message !== 'Unauthorized') toast('Could not load events.', 'error');
-    }
-  }
-
-  // ── PRAYERS ──
-  async function loadPrayers() {
-    try {
-      const data = await apiGet(`/members/${MEMBER_ID}/prayers`);
-      const list = document.getElementById('prayers-list');
-      document.getElementById('prayers-total').textContent = `${data.count} total`;
-      if (!data.prayers.length) {
-        list.innerHTML = `<div class="empty-state"><div class="icon">🙏</div><p>You haven't submitted any prayer requests yet.<br/><a href="/#prayer">Submit one →</a></p></div>`;
-        return;
-      }
-      list.innerHTML = data.prayers.map(p => `
-        <div class="list-item">
-          <div class="list-item-main">
-            <h4>${p.category}</h4>
-            <p>Submitted ${new Date(p.submitted_at).toLocaleDateString('en-KE', { day:'2-digit', month:'short', year:'numeric' })}${p.is_anonymous ? ' · Anonymous' : ''}</p>
-            <p class="req-text">${p.request}</p>
-          </div>
-          <span class="status-pill ${p.status}">${p.status}</span>
-        </div>`).join('');
-    } catch (e) {
-      if (e.message !== 'Unauthorized') toast('Could not load prayer requests.', 'error');
-    }
-  }
-
-  // ── NEWSLETTER TOGGLE ──
-  document.getElementById('newsletter-toggle').addEventListener('change', async (e) => {
-    const is_subscribed = e.target.checked;
-    try {
-      const res = await fetch(`${API}/members/${MEMBER_ID}/newsletter`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
-        body: JSON.stringify({ is_subscribed })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        toast(data.message);
-        document.getElementById('stat-newsletter').textContent = is_subscribed ? 'On' : 'Off';
-        loadProfile();
-      } else {
-        toast('Could not update subscription.', 'error');
-        e.target.checked = !is_subscribed;
-      }
-    } catch {
-      toast('Server error.', 'error');
-      e.target.checked = !is_subscribed;
-    }
-  });
-
-  // ── TAB SWITCHING ──
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById(`panel-${tab.dataset.panel}`).classList.add('active');
-    });
-  });
-
-  // ── AUTO-LOGIN ──
-  if (TOKEN && MEMBER_ID) {
-    showPortal();
-  }
-</script>
+<!-- ══════════════════════════════════════════════════
+     CLIENT CONTROLLER JAVASCRIPT
+══════════════════════════════════════════════════ -->
+<script src="/js/member-ui.js"></script>
+<script src="/js/member-api.js"></script>
+<script src="/js/member-library.js"></script>
+<script src="/js/member.js"></script>
 </body>
 </html>
