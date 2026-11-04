@@ -80,7 +80,38 @@ tucu-laravel/
 ```bash
 cd tucu-laravel
 composer install
+python -m pip install -r scripts/requirements-library.txt
 ```
+
+The library import command uses PyMuPDF to generate a cover from the first page of
+each valid PDF that has no usable uploaded cover. Set `LIBRARY_PYTHON_BINARY` in
+`.env` to the Python executable that has these requirements installed if `python`
+is not available on the PHP process's PATH.
+
+For a larger PDF collection, prepare and review a metadata manifest before importing:
+
+```bash
+python scripts/prepare-library-directory.py \
+  --source "D:/E_books" \
+  --output "storage/app/library-import/manifest.json" \
+  --covers "storage/app/library-import/covers"
+php artisan library:import-directory storage/app/library-import/manifest.json --dry-run
+php artisan library:import-directory storage/app/library-import/manifest.json --apply
+```
+
+The preparation step extracts PDF metadata, suggests categories, and generates
+first-page covers. The import is idempotent by file checksum, creates missing
+categories, stores PDFs and covers privately, and adds new titles as drafts.
+Convert Word and PowerPoint files to PDF before preparing them. Keep the source
+files unchanged and review generated metadata and categories before publishing.
+
+The authenticated admin console includes a **Books & Categories** section for
+creating categories, adding titles and PDF editions, updating metadata/covers,
+and publishing or archiving books. Uploaded PDFs and covers are kept in private
+Laravel storage; a first-page cover is generated automatically when no cover is
+uploaded. The configured PDF limit is 64 MiB, so PHP's `upload_max_filesize` and
+`post_max_size` must be set to at least 64M and 65M respectively for the full
+limit to be usable.
 
 ### 3. Configure environment
 ```bash

@@ -26,7 +26,8 @@ return [
     |
     */
 
-    'guard' => ['sanctum'],
+    // Bearer-only guards must not recursively ask Sanctum to resolve itself.
+    'guard' => [],
 
     /*
     |--------------------------------------------------------------------------

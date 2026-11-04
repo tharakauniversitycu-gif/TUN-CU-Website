@@ -1,0 +1,11 @@
+/.env
+/vendor/
+/node_modules/
+/bootstrap/cache/*.php
+/storage/**/*.log
+/storage/framework/sessions/*
+/storage/framework/views/*.php
+/storage/framework/cache/*
+/storage/app/private/
+/storage/testing/
+/.phpunit.cache/

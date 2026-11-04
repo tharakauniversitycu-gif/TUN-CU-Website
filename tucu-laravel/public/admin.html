@@ -3,374 +3,1705 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TUCU Admin Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <title>Executive Admin Console — Tharaka University Christian Union</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+  
   <style>
+    /* ── RESET & DESIGN SYSTEM ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --green: #3D1E96; --green-mid: #5B3FC4; --green-light: #0E8FD0;
-      --gold: #FFC700; --gold-light: #FCF103;
-      --bg: #F4F1FB; --white: #FFFFFF; --charcoal: #1C1C1C;
-      --slate: #6E6B95; --border: #E5DFF7;
-      --red: #C0392B; --blue: #0E8FD0; --orange: #D97706;
-    }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--charcoal); display: flex; min-height: 100vh; }
+      --navy-dark: #0F172A;
+      --slate-dark: #1E293B;
+      --slate-border: #334155;
+      
+      --gold-solid: #D97706;
+      --gold-amber: #B45309;
+      --gold-subtle: #FEF3C7;
+      --gold-accent: #CA8A04;
 
-    /* ── SIDEBAR ── */
+      --surface-bg: #F8FAFC;
+      --surface-card: #FFFFFF;
+      --surface-subtle: #F1F5F9;
+      --surface-border: #E2E8F0;
+
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --text-light: #94A3B8;
+
+      --emerald-500: #10B981;
+      --emerald-100: #D1FAE5;
+      --emerald-700: #047857;
+
+      --ruby-500: #EF4444;
+      --ruby-100: #FEE2E2;
+      --ruby-700: #B91C1C;
+
+      --amber-500: #F59E0B;
+      --amber-100: #FEF3C7;
+      --amber-700: #B45309;
+
+      --blue-500: #0284C7;
+      --blue-100: #E0F2FE;
+
+      --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--surface-bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ══════════════════════════════════════════════════
+       SIDEBAR NAVIGATION (INSTITUTIONAL CORPORATE THEME)
+    ══════════════════════════════════════════════════ */
     #sidebar {
-      width: 240px; min-height: 100vh; background: var(--green);
-      display: flex; flex-direction: column;
-      position: fixed; left: 0; top: 0; bottom: 0; z-index: 100;
+      width: 260px;
+      min-height: 100vh;
+      background: #0F172A;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0; top: 0; bottom: 0;
+      z-index: 100;
+      border-right: 1px solid #1E293B;
+      transition: transform 0.3s ease;
     }
+
     .sidebar-brand {
-      padding: 24px 20px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 24px 22px 20px;
+      border-bottom: 1px solid #1E293B;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #0F172A;
     }
-    .sidebar-brand .logo { width: 44px; height: 44px; object-fit: contain; }
-    .sidebar-brand h2 { font-family: 'Playfair Display', serif; font-size: 1rem; color: #fff; margin-top: 10px; }
-    .sidebar-brand small { font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 0.1em; text-transform: uppercase; }
-    .sidebar-nav { flex: 1; padding: 16px 0; }
-    .nav-section { padding: 12px 20px 6px; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .sidebar-brand .logo {
+      width: 42px; height: 42px;
+      object-fit: contain;
+      filter: none;
+      flex-shrink: 0;
+    }
+    .sidebar-brand-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #F8FAFC;
+      letter-spacing: 0.01em;
+    }
+    .sidebar-brand-text small {
+      display: block;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #94A3B8;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 18px 12px;
+      overflow-y: auto;
+    }
+    .nav-section {
+      padding: 12px 14px 6px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #64748B;
+    }
     .nav-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 11px 20px; cursor: pointer;
-      font-size: 0.84rem; color: rgba(255,255,255,0.65);
-      transition: background 0.15s, color 0.15s;
-      border-left: 3px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #94A3B8;
+      border-radius: var(--radius-sm);
+      margin-bottom: 4px;
+      transition: all 0.15s ease;
+      position: relative;
     }
-    .nav-item:hover { background: rgba(255,255,255,0.07); color: #fff; }
-    .nav-item.active { background: rgba(255, 199, 0,0.12); color: var(--gold-light); border-left-color: var(--gold); }
-    .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
-    .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,255,255,0.08); }
-    .admin-badge { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .admin-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--green); flex-shrink: 0; }
-    .admin-name { font-size: 0.8rem; font-weight: 600; color: #fff; }
-    .admin-role { font-size: 0.65rem; color: rgba(255,255,255,0.4); }
-    .logout-btn { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); padding: 8px; border-radius: 4px; cursor: pointer; font-size: 0.78rem; font-family: 'Inter', sans-serif; transition: background 0.15s; }
-    .logout-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+    .nav-item:hover {
+      background: #1E293B;
+      color: #F8FAFC;
+      transform: none;
+    }
+    .nav-item.active {
+      background: #1E293B;
+      color: #FFFFFF;
+      font-weight: 600;
+      box-shadow: inset 3px 0 0 #C9A84C;
+    }
+    .nav-item .icon {
+      font-size: 1.05rem;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+    .nav-item.active .icon {
+      opacity: 1;
+    }
+    .nav-badge-count {
+      margin-left: auto;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 12px;
+      background: #334155;
+      color: #F8FAFC;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+    }
+    .nav-item.active .nav-badge-count {
+      background: #C9A84C;
+      color: #FFFFFF;
+    }
 
-    /* ── MAIN ── */
-    #main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; }
+    /* Sidebar Footer */
+    .sidebar-footer {
+      padding: 16px;
+      border-top: 1px solid #1E293B;
+      background: #0B1120;
+    }
+    .admin-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .admin-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--gold-solid);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.92rem; font-weight: 700;
+      color: #FFFFFF;
+      box-shadow: none;
+      flex-shrink: 0;
+    }
+    .admin-name {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+    .admin-role {
+      font-size: 0.68rem;
+      color: var(--gold-solid);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+    .logout-btn {
+      width: 100%;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #FECACA;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .logout-btn:hover {
+      background: #EF4444;
+      color: #FFFFFF;
+      border-color: #EF4444;
+    }
+
+    /* ══════════════════════════════════════════════════
+       MAIN CONTENT WRAPPER
+    ══════════════════════════════════════════════════ */
+    #main {
+      margin-left: 260px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Top Bar */
     #topbar {
-      height: 60px; background: var(--white); border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 32px; position: sticky; top: 0; z-index: 50;
+      height: 68px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
     }
-    #topbar h1 { font-size: 1.1rem; font-weight: 700; color: var(--charcoal); }
-    #topbar .breadcrumb { font-size: 0.75rem; color: var(--slate); margin-top: 2px; }
-    .topbar-actions { display: flex; align-items: center; gap: 14px; }
-    .topbar-date { font-size: 0.78rem; color: var(--slate); }
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .sidebar-mobile-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 10px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+    #topbar h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+      line-height: 1.2;
+    }
+    #topbar .breadcrumb {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
 
-    /* ── LOGIN SCREEN ── */
-    #login-screen {
-      position: fixed; inset: 0; background: var(--green);
-      display: flex; align-items: center; justify-content: center; z-index: 1000;
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
-    .login-box {
-      background: #fff; border-radius: 8px; padding: 48px 40px;
-      width: 380px; box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+    .btn-rollover-exec {
+      background: var(--navy-dark);
+      color: #FFFFFF;
+      border: none;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.25);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .login-logo { text-align: center; margin-bottom: 28px; }
-    .login-logo img { width: 76px; height: 76px; object-fit: contain; margin: 0 auto; }
-    .login-logo h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--green); margin-top: 8px; }
-    .login-logo p { font-size: 0.78rem; color: var(--slate); margin-top: 4px; }
-    .login-field { margin-bottom: 18px; }
-    .login-field label { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin-bottom: 8px; }
-    .login-field input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
-    .login-field input:focus { border-color: var(--green-mid); }
-    .login-btn { width: 100%; background: var(--green); color: #fff; border: none; padding: 13px; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
-    .login-btn:hover { background: var(--green-mid); }
-    .login-error { color: var(--red); font-size: 0.8rem; margin-top: 10px; text-align: center; display: none; }
+    .btn-rollover-exec:hover {
+      background: #1E3A5F;
+      transform: translateY(-1.5px);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.35);
+    }
+    .btn-rollover-exec:active { transform: translateY(0); }
 
-    /* ── CONTENT ── */
-    #content { padding: 32px; flex: 1; }
+    .topbar-date-pill {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      background: var(--surface-subtle);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--surface-border);
+      font-weight: 600;
+    }
+
+    /* Content Area */
+    #content {
+      padding: 32px;
+      flex: 1;
+    }
 
     .page { display: none; }
-    .page.active { display: block; }
-
-    /* ── STAT CARDS ── */
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
-    .stat-card { background: var(--white); border-radius: 8px; padding: 24px; border-left: 4px solid var(--green); display: flex; align-items: center; gap: 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-    .stat-card.gold { border-left-color: var(--gold); }
-    .stat-card.blue { border-left-color: var(--blue); }
-    .stat-card.red { border-left-color: var(--red); }
-    .stat-card.orange { border-left-color: var(--orange); }
-    .stat-icon { width: 48px; height: 48px; border-radius: 10px; background: rgba(61, 30, 150,0.08); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
-    .stat-card.gold .stat-icon { background: rgba(255, 199, 0,0.1); }
-    .stat-card.blue .stat-icon { background: rgba(14, 143, 208,0.08); }
-    .stat-card.red .stat-icon { background: rgba(192,57,43,0.08); }
-    .stat-card.orange .stat-icon { background: rgba(217,119,6,0.08); }
-    .stat-val { font-size: 2rem; font-weight: 800; color: var(--charcoal); line-height: 1; }
-    .stat-label { font-size: 0.75rem; color: var(--slate); margin-top: 4px; font-weight: 500; }
-
-    /* ── TABLE ── */
-    .card { background: var(--white); border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
-    .card-header { padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .card-header h3 { font-size: 0.95rem; font-weight: 700; color: var(--charcoal); }
-    .card-header .count-badge { background: var(--green); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
-    .search-input { padding: 7px 14px; border: 1.5px solid var(--border); border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none; width: 220px; }
-    .search-input:focus { border-color: var(--green-mid); }
-    table { width: 100%; border-collapse: collapse; }
-    th { padding: 11px 16px; text-align: left; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate); background: #F8F5FD; border-bottom: 1px solid var(--border); }
-    td { padding: 13px 16px; font-size: 0.82rem; color: var(--charcoal); border-bottom: 1px solid var(--border); vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #F8F5FD; }
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
-    .badge-green { background: rgba(61, 30, 150,0.1); color: var(--green); }
-    .badge-gold { background: rgba(255, 199, 0,0.1); color: #7A5C00; }
-    .badge-red { background: rgba(192,57,43,0.1); color: var(--red); }
-    .badge-blue { background: rgba(14, 143, 208,0.08); color: var(--blue); }
-    .action-btn { padding: 5px 12px; border-radius: 4px; border: none; cursor: pointer; font-size: 0.75rem; font-family: 'Inter', sans-serif; font-weight: 600; transition: opacity 0.15s; }
-    .action-btn:hover { opacity: 0.8; }
-    .btn-sm-green { background: var(--green); color: #fff; }
-    .btn-sm-gold { background: var(--gold); color: var(--green); }
-    .btn-sm-red { background: var(--red); color: #fff; }
-    .btn-sm-blue { background: var(--blue); color: #fff; }
-    .empty-row td { text-align: center; color: var(--slate); padding: 40px; font-style: italic; }
-    .loading-row td { text-align: center; color: var(--slate); padding: 40px; }
-
-    /* ── PRAYER EXPANDED ── */
-    .prayer-text-cell { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
-    .prayer-text-cell:hover { white-space: normal; }
-
-    /* ── DASHBOARD RECENT ── */
-    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
-
-    /* ── TOAST ── */
-    .admin-toast {
-      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-      background: var(--green); color: #fff; padding: 12px 22px;
-      border-radius: 6px; font-size: 0.84rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      border-left: 4px solid var(--gold);
-      animation: fadeInRight 0.3s ease;
+    .page.active { display: block; animation: pageFadeIn 0.25s ease; }
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes fadeInRight { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: none; } }
-    .admin-toast.error { background: var(--red); border-left-color: #E87070; }
 
-    /* ── MEMBER DETAIL MODAL ── */
+    /* ══════════════════════════════════════════════════
+       STATISTICS OVERVIEW CARDS
+    ══════════════════════════════════════════════════ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--surface-card);
+      border-radius: var(--radius-md);
+      padding: 22px 24px;
+      border: 1px solid var(--surface-border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--slate-dark);
+    }
+    .stat-card.gold::before { background: var(--gold-solid); }
+    .stat-card.blue::before { background: var(--blue-500); }
+    .stat-card.orange::before { background: var(--amber-500); }
+    .stat-card.red::before { background: var(--ruby-500); }
+
+    .stat-icon {
+      width: 48px; height: 48px;
+      border-radius: var(--radius-sm);
+      background: var(--surface-subtle);
+      color: var(--navy-dark);
+      border: 1px solid var(--surface-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .stat-card:hover .stat-icon { transform: none; }
+    .stat-card.gold .stat-icon { background: var(--gold-subtle); color: var(--gold-amber); border-color: #FDE68A; }
+    .stat-card.blue .stat-icon { background: var(--blue-100); color: var(--blue-500); border-color: #BAE6FD; }
+    .stat-card.orange .stat-icon { background: var(--amber-100); color: var(--amber-700); border-color: #FDE68A; }
+    .stat-card.red .stat-icon { background: var(--ruby-100); color: var(--ruby-700); border-color: #FECACA; }
+
+    .stat-val {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .stat-label {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════════════════
+       TABLES & CARD SURFACES
+    ══════════════════════════════════════════════════ */
+    .card {
+      background: var(--surface-card);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--surface-border);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .card-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: #FFFFFF;
+      flex-wrap: wrap;
+    }
+    .card-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .card-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+    }
+    .count-badge {
+      background: var(--navy-dark);
+      color: #FFFFFF;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    /* Interactive Search & Filter Controls */
+    .card-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--text-light);
+      pointer-events: none;
+      font-size: 0.85rem;
+    }
+    .search-input {
+      padding: 8px 32px 8px 34px;
+      border: 1.5px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      width: 240px;
+      transition: all 0.2s ease;
+      background: #FFFFFF;
+    }
+    .search-input:focus {
+      border-color: #94A3B8;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
+      width: 280px;
+    }
+    .search-clear-btn {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      color: var(--text-light);
+      cursor: pointer;
+      display: none;
+    }
+
+    .filter-pills-bar {
+      display: flex;
+      gap: 6px;
+      padding: 12px 24px;
+      background: var(--surface-subtle);
+      border-bottom: 1px solid var(--surface-border);
+      overflow-x: auto;
+    }
+    .filter-btn-chip {
+      background: #FFFFFF;
+      border: 1px solid var(--surface-border);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .filter-btn-chip:hover {
+      border-color: var(--navy-dark);
+      color: var(--navy-dark);
+    }
+    .filter-btn-chip.active {
+      background: var(--navy-dark);
+      color: #FFFFFF;
+      border-color: var(--navy-dark);
+    }
+
+    /* Table Typography & Rows */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    th {
+      padding: 12px 18px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: #F8F9FA;
+      border-bottom: 1px solid var(--surface-border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      color: var(--text-main);
+      border-bottom: 1px solid var(--surface-border);
+      vertical-align: middle;
+      transition: background 0.15s ease;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #F5F6F7; }
+
+    /* Pill Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .badge-green { background: var(--emerald-100); color: var(--emerald-700); }
+    .badge-green .badge-dot { background: var(--emerald-500); }
+    .badge-gold { background: var(--amber-100); color: var(--amber-700); }
+    .badge-gold .badge-dot { background: var(--amber-500); }
+    .badge-red { background: var(--ruby-100); color: var(--ruby-700); }
+    .badge-red .badge-dot { background: var(--ruby-500); }
+    .badge-blue { background: var(--blue-100); color: var(--blue-500); }
+    .badge-blue .badge-dot { background: var(--blue-500); }
+
+    /* Table Action Buttons */
+    .btn-action-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-btn {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .action-btn:hover { transform: translateY(-1px); }
+    .action-btn:active { transform: translateY(0); }
+    .action-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn-action-view {
+      background: #F1F5F9;
+      color: var(--navy-dark);
+      border-color: #E2E8F0;
+    }
+    .btn-action-view:hover {
+      background: #E2E8F0;
+      color: var(--navy-dark);
+    }
+    .btn-action-success {
+      background: var(--emerald-100);
+      color: var(--emerald-700);
+      border-color: #A7F3D0;
+    }
+    .btn-action-success:hover {
+      background: var(--emerald-500);
+      color: #FFFFFF;
+    }
+    .btn-action-danger {
+      background: var(--ruby-100);
+      color: var(--ruby-700);
+      border-color: #FECACA;
+    }
+    .btn-action-danger:hover {
+      background: var(--ruby-500);
+      color: #FFFFFF;
+    }
+
+    /* ══════════════════════════════════════════════════
+       SHIMMER SKELETON LOADERS
+    ══════════════════════════════════════════════════ */
+    .skeleton-box {
+      height: 16px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #E8ECF4 25%, #F4F6FB 50%, #E8ECF4 75%);
+      background-size: 200% 100%;
+      animation: shimmerAnim 1.6s ease-in-out infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    @keyframes shimmerAnim {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .empty-row td, .empty-state-card {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 56px 24px;
+    }
+    .empty-state-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 32px;
+      background: #FFFFFF;
+      border-radius: var(--radius-md);
+      border: 1px dashed #CBD5E1;
+      margin: 16px 0;
+    }
+    .empty-state-icon {
+      font-size: 2.8rem;
+      margin-bottom: 14px;
+      opacity: 0.7;
+      display: inline-block;
+    }
+    .empty-state-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1E293B;
+      margin-bottom: 6px;
+    }
+    .empty-state-desc {
+      font-size: 0.88rem;
+      color: #64748B;
+      max-width: 440px;
+      line-height: 1.6;
+    }
+
+    /* ══════════════════════════════════════════════════
+       MODAL SYSTEM (SOLID INSTITUTIONAL DIALOG)
+    ══════════════════════════════════════════════════ */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-      display: none; align-items: center; justify-content: center; z-index: 2000;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.70);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
       padding: 24px;
+      animation: modalFadeIn 0.15s ease;
     }
     .modal-overlay.active { display: flex; }
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .modal-box {
-      background: #fff; border-radius: 8px; width: 100%; max-width: 640px;
-      max-height: 88vh; overflow-y: auto; box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 680px;
+      max-height: 88vh;
+      overflow-y: auto;
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      position: relative;
     }
+
     .modal-header {
-      padding: 20px 24px; border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      position: sticky; top: 0; background: #fff; z-index: 1;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: #FFFFFF;
+      z-index: 10;
     }
-    .modal-header h3 { font-size: 1.05rem; color: var(--charcoal); }
-    .modal-close { background: none; border: none; font-size: 1.4rem; cursor: pointer; color: var(--slate); line-height: 1; }
+    .modal-header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .modal-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+    }
+    .modal-close {
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      width: 32px; height: 32px;
+      border-radius: var(--radius-sm);
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s ease;
+    }
+    .modal-close:hover {
+      background: #E2E8F0;
+      color: var(--navy-dark);
+    }
+
     .modal-body { padding: 24px; }
     .modal-section { margin-bottom: 24px; }
-    .modal-section h4 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
-    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .modal-field label { display: block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--slate); margin-bottom: 6px; }
+    .modal-section:last-child { margin-bottom: 0; }
+    .modal-section h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--slate-dark);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .modal-field { display: flex; flex-direction: column; gap: 6px; }
+    .modal-field label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--navy-dark);
+    }
     .modal-field input, .modal-field select, .modal-field textarea {
-      width: 100%; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 4px;
-      font-family: 'Inter', sans-serif; font-size: 0.85rem; outline: none;
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: var(--text-main);
+      outline: none;
+      transition: all 0.2s ease;
+      background: #FFFFFF;
     }
-    .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { border-color: var(--green-mid); }
+    .modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus {
+      border-color: #94A3B8;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
+    }
     .modal-field.full { grid-column: span 2; }
-    .modal-list-item { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
-    .modal-list-item:last-child { border-bottom: none; }
-    .modal-empty { font-size: 0.8rem; color: var(--slate); font-style: italic; padding: 8px 0; }
-    .modal-save-btn {
-      background: var(--green); color: #fff; border: none; padding: 10px 24px;
-      border-radius: 4px; font-size: 0.84rem; font-weight: 700; cursor: pointer;
-      letter-spacing: 0.04em; text-transform: uppercase; transition: opacity 0.15s; margin-top: 8px;
+
+    /* Button Spinner & States */
+    .btn-spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #FFFFFF;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: inline-block;
     }
-    .modal-save-btn:hover { opacity: 0.9; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Modal Action Buttons */
+    .modal-actions-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid var(--surface-border);
+    }
+    .btn-secondary {
+      background: var(--surface-subtle);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover { background: #E2E8F0; color: var(--navy-dark); }
+    .btn-primary {
+      background: var(--navy-dark);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 24px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.2);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      background: #1E3A5F;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.3);
+      transform: translateY(-1px);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* Danger / Warning Modal Box */
+    .modal-danger-box { max-width: 480px; text-align: center; }
+    .modal-danger-icon {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--ruby-100);
+      color: var(--ruby-500);
+      font-size: 2rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    /* ══════════════════════════════════════════════════
+       ADMIN LOGIN OVERLAY
+    ══════════════════════════════════════════════════ */
+    #login-screen {
+      position: fixed;
+      inset: 0;
+      background: #0F172A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 24px;
+    }
+    #login-screen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 15% 35%, rgba(255, 255, 255, 0.03) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 50% at 85% 75%, rgba(255, 255, 255, 0.025) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .login-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      padding: 48px 42px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255,255,255,0.08);
+      position: relative;
+      z-index: 1;
+    }
+    .login-divider-rule {
+      border: none;
+      border-top: 1px solid var(--surface-border);
+      margin: 20px 0;
+    }
+    .login-logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .login-logo img {
+      width: 64px; height: 64px;
+      object-fit: contain;
+      margin: 0 auto;
+    }
+    .login-logo h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--navy-dark);
+      margin-top: 12px;
+      letter-spacing: -0.01em;
+    }
+    .login-logo p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .login-field { margin-bottom: 16px; }
+    .login-field label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--navy-dark);
+      margin-bottom: 7px;
+    }
+    .login-field input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--surface-border);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s ease;
+      color: var(--text-main);
+      background: #FAFBFC;
+    }
+    .login-field input:focus {
+      border-color: #94A3B8;
+      box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
+      background: #FFFFFF;
+    }
+    .login-btn {
+      width: 100%;
+      background: var(--navy-dark);
+      color: #FFFFFF;
+      border: none;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.92rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.3);
+    }
+    .login-btn:hover {
+      background: #1E3A5F;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.4);
+      transform: translateY(-1px);
+    }
+    .login-btn:active { transform: translateY(0); }
+    .login-error {
+      color: var(--ruby-500);
+      background: var(--ruby-100);
+      border: 1px solid #FECACA;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      margin-top: 14px;
+      text-align: center;
+      display: none;
+      font-weight: 600;
+    }
+
+    /* ══════════════════════════════════════════════════
+       TOAST NOTIFICATIONS
+    ══════════════════════════════════════════════════ */
+    .admin-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99999;
+      background: var(--navy-dark);
+      color: #FFFFFF;
+      padding: 14px 22px;
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      border-left: 4px solid var(--gold-solid);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: toastSlideIn 0.3s ease;
+      max-width: 380px;
+    }
+    .admin-toast.err { border-left-color: var(--ruby-500); }
+    @keyframes toastSlideIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════════════════════════════════════════
+       RESPONSIVENESS
+    ══════════════════════════════════════════════════ */
+    @media (max-width: 1080px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 860px) {
+      #sidebar { transform: translateX(-100%); }
+      #sidebar.mobile-open { transform: translateX(0); }
+      #main { margin-left: 0; }
+      .sidebar-mobile-toggle { display: block; }
+      .stats-grid { grid-template-columns: 1fr; }
+      #topbar { padding: 0 20px; }
+      #content { padding: 20px; }
+      .modal-grid { grid-template-columns: 1fr; }
+      .modal-field.full { grid-column: span 1; }
+    }
+    /* ══════════════════════════════════════════════════
+       PREMIUM POLISH & OVERRIDES
+    ══════════════════════════════════════════════════ */
+
+    /* Solid topbar — no backdrop blur jank */
+    #topbar {
+      background: #FFFFFF;
+      backdrop-filter: none;
+    }
+
+    /* Table row hover — pure neutral, no colour cast */
+    tr:hover td { background: #F5F6F7; }
+
+    /* Default (uncoloured) stat card icon gets a neutral tint */
+    .stat-card:not(.gold):not(.blue):not(.orange):not(.red) .stat-icon {
+      background: #EFF3F8;
+      color: var(--navy-dark);
+      border-color: #DDE4EE;
+    }
+    .stat-card:not(.gold):not(.blue):not(.orange):not(.red)::before {
+      background: #334155;
+    }
+
+    /* Ensure stat numbers are always legible */
+    .stat-val { color: var(--navy-dark); }
+
+    /* Better sidebar active indicator */
+    .nav-item.active {
+      background: #1E293B;
+      border-left: 3px solid #C9A84C;
+      padding-left: 11px;
+    }
+
+    /* Keyboard focus outlines — muted slate, never neon */
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid #94A3B8;
+      outline-offset: 2px;
+    }
+
+    /* Topbar action buttons cluster */
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Dashboard grid for two side-by-side cards */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 860px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
   </style>
+  <link rel="stylesheet" href="/css/portal-theme.css"/>
+  <link rel="stylesheet" href="/css/admin-library.css"/>
 </head>
 <body>
 
-<!-- LOGIN -->
+<!-- ══════════════════════════════════════════════════
+     1. ADMIN AUTH OVERLAY
+══════════════════════════════════════════════════ -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">
-      <img src="/images/tucu-logo.png" alt="TUCU Logo"/>
-      <h2>TUCU Admin Portal</h2>
-      <p>Tharaka University Christian Union</p>
+      <img src="/images/tucu-logo.png" alt="TUCU Crest"/>
+      <h2>TUCU Admin Suite</h2>
+      <p>Executive Management Console</p>
+    </div>
+    <hr class="login-divider-rule"/>
+    <div class="login-field">
+      <label>Admin Username</label>
+      <input type="text" id="login-user" placeholder="admin" value="admin" autocomplete="username"/>
     </div>
     <div class="login-field">
-      <label>Username</label>
-      <input type="text" id="login-user" placeholder="admin" value="admin"/>
+      <label>Security Password</label>
+      <input type="password" id="login-pass" placeholder="Enter your password" autocomplete="current-password"/>
+      <small style="font-size:0.72rem; color:var(--text-light); display:block; margin-top:5px;">
+        Default credential: <code style="color:var(--navy-dark); font-weight:700; background:#F1F5F9; padding:1px 6px; border-radius:4px;">tucu2026admin</code>
+      </small>
     </div>
-    <div class="login-field">
-      <label>Password</label>
-      <input type="password" id="login-pass" placeholder="••••••••"/>
-    </div>
-    <button class="login-btn" id="login-submit">Sign In to Dashboard</button>
-    <p class="login-error" id="login-error">Invalid username or password.</p>
+    <button class="login-btn" id="login-submit">
+      <span>🔐</span>
+      <span>Sign In to Executive Console</span>
+    </button>
+    <div class="login-error" id="login-error">⚠️ Invalid credentials. Please try again.</div>
   </div>
 </div>
 
-<!-- SIDEBAR -->
+<!-- ══════════════════════════════════════════════════
+     2. SIDEBAR
+══════════════════════════════════════════════════ -->
 <aside id="sidebar">
   <div class="sidebar-brand">
-    <img class="logo" src="/images/tucu-logo.png" alt="TUCU Logo"/>
-    <h2>TUCU Admin</h2>
-    <small>Management Portal</small>
+    <img class="logo" src="/images/tucu-logo.png" alt="TUCU Crest"/>
+    <div class="sidebar-brand-text">
+      <h2>TUCU Executive</h2>
+      <small>Management Console</small>
+    </div>
   </div>
+
   <nav class="sidebar-nav">
-    <div class="nav-section">Overview</div>
-    <div class="nav-item active" data-page="dashboard"><span class="icon">📊</span> Dashboard</div>
-    <div class="nav-section">Ministry</div>
-    <div class="nav-item" data-page="members"><span class="icon">👥</span> Members</div>
-    <div class="nav-item" data-page="prayers"><span class="icon">🙏</span> Prayer Requests</div>
-    <div class="nav-item" data-page="events"><span class="icon">📅</span> Event Registrations</div>
+    <div class="nav-section">Union Overview</div>
+    <div class="nav-item active" data-page="dashboard">
+      <span class="icon">📊</span>
+      <span>Dashboard</span>
+    </div>
+
+    <div class="nav-section">Ministry Operations</div>
+    <div class="nav-item" data-page="members">
+      <span class="icon">👥</span>
+      <span>Members</span>
+      <span class="nav-badge-count" id="badge-members-total"></span>
+    </div>
+    <div class="nav-item" data-page="prayers">
+      <span class="icon">🙏</span>
+      <span>Prayer Petitions</span>
+      <span class="nav-badge-count" id="badge-prayers-total"></span>
+    </div>
+    <div class="nav-item" data-page="events">
+      <span class="icon">📅</span>
+      <span>Event Registrations</span>
+      <span class="nav-badge-count" id="badge-events-total"></span>
+    </div>
+    <div class="nav-section">Library</div>
+    <div class="nav-item" data-page="library">
+      <span class="icon">📚</span>
+      <span>Books & Categories</span>
+    </div>
+
     <div class="nav-section">Communications</div>
-    <div class="nav-item" data-page="messages"><span class="icon">✉️</span> Messages</div>
-    <div class="nav-item" data-page="newsletter"><span class="icon">📧</span> Newsletter</div>
-    <div class="nav-section">Site</div>
-    <div class="nav-item" onclick="window.open('/','_blank')"><span class="icon">🌐</span> View Website</div>
+    <div class="nav-item" data-page="messages">
+      <span class="icon">✉️</span>
+      <span>Messages</span>
+      <span class="nav-badge-count" id="badge-messages-total"></span>
+    </div>
+    <div class="nav-item" data-page="newsletter">
+      <span class="icon">📧</span>
+      <span>Gazette Subscribers</span>
+      <span class="nav-badge-count" id="badge-newsletter-total"></span>
+    </div>
+
+    <div class="nav-section">Public Union</div>
+    <div class="nav-item" onclick="window.open('/','_blank')">
+      <span class="icon">🌐</span>
+      <span>View Website</span>
+    </div>
   </nav>
+
   <div class="sidebar-footer">
     <div class="admin-badge">
       <div class="admin-avatar" id="admin-initials">A</div>
-      <div><div class="admin-name" id="admin-display-name">Admin</div><div class="admin-role">Super Admin</div></div>
+      <div>
+        <div class="admin-name" id="admin-display-name">Administrator</div>
+        <div class="admin-role">Super Admin</div>
+      </div>
     </div>
-    <button class="logout-btn" id="logout-btn">Sign Out</button>
+    <button class="logout-btn" id="logout-btn">
+      <span>Sign Out</span>
+    </button>
   </div>
 </aside>
 
-<!-- MAIN -->
+<!-- ══════════════════════════════════════════════════
+     3. MAIN INTERFACE
+══════════════════════════════════════════════════ -->
 <div id="main">
-  <div id="topbar">
-    <div>
-      <h1 id="page-title">Dashboard</h1>
-      <div class="breadcrumb">Tharaka University CU · Admin Portal</div>
+  <!-- Top Bar -->
+  <header id="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-mobile-toggle" id="sidebar-toggle-btn" aria-label="Toggle Navigation" aria-controls="sidebar" aria-expanded="false">☰</button>
+      <div>
+        <h1 id="page-title">Executive Dashboard</h1>
+        <div class="breadcrumb">Tharaka University Christian Union · Administration</div>
+      </div>
     </div>
-    <div class="topbar-actions">
-      <span class="topbar-date" id="topbar-date"></span>
-    </div>
-  </div>
 
+    <div class="topbar-actions">
+      <button class="btn-rollover-exec" id="btn-open-rollover-modal">
+        <span>🎓</span>
+        <span>Advance Academic Cycle</span>
+      </button>
+      <span class="topbar-date-pill" id="topbar-date"></span>
+    </div>
+  </header>
+
+  <!-- Content Router Pages -->
   <div id="content">
 
-    <!-- DASHBOARD PAGE -->
+    <!-- ── PAGE 1: DASHBOARD OVERVIEW ── -->
     <div class="page active" id="page-dashboard">
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon">👥</div>
-          <div><div class="stat-val" id="stat-members">—</div><div class="stat-label">Active Members</div></div>
+          <div>
+            <div class="stat-val" id="stat-members"><span class="skeleton-box" style="width:60px; height:24px;"></span></div>
+            <div class="stat-label">Active Members</div>
+          </div>
         </div>
         <div class="stat-card gold">
           <div class="stat-icon">🙏</div>
-          <div><div class="stat-val" id="stat-prayers">—</div><div class="stat-label">Prayer Requests</div></div>
+          <div>
+            <div class="stat-val" id="stat-prayers"><span class="skeleton-box" style="width:60px; height:24px;"></span></div>
+            <div class="stat-label">Prayer Requests</div>
+          </div>
         </div>
         <div class="stat-card blue">
           <div class="stat-icon">📅</div>
-          <div><div class="stat-val" id="stat-registrations">—</div><div class="stat-label">Event Registrations</div></div>
+          <div>
+            <div class="stat-val" id="stat-registrations"><span class="skeleton-box" style="width:60px; height:24px;"></span></div>
+            <div class="stat-label">Event Registrations</div>
+          </div>
         </div>
         <div class="stat-card orange">
-          <div class="stat-icon">🙏</div>
-          <div><div class="stat-val" id="stat-pending">—</div><div class="stat-label">Pending Prayers</div></div>
+          <div class="stat-icon">⏳</div>
+          <div>
+            <div class="stat-val" id="stat-pending"><span class="skeleton-box" style="width:60px; height:24px;"></span></div>
+            <div class="stat-label">Pending Prayers</div>
+          </div>
         </div>
         <div class="stat-card red">
           <div class="stat-icon">✉️</div>
-          <div><div class="stat-val" id="stat-messages">—</div><div class="stat-label">Unread Messages</div></div>
+          <div>
+            <div class="stat-val" id="stat-messages"><span class="skeleton-box" style="width:60px; height:24px;"></span></div>
+            <div class="stat-label">Unread Messages</div>
+          </div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">📧</div>
-          <div><div class="stat-val" id="stat-subscribers">—</div><div class="stat-label">Newsletter Subs</div></div>
+          <div>
+            <div class="stat-val" id="stat-subscribers"><span class="skeleton-box" style="width:60px; height:24px;"></span></div>
+            <div class="stat-label">Newsletter Readers</div>
+          </div>
         </div>
       </div>
+
+      <!-- Quick Recent Feed Columns -->
       <div class="dashboard-grid">
         <div class="card">
-          <div class="card-header"><h3>Recent Members</h3><span class="count-badge" id="dash-member-count">0</span></div>
-          <table><thead><tr><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
-          <tbody id="dash-members-tbody"><tr class="loading-row"><td colspan="3">Loading...</td></tr></tbody></table>
+          <div class="card-header">
+            <div class="card-header-left">
+              <h3>Recently Enrolled Members</h3>
+              <span class="count-badge" id="dash-member-count">0</span>
+            </div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Member</th>
+                  <th>Email</th>
+                  <th>Joined</th>
+                </tr>
+              </thead>
+              <tbody id="dash-members-tbody">
+                <tr class="skeleton-row">
+                  <td><span class="skeleton-box" style="width:62%;"></span></td>
+                  <td><span class="skeleton-box" style="width:80%;"></span></td>
+                  <td><span class="skeleton-box" style="width:42%;"></span></td>
+                </tr>
+                <tr class="skeleton-row">
+                  <td><span class="skeleton-box" style="width:55%;"></span></td>
+                  <td><span class="skeleton-box" style="width:75%;"></span></td>
+                  <td><span class="skeleton-box" style="width:38%;"></span></td>
+                </tr>
+                <tr class="skeleton-row">
+                  <td><span class="skeleton-box" style="width:68%;"></span></td>
+                  <td><span class="skeleton-box" style="width:85%;"></span></td>
+                  <td><span class="skeleton-box" style="width:45%;"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+
         <div class="card">
-          <div class="card-header"><h3>Recent Prayer Requests</h3><span class="count-badge" id="dash-prayer-count">0</span></div>
-          <table><thead><tr><th>Name</th><th>Category</th><th>Status</th></tr></thead>
-          <tbody id="dash-prayers-tbody"><tr class="loading-row"><td colspan="3">Loading...</td></tr></tbody></table>
+          <div class="card-header">
+            <div class="card-header-left">
+              <h3>Recent Prayer Intercessions</h3>
+              <span class="count-badge" id="dash-prayer-count">0</span>
+            </div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Petitioner</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="dash-prayers-tbody">
+                <tr class="skeleton-row">
+                  <td><span class="skeleton-box" style="width:58%;"></span></td>
+                  <td><span class="skeleton-box" style="width:50%;"></span></td>
+                  <td><span class="skeleton-box" style="width:35%;"></span></td>
+                </tr>
+                <tr class="skeleton-row">
+                  <td><span class="skeleton-box" style="width:65%;"></span></td>
+                  <td><span class="skeleton-box" style="width:44%;"></span></td>
+                  <td><span class="skeleton-box" style="width:38%;"></span></td>
+                </tr>
+                <tr class="skeleton-row">
+                  <td><span class="skeleton-box" style="width:52%;"></span></td>
+                  <td><span class="skeleton-box" style="width:55%;"></span></td>
+                  <td><span class="skeleton-box" style="width:32%;"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- MEMBERS PAGE -->
+    <!-- ── PAGE 2: MEMBERS DIRECTORY ── -->
     <div class="page" id="page-members">
       <div class="card">
         <div class="card-header">
-          <h3>All Members <span class="count-badge" id="members-count">0</span></h3>
-          <input type="text" class="search-input" id="members-search" placeholder="Search by name or email..."/>
+          <div class="card-header-left">
+            <h3>Registered Union Members</h3>
+            <span class="count-badge" id="members-count">0</span>
+          </div>
+
+          <div class="card-header-actions">
+            <div class="search-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="members-search" placeholder="Search by name, reg number, email..."/>
+              <button class="search-clear-btn" id="members-search-clear">×</button>
+            </div>
+          </div>
         </div>
-        <table>
-          <thead><tr><th>#</th><th>Full Name</th><th>Reg Number</th><th>Email</th><th>Course</th><th>Phone</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
-          <tbody id="members-tbody"><tr class="loading-row"><td colspan="9">Loading...</td></tr></tbody>
-        </table>
+
+        <!-- Quick Filter Pills -->
+        <div class="filter-pills-bar" id="members-filter-bar">
+          <button class="filter-btn-chip active" data-filter="all">All Members</button>
+          <button class="filter-btn-chip" data-filter="exec">👑 Executives</button>
+          <button class="filter-btn-chip" data-filter="undergrad">Undergraduates</button>
+          <button class="filter-btn-chip" data-filter="assoc">🎓 Associates</button>
+          <button class="filter-btn-chip" data-filter="active">● Active Status</button>
+        </div>
+
+        <div class="table-container" id="members-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Reg Number</th>
+                <th>Email</th>
+                <th>Course</th>
+                <th>Year</th>
+                <th>Status</th>
+                <th>Enrolled</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="members-tbody">
+              <tr><td colspan="9"><span class="skeleton-box" style="width:100%;"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state-card" id="members-empty-state" style="display:none;">
+          <span class="empty-state-icon">👥</span>
+          <div class="empty-state-title">No members match your criteria</div>
+          <p class="empty-state-desc">Try clearing your search or switching filters to see active member records.</p>
+        </div>
       </div>
     </div>
 
-    <!-- PRAYERS PAGE -->
+    <!-- ── PAGE 3: PRAYERS DIRECTORY ── -->
     <div class="page" id="page-prayers">
       <div class="card">
         <div class="card-header">
-          <h3>Prayer Requests <span class="count-badge" id="prayers-count">0</span></h3>
-          <input type="text" class="search-input" id="prayers-search" placeholder="Search by name or category..."/>
+          <div class="card-header-left">
+            <h3>Confidential Prayer Petitions</h3>
+            <span class="count-badge" id="prayers-count">0</span>
+          </div>
+
+          <div class="card-header-actions">
+            <div class="search-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="prayers-search" placeholder="Search petition, category, or petitioner..."/>
+              <button class="search-clear-btn" id="prayers-search-clear">×</button>
+            </div>
+          </div>
         </div>
-        <table>
-          <thead><tr><th>#</th><th>Name</th><th>Category</th><th>Request</th><th>Anonymous</th><th>Status</th><th>Submitted</th><th>Actions</th></tr></thead>
-          <tbody id="prayers-tbody"><tr class="loading-row"><td colspan="8">Loading...</td></tr></tbody>
-        </table>
+
+        <div class="filter-pills-bar" id="prayers-filter-bar">
+          <button class="filter-btn-chip active" data-filter="all">All Petitions</button>
+          <button class="filter-btn-chip" data-filter="pending">⏳ Pending Intercession</button>
+          <button class="filter-btn-chip" data-filter="prayed">✓ Answered / Prayed</button>
+        </div>
+
+        <div class="table-container" id="prayers-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Petitioner</th>
+                <th>Category</th>
+                <th>Prayer Request</th>
+                <th>Anonymous</th>
+                <th>Status</th>
+                <th>Submitted</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="prayers-tbody">
+              <tr><td colspan="8"><span class="skeleton-box" style="width:100%;"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state-card" id="prayers-empty-state" style="display:none;">
+          <span class="empty-state-icon">🙏</span>
+          <div class="empty-state-title">No active prayer petitions found</div>
+          <p class="empty-state-desc">New entries will appear here.</p>
+        </div>
       </div>
     </div>
 
-    <!-- EVENTS PAGE -->
+    <!-- ── PAGE 4: EVENTS DIRECTORY ── -->
     <div class="page" id="page-events">
       <div class="card">
         <div class="card-header">
-          <h3>Event Registrations <span class="count-badge" id="events-count">0</span></h3>
-          <input type="text" class="search-input" id="events-search" placeholder="Search by name or event..."/>
+          <div class="card-header-left">
+            <h3>Event Registrations</h3>
+            <span class="count-badge" id="events-count">0</span>
+          </div>
+          <div class="card-header-actions">
+            <div class="search-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" class="search-input" id="events-search" placeholder="Search by member or event name..."/>
+              <button class="search-clear-btn" id="events-search-clear">×</button>
+            </div>
+          </div>
         </div>
-        <table>
-          <thead><tr><th>#</th><th>Full Name</th><th>Event</th><th>Email</th><th>Phone</th><th>Reg No.</th><th>Registered</th></tr></thead>
-          <tbody id="events-tbody"><tr class="loading-row"><td colspan="7">Loading...</td></tr></tbody>
-        </table>
+
+        <div class="table-container" id="events-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Full Name</th>
+                <th>Event</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Reg No.</th>
+                <th>Registered</th>
+              </tr>
+            </thead>
+            <tbody id="events-tbody">
+              <tr><td colspan="7"><span class="skeleton-box" style="width:100%;"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state-card" id="events-empty-state" style="display:none;">
+          <span class="empty-state-icon">📅</span>
+          <div class="empty-state-title">No event registrations found</div>
+          <p class="empty-state-desc">When members or visitors RSVP to Union events, entries will appear here.</p>
+        </div>
       </div>
     </div>
 
-    <!-- MESSAGES PAGE -->
+    <!-- ── PAGE 5: MESSAGES DIRECTORY ── -->
     <div class="page" id="page-messages">
       <div class="card">
         <div class="card-header">
-          <h3>Contact Messages <span class="count-badge" id="messages-count">0</span></h3>
+          <div class="card-header-left">
+            <h3>Direct Website Inquiries</h3>
+            <span class="count-badge" id="messages-count">0</span>
+          </div>
         </div>
-        <table>
-          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Status</th><th>Sent</th><th>Action</th></tr></thead>
-          <tbody id="messages-tbody"><tr class="loading-row"><td colspan="8">Loading...</td></tr></tbody>
-        </table>
+
+        <div class="table-container" id="messages-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Sender</th>
+                <th>Email</th>
+                <th>Subject</th>
+                <th>Inquiry Message</th>
+                <th>Status</th>
+                <th>Received</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="messages-tbody">
+              <tr><td colspan="8"><span class="skeleton-box" style="width:100%;"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state-card" id="messages-empty-state" style="display:none;">
+          <span class="empty-state-icon">✉️</span>
+          <div class="empty-state-title">No inquiries on record</div>
+          <p class="empty-state-desc">Messages submitted via the public contact portal will be listed here.</p>
+        </div>
       </div>
     </div>
 
-    <!-- NEWSLETTER PAGE -->
+    <!-- ── PAGE 6: NEWSLETTER SUBSCRIBERS ── -->
     <div class="page" id="page-newsletter">
       <div class="card">
         <div class="card-header">
-          <h3>Newsletter Subscribers <span class="count-badge" id="newsletter-count">0</span></h3>
+          <div class="card-header-left">
+            <h3>Gazette & Devotional Subscribers</h3>
+            <span class="count-badge" id="newsletter-count">0</span>
+          </div>
         </div>
-        <table>
-          <thead><tr><th>#</th><th>Email Address</th><th>Subscribed</th></tr></thead>
-          <tbody id="newsletter-tbody"><tr class="loading-row"><td colspan="3">Loading...</td></tr></tbody>
-        </table>
+
+        <div class="table-container" id="newsletter-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Subscriber Email</th>
+                <th>Subscription Date</th>
+              </tr>
+            </thead>
+            <tbody id="newsletter-tbody">
+              <tr><td colspan="3"><span class="skeleton-box" style="width:100%;"></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state-card" id="newsletter-empty-state" style="display:none;">
+          <span class="empty-state-icon">📧</span>
+          <div class="empty-state-title">No newsletter subscribers yet</div>
+          <p class="empty-state-desc">Subscriber records from the website will appear here.</p>
+        </div>
       </div>
+    </div>
+
+    <!-- ── PAGE 7: LIBRARY MANAGEMENT ── -->
+    <div class="page" id="page-library">
+      <section class="library-admin-intro">
+        <div>
+          <span class="library-admin-eyebrow">LIBRARY COLLECTION</span>
+          <h2>A considered collection. Easy to manage.</h2>
+          <p>Search, filter, and update your library from a single workspace. Select titles to publish or archive in batches.</p>
+        </div>
+        <a class="library-admin-public-link" href="/library/" target="_blank" rel="noopener">View public library ↗</a>
+      </section>
+      <div class="library-admin-stats" aria-label="Library book totals">
+        <button type="button" class="library-admin-stat active" data-library-status="all"><span>All titles</span><strong id="library-count-all">—</strong></button>
+        <button type="button" class="library-admin-stat" data-library-status="published"><span>Published</span><strong id="library-count-published">—</strong></button>
+        <button type="button" class="library-admin-stat" data-library-status="draft"><span>Drafts</span><strong id="library-count-draft">—</strong></button>
+        <button type="button" class="library-admin-stat" data-library-status="archived"><span>Archived</span><strong id="library-count-archived">—</strong></button>
+      </div>
+      <div class="library-admin-toolbar">
+        <label class="library-admin-search">
+          <span aria-hidden="true">⌕</span>
+          <input id="library-admin-search" type="search" placeholder="Search title, author, category…" autocomplete="off"/>
+        </label>
+        <label class="library-admin-filter">Category
+          <select id="library-admin-category-filter"><option value="">All categories</option></select>
+        </label>
+        <label class="library-admin-filter">Sort by
+          <select id="library-admin-sort">
+            <option value="updated">Recently updated</option>
+            <option value="title">Title A–Z</option>
+            <option value="oldest">Oldest added</option>
+          </select>
+        </label>
+        <button class="library-admin-button secondary" id="library-admin-refresh" type="button">Refresh</button>
+        <button class="library-admin-button primary" id="library-admin-new" type="button">＋ Add a book</button>
+      </div>
+      <section class="library-admin-catalogue card">
+        <div id="library-admin-bulkbar" class="library-admin-bulkbar" hidden>
+          <label><input type="checkbox" id="library-admin-select-page"/> Select page</label>
+          <span id="library-admin-selected-count">0 selected</span>
+          <label class="library-admin-bulk-select"><span class="sr-only">Bulk action</span>
+            <select id="library-admin-bulk-action">
+              <option value="">Choose action…</option>
+              <option value="published">Publish selected</option>
+              <option value="draft">Move to drafts</option>
+              <option value="archived">Archive selected</option>
+            </select>
+          </label>
+          <button class="library-admin-button primary" id="library-admin-bulk-apply" type="button" disabled>Apply</button>
+          <button class="library-admin-clear-selection" id="library-admin-clear-selection" type="button">Clear selection</button>
+        </div>
+        <div class="library-admin-table-wrap">
+          <table class="library-admin-table">
+            <thead><tr>
+              <th class="library-admin-check-cell"><span class="sr-only">Select</span></th>
+              <th>Title</th><th>Category</th><th>Status</th><th>Current edition</th><th>Last updated</th><th><span class="sr-only">Actions</span></th>
+            </tr></thead>
+            <tbody id="library-admin-books" aria-live="polite">
+              <tr><td colspan="7"><div class="library-admin-state">Loading library catalogue…</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="library-admin-pagination">
+          <span id="library-admin-range">Loading titles…</span>
+          <div class="library-admin-pagination-controls">
+            <label>Rows
+              <select id="library-admin-per-page"><option>25</option><option>50</option><option>100</option></select>
+            </label>
+            <button class="library-admin-button secondary" id="library-admin-prev" type="button">← Previous</button>
+            <span id="library-admin-page-label">Page 1 of 1</span>
+            <button class="library-admin-button secondary" id="library-admin-next" type="button">Next →</button>
+          </div>
+        </div>
+      </section>
+      <div class="library-admin-overlay" id="library-admin-editor-overlay" hidden>
+        <aside class="library-admin-editor card" id="library-admin-editor" role="dialog" aria-modal="true" aria-labelledby="library-admin-editor-title">
+          <div class="library-admin-section-heading">
+            <div><span class="library-admin-eyebrow" id="library-admin-editor-mode">NEW TITLE</span><h3 id="library-admin-editor-title">Add a book</h3></div>
+            <button type="button" class="library-admin-close" id="library-admin-close" aria-label="Close book editor">×</button>
+          </div>
+          <form id="library-admin-form" class="library-admin-form">
+            <input type="hidden" id="library-book-id"/>
+            <label>Title<input id="library-title" name="title" required maxlength="255" placeholder="Book title"/></label>
+            <label>Author<input id="library-author" name="author" maxlength="255" placeholder="Author or ministry"/></label>
+            <label>Category<select id="library-category" name="category_id"><option value="">Uncategorized</option></select></label>
+            <label>Description<textarea id="library-description" name="description" rows="4" maxlength="10000" placeholder="A short description for readers"></textarea></label>
+            <label class="library-admin-check"><input id="library-featured" type="checkbox"/> Feature this title in the public library</label>
+            <label class="library-admin-upload">PDF edition <span id="library-pdf-help">Required for a new book · PDF up to 64 MiB</span><input id="library-pdf" type="file" accept="application/pdf,.pdf"/><span id="library-pdf-file-info" class="library-admin-file-info">No PDF selected</span></label>
+            <label class="library-admin-upload">Cover image <span>Optional · JPEG, PNG, or WebP · 8 MiB max</span><input id="library-cover" type="file" accept="image/jpeg,image/png,image/webp"/><span id="library-cover-file-info" class="library-admin-file-info">No cover selected</span></label>
+            <div id="library-admin-upload-progress" class="library-admin-upload-progress" hidden aria-live="polite">
+              <div class="library-admin-progress-copy"><span id="library-admin-progress-label">Preparing upload…</span><span id="library-admin-progress-percent">0%</span></div>
+              <progress id="library-admin-progress" max="100" value="0">0%</progress>
+            </div>
+            <p class="library-admin-cover-note">A missing cover is generated from the PDF's first page.</p>
+            <div class="library-admin-form-actions">
+              <button class="library-admin-button primary" type="submit" id="library-admin-save">Add book to drafts</button>
+              <button class="library-admin-button secondary" type="button" id="library-admin-cancel">Cancel</button>
+            </div>
+            <p id="library-admin-form-message" class="library-admin-message" role="status"></p>
+          </form>
+        </aside>
+      </div>
+      <details class="library-admin-category-manager">
+        <summary>Manage book categories</summary>
+        <form id="library-admin-category-form" class="library-admin-category-form">
+          <label>Add a category<input id="library-category-name" maxlength="100" placeholder="e.g. Discipleship" required/></label>
+          <button class="library-admin-button secondary" type="submit">Create category</button>
+        </form>
+        <div id="library-admin-category-list" class="library-admin-category-list"></div>
+      </details>
     </div>
 
   </div>
 </div>
 
-<!-- MEMBER DETAIL MODAL -->
+<!-- ══════════════════════════════════════════════════
+     4. MODAL: MEMBER PROFILE & CONTROLS
+══════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="member-modal">
   <div class="modal-box">
     <div class="modal-header">
-      <h3>Member Profile</h3>
+      <div class="modal-header-title">
+        <span>👤</span>
+        <h3>Member Profile & Administrative Controls</h3>
+      </div>
       <button class="modal-close" onclick="closeMemberModal()">&times;</button>
     </div>
     <div class="modal-body">
@@ -378,120 +1709,272 @@
         <div class="modal-section">
           <h4>Personal Information</h4>
           <div class="modal-grid">
-            <div class="modal-field"><label>Full Name</label><input type="text" id="m-full_name"/></div>
-            <div class="modal-field"><label>Email</label><input type="email" id="m-email" disabled/></div>
-            <div class="modal-field"><label>Phone</label><input type="text" id="m-phone"/></div>
-            <div class="modal-field"><label>Reg. Number</label><input type="text" id="m-reg_number" disabled/></div>
-            <div class="modal-field"><label>Course / Department</label><input type="text" id="m-course"/></div>
-            <div class="modal-field"><label>Year of Study</label>
+            <div class="modal-field">
+              <label>Full Legal Name</label>
+              <input type="text" id="m-full_name" required/>
+            </div>
+            <div class="modal-field">
+              <label>University Email (Read-Only)</label>
+              <input type="email" id="m-email" disabled style="background:#F1F5F9; cursor:not-allowed;"/>
+            </div>
+            <div class="modal-field">
+              <label>Phone Number</label>
+              <input type="text" id="m-phone"/>
+            </div>
+            <div class="modal-field">
+              <label>Registration Number (Read-Only)</label>
+              <input type="text" id="m-reg_number" disabled style="background:#F1F5F9; cursor:not-allowed;"/>
+            </div>
+            <div class="modal-field">
+              <label>Degree / Department</label>
+              <input type="text" id="m-course"/>
+            </div>
+            <div class="modal-field">
+              <label>Current Study Year</label>
               <select id="m-year_of_study">
-                <option value="">—</option>
-                <option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option><option>Year 5</option>
+                <option value="1">Year 1</option>
+                <option value="2">Year 2</option>
+                <option value="3">Year 3</option>
+                <option value="4">Year 4</option>
+                <option value="5">Year 5 (5-year programs)</option>
+                <option value="0">Associate (Graduated)</option>
               </select>
             </div>
-            <div class="modal-field"><label>Ministry</label><input type="text" id="m-ministry"/></div>
-            <div class="modal-field"><label>Joined</label><input type="text" id="m-joined_at" disabled/></div>
+            <div class="modal-field">
+              <label>Degree Duration</label>
+              <select id="m-course_duration">
+                <option value="4">4-Year Degree</option>
+                <option value="5">5-Year Degree</option>
+              </select>
+            </div>
+            <div class="modal-field">
+              <label>Membership Category</label>
+              <select id="m-membership_category">
+                <option value="full">Full Member (Undergrad)</option>
+                <option value="special">Special Member (Postgrad)</option>
+                <option value="associate">Associate Member (Alumni)</option>
+              </select>
+            </div>
+            <div class="modal-field full">
+              <label>Assigned Ministries & Dockets</label>
+              <div id="m-ministries-display" style="padding:10px 12px; background:var(--surface-subtle); border-radius:var(--radius-sm); border:1px solid var(--surface-border); display:flex; flex-wrap:wrap; gap:6px;"></div>
+            </div>
           </div>
         </div>
 
         <div class="modal-section">
-          <h4>Admin Controls</h4>
+          <h4>Leadership & Constitutional Privilege</h4>
           <div class="modal-grid">
-            <div class="modal-field"><label>Status</label>
-              <select id="m-status"><option value="active">Active</option><option value="inactive">Inactive</option></select>
+            <div class="modal-field">
+              <label>Account Status</label>
+              <select id="m-status">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="associate">Associate</option>
+                <option value="suspended">Suspended</option>
+              </select>
             </div>
-            <div class="modal-field"><label>Role</label>
-              <select id="m-role"><option value="member">Member</option><option value="leader">Leader</option><option value="committee">Committee</option></select>
+            <div class="modal-field">
+              <label>Union Role</label>
+              <select id="m-role">
+                <option value="member">General Member</option>
+                <option value="subcommittee">Subcommittee Leader</option>
+                <option value="executive">Executive Committee Member</option>
+                <option value="associate">Associate of the Union</option>
+                <option value="patron">Patron / Advisory Board</option>
+              </select>
             </div>
-            <div class="modal-field full"><label>Admin Notes (visible to member)</label>
-              <textarea id="m-admin_notes" rows="2" placeholder="e.g. Welcome note, role assignment, reminders..."></textarea>
+            <div class="modal-field full">
+              <label>Executive Committee Position (if applicable)</label>
+              <input type="text" id="m-ec_position" placeholder="e.g. Chairperson, Vice Chairperson, Secretary, Treasurer, Missions Coordinator..."/>
+            </div>
+            <div class="modal-field full">
+              <label>Executive / Leadership Remarks (visible to member)</label>
+              <textarea id="m-admin_notes" rows="2" placeholder="Notes, reminders, or role assignments..."></textarea>
             </div>
           </div>
-          <button type="submit" class="modal-save-btn">Save Changes</button>
+        </div>
+
+        <div class="modal-actions-bar">
+          <button type="button" class="btn-secondary" onclick="closeMemberModal()">Cancel</button>
+          <button type="submit" class="btn-primary" id="m-save-btn">
+            <span>Save Member Record</span>
+          </button>
         </div>
       </form>
 
-      <div class="modal-section">
+      <!-- Activity History Sub-sections -->
+      <div class="modal-section" style="margin-top:24px; padding-top:24px; border-top:1px solid var(--surface-border);">
         <h4>Event Registrations (<span id="m-events-count">0</span>)</h4>
         <div id="m-events-list"></div>
       </div>
 
       <div class="modal-section">
-        <h4>Prayer Requests (<span id="m-prayers-count">0</span>)</h4>
+        <h4>Submitted Prayer Petitions (<span id="m-prayers-count">0</span>)</h4>
         <div id="m-prayers-list"></div>
-      </div>
-
-      <div class="modal-section">
-        <h4>Newsletter</h4>
-        <p style="font-size:0.85rem;color:var(--slate);">
-          Subscribed: <strong id="m-newsletter-status">—</strong>
-        </p>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ══════════════════════════════════════════════════
+     5. MODAL: ACADEMIC YEAR ROLLOVER DIALOG
+══════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="rollover-modal">
+  <div class="modal-box" style="max-width:540px;">
+    <div class="modal-header">
+      <div class="modal-header-title">
+        <span>🎓</span>
+        <h3>Advance Academic Year Cycle</h3>
+      </div>
+      <button class="modal-close" onclick="closeRolloverModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:var(--radius-sm); padding:14px; margin-bottom:20px; font-size:0.85rem; color:#92400E; line-height:1.55;">
+        <strong>⚠️ Administrative Impact:</strong><br/>
+        • Advances all enrolled undergraduates: <code>Year + 1</code>.<br/>
+        • Students in their final year (Year 4 or Year 5 for 5-yr courses) graduate to <strong>Associate</strong> status.<br/>
+        • Enforces an academic verification prompt for all members on their next login.
+      </div>
+
+      <form id="rollover-form">
+        <div class="modal-field" style="margin-bottom:18px;">
+          <label>New Academic Year Label</label>
+          <input type="text" id="rollover-year-input" required placeholder="e.g. 2026/2027" value="2026/2027" style="font-size:1.05rem; font-weight:700;"/>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px;">
+          <input type="checkbox" id="rollover-confirm-check" style="width:18px; height:18px; cursor:pointer;" required/>
+          <label for="rollover-confirm-check" style="margin:0; font-size:0.82rem; font-weight:600; cursor:pointer; color:var(--text-main);">
+            I confirm authorization from the TUCU Executive Committee to roll over the union academic year.
+          </label>
+        </div>
+
+        <div class="modal-actions-bar">
+          <button type="button" class="btn-secondary" onclick="closeRolloverModal()">Cancel</button>
+          <button type="submit" class="btn-primary" id="rollover-submit-btn">
+            <span>Execute Academic Rollover</span>
+            <span>⚡</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     6. MODAL: DESTRUCTIVE ACTION CONFIRMATION
+══════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal-box modal-danger-box">
+    <div class="modal-body" style="padding:34px 28px;">
+      <div class="modal-danger-icon">🗑️</div>
+      <h3 style="font-family:'Playfair Display',serif; font-size:1.35rem; color:#0F172A; margin-bottom:8px;" id="confirm-modal-title">
+        Confirm Removal
+      </h3>
+      <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.6; margin-bottom:24px;" id="confirm-modal-desc">
+        Are you sure you want to remove this record? This action cannot be undone.
+      </p>
+
+      <div style="display:flex; justify-content:center; gap:12px;">
+        <button class="btn-secondary" id="confirm-modal-cancel">Cancel</button>
+        <button class="btn-action-danger" id="confirm-modal-proceed" style="padding:10px 22px; font-size:0.86rem; border-radius:var(--radius-sm);">
+          <span>Confirm & Delete</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     CONTROLLER JAVASCRIPT
+══════════════════════════════════════════════════ -->
 <script>
-  // ── LARAVEL API BASE URL ──
-  const API = 'http://localhost:8000/api';
+  const API = `${window.location.origin}/api`;
   let TOKEN = localStorage.getItem('tucu_admin_token');
   let currentAdmin = JSON.parse(localStorage.getItem('tucu_admin_info') || 'null');
   let allData = { members: [], prayers: [], events: [], messages: [], subscribers: [] };
+  let currentMemberId = null;
 
-  function errorMessage(data, fallback = 'Something went wrong.') {
-    if (data?.errors) {
-      const first = Object.values(data.errors)[0];
-      if (Array.isArray(first)) return first[0];
-    }
-    return data?.message || data?.error || fallback;
+  // ── TOAST NOTIFICATIONS ──
+  function toast(msg, isError = false) {
+    const existing = document.querySelector('.admin-toast');
+    if (existing) existing.remove();
+    const t = document.createElement('div');
+    t.className = 'admin-toast' + (isError ? ' err' : '');
+    t.innerHTML = `<span>${isError ? '⚠️' : '✨'}</span><span>${msg}</span>`;
+    document.body.appendChild(t);
+    setTimeout(() => {
+      t.style.opacity = '0';
+      t.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => t.remove(), 300);
+    }, 3800);
+  }
+
+  function fmtDate(str) {
+    if (!str) return '—';
+    return new Date(str).toLocaleDateString('en-KE', { day:'2-digit', month:'short', year:'numeric' });
   }
 
   // ── DATE ──
-  document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-KE', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-KE', {
+    weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+  });
 
-  // ── TOAST ──
-  function toast(msg) {
-    const t = document.createElement('div');
-    t.className = 'admin-toast'; t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(() => t.remove(), 3500);
-  }
+  // ── MOBILE SIDEBAR TOGGLE ──
+  const sidebar = document.getElementById('sidebar');
+  document.getElementById('sidebar-toggle-btn').addEventListener('click', event => {
+    const isOpen = sidebar.classList.toggle('mobile-open');
+    event.currentTarget.setAttribute('aria-expanded', String(isOpen));
+  });
 
-  // ── LOGIN ──
+  // ── AUTH & SIGN IN ──
   async function tryLogin() {
     const username = document.getElementById('login-user').value.trim();
     const password = document.getElementById('login-pass').value;
     const btn = document.getElementById('login-submit');
-    btn.textContent = 'Signing in...'; btn.disabled = true;
+    const err = document.getElementById('login-error');
+    err.style.display = 'none';
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-spinner"></span><span>Verifying credentials...</span>';
+
     try {
       const res = await fetch(`${API}/admin/login`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ username, password })
       });
-      const data = await res.json();
-      if (res.ok) {
+      const data = await res.json().catch(() => null);
+      if (res.ok && data) {
         TOKEN = data.token;
         currentAdmin = data.admin;
         localStorage.setItem('tucu_admin_token', TOKEN);
         localStorage.setItem('tucu_admin_info', JSON.stringify(currentAdmin));
         document.getElementById('login-screen').style.display = 'none';
         initDashboard();
+        toast('Welcome back to TUCU Executive Admin Suite!');
       } else {
-        document.getElementById('login-error').style.display = 'block';
-        document.getElementById('login-error').textContent = errorMessage(data, 'Invalid username or password.');
+        err.style.display = 'block';
+        err.textContent = data?.message || (data?.errors ? Object.values(data.errors)[0][0] : 'Invalid administrator username or password.');
       }
     } catch {
-      document.getElementById('login-error').style.display = 'block';
-      document.getElementById('login-error').textContent = 'Cannot reach server. Is it running?';
+      err.style.display = 'block';
+      err.textContent = 'Cannot connect to the server. Please check your connection and try again.';
     }
-    btn.textContent = 'Sign In to Dashboard'; btn.disabled = false;
+    btn.disabled = false;
+    btn.innerHTML = '<span>Sign In to Executive Console</span>';
   }
 
   document.getElementById('login-submit').addEventListener('click', tryLogin);
   document.getElementById('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+
   document.getElementById('logout-btn').addEventListener('click', async () => {
     try {
-      await fetch(`${API}/admin/logout`, { method: 'POST', headers: { Authorization: `Bearer ${TOKEN}` } });
+      await fetch(`${API}/admin/logout`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${TOKEN}`, 'Accept': 'application/json' }
+      });
     } catch {}
     localStorage.removeItem('tucu_admin_token');
     localStorage.removeItem('tucu_admin_info');
@@ -499,30 +1982,48 @@
     document.getElementById('login-screen').style.display = 'flex';
   });
 
-  // ── AUTO-LOGIN ──
+  // Auto-Login Verification
   if (TOKEN) {
-    fetch(`${API}/admin/stats`, { headers: { Authorization: `Bearer ${TOKEN}` } })
-      .then(r => { if (r.ok) { document.getElementById('login-screen').style.display = 'none'; initDashboard(); }
-        else { localStorage.removeItem('tucu_admin_token'); localStorage.removeItem('tucu_admin_info'); } })
+    fetch(`${API}/admin/stats`, { headers: { 'Authorization': `Bearer ${TOKEN}`, 'Accept': 'application/json' } })
+      .then(r => {
+        if (r.ok) {
+          document.getElementById('login-screen').style.display = 'none';
+          initDashboard();
+        } else {
+          localStorage.removeItem('tucu_admin_token');
+          localStorage.removeItem('tucu_admin_info');
+        }
+      })
       .catch(() => {});
   }
 
-  // ── INIT ──
+  // ── INIT DASHBOARD ──
   function initDashboard() {
     if (currentAdmin) {
       document.getElementById('admin-display-name').textContent = currentAdmin.username;
-      document.getElementById('admin-initials').textContent = currentAdmin.username[0].toUpperCase();
+      document.getElementById('admin-initials').textContent = (currentAdmin.username || 'A')[0].toUpperCase();
     }
     loadStats();
     loadAllData();
   }
 
   async function apiFetch(path) {
-    const res = await fetch(`${API}${path}`, { headers: { Authorization: `Bearer ${TOKEN}` } });
+    const res = await fetch(`${API}${path}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${TOKEN}`
+      }
+    });
+    if (res.status === 401 || res.status === 403) {
+      localStorage.removeItem('tucu_admin_token');
+      document.getElementById('login-screen').style.display = 'flex';
+      throw new Error('Unauthorized');
+    }
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
 
+  // ── LOAD STATS ──
   async function loadStats() {
     try {
       const s = await apiFetch('/admin/stats');
@@ -532,19 +2033,65 @@
       document.getElementById('stat-pending').textContent = s.prayers_pending;
       document.getElementById('stat-messages').textContent = s.unread_messages;
       document.getElementById('stat-subscribers').textContent = s.newsletter_subscribers;
+
+      // Sidebar counters helper: hide completely if 0 or falsy
+      function setSidebarBadge(id, count) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const n = parseInt(count, 10) || 0;
+        if (n > 0) {
+          el.textContent = n;
+          el.style.display = 'inline-flex';
+        } else {
+          el.textContent = '';
+          el.style.display = 'none';
+        }
+      }
+
+      setSidebarBadge('badge-members-total', s.members);
+      setSidebarBadge('badge-prayers-total', s.prayers);
+      setSidebarBadge('badge-events-total', s.event_registrations);
+      setSidebarBadge('badge-messages-total', s.unread_messages);
+      setSidebarBadge('badge-newsletter-total', s.newsletter_subscribers);
     } catch {}
   }
 
+  // ── LOAD ALL DATA ──
   async function loadAllData() {
-    try { allData.members = await apiFetch('/admin/members'); renderMembers(); renderDashMembers(); } catch {}
-    try { allData.prayers = await apiFetch('/admin/prayers'); renderPrayers(); renderDashPrayers(); } catch {}
+    try {
+      allData.members = await apiFetch('/admin/members');
+      renderMembers();
+      renderDashMembers();
+    } catch {
+      renderMembers();
+      const mb = document.getElementById('dash-members-tbody');
+      if (mb) mb.innerHTML = '<tr class="empty-row"><td colspan="3">No new members enrolled today.</td></tr>';
+    }
+    try {
+      allData.prayers = await apiFetch('/admin/prayers');
+      renderPrayers();
+      renderDashPrayers();
+    } catch {
+      renderPrayers();
+      const pb = document.getElementById('dash-prayers-tbody');
+      if (pb) pb.innerHTML = '<tr class="empty-row"><td colspan="3">No recent prayer intercessions found.</td></tr>';
+    }
     try { allData.events = await apiFetch('/admin/registrations'); renderEvents(); } catch {}
     try { allData.messages = await apiFetch('/admin/messages'); renderMessages(); } catch {}
     try { allData.subscribers = await apiFetch('/admin/subscribers'); renderNewsletter(); } catch {}
   }
 
-  // ── NAVIGATION ──
-  const pageTitles = { dashboard:'Dashboard', members:'Members', prayers:'Prayer Requests', events:'Event Registrations', messages:'Contact Messages', newsletter:'Newsletter Subscribers' };
+  // ── NAVIGATION ROUTER ──
+  const pageTitles = {
+    dashboard: 'Executive Dashboard',
+    members: 'Member Directory & Callings',
+    prayers: 'Prayer Petitions & Intercession',
+    events: 'Event Registrations',
+    messages: 'Website Messages & Inquiries',
+    newsletter: 'Gazette & Newsletter Subscribers',
+    library: 'Library Collection Management'
+  };
+
   document.querySelectorAll('.nav-item[data-page]').forEach(item => {
     item.addEventListener('click', () => {
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -553,154 +2100,437 @@
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById(`page-${page}`).classList.add('active');
       document.getElementById('page-title').textContent = pageTitles[page] || page;
+      sidebar.classList.remove('mobile-open');
+      document.getElementById('sidebar-toggle-btn').setAttribute('aria-expanded', 'false');
+      if (page === 'library') window.loadAdminLibrary?.(true);
     });
   });
 
-  // ── HELPERS ──
-  function fmtDate(str) { if (!str) return '—'; return new Date(str).toLocaleDateString('en-KE', { day:'2-digit', month:'short', year:'numeric' }); }
+  // ── MEMBERS DIRECTORY & ACTIONS ──
+  let activeMemberFilter = 'all';
 
-  // ── MEMBERS ──
-  function renderMembers(filter = '') {
+  function renderMembers() {
     const tbody = document.getElementById('members-tbody');
+    const searchVal = document.getElementById('members-search').value.toLowerCase().trim();
     let data = allData.members;
-    if (filter) data = data.filter(m => m.full_name?.toLowerCase().includes(filter) || m.email?.toLowerCase().includes(filter));
+
+    // Apply Filter Chips
+    if (activeMemberFilter === 'exec') {
+      data = data.filter(m => m.is_executive || m.role === 'executive');
+    } else if (activeMemberFilter === 'undergrad') {
+      data = data.filter(m => !m.is_associate && m.year_of_study > 0);
+    } else if (activeMemberFilter === 'assoc') {
+      data = data.filter(m => m.is_associate || m.year_of_study === 0);
+    } else if (activeMemberFilter === 'active') {
+      data = data.filter(m => m.status === 'active');
+    }
+
+    // Apply Search Input
+    if (searchVal) {
+      data = data.filter(m =>
+        m.full_name?.toLowerCase().includes(searchVal) ||
+        m.email?.toLowerCase().includes(searchVal) ||
+        m.reg_number?.toLowerCase().includes(searchVal) ||
+        m.course?.toLowerCase().includes(searchVal)
+      );
+    }
+
     document.getElementById('members-count').textContent = data.length;
-    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No members found.</td></tr>'; return; }
-    tbody.innerHTML = data.map((m, i) => `
-      <tr>
-        <td>${i+1}</td>
-        <td><strong>${m.full_name}</strong></td>
-        <td>${m.reg_number || '—'}</td>
-        <td>${m.email}</td>
-        <td>${m.course || '—'}</td>
-        <td>${m.phone || '—'}</td>
-        <td><span class="badge badge-${m.status === 'active' ? 'green' : 'red'}">${m.status}</span></td>
-        <td>${fmtDate(m.joined_at)}</td>
-        <td>
-          <button class="action-btn btn-sm-blue" onclick="viewMember(${m.id})">View</button>
-          <button class="action-btn btn-sm-red" onclick="deleteMember(${m.id})">Remove</button>
-        </td>
-      </tr>`).join('');
+    const tableContainer = document.getElementById('members-table-container');
+    const emptyState = document.getElementById('members-empty-state');
+
+    if (!data.length) {
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (emptyState) emptyState.style.display = 'flex';
+      return;
+    }
+
+    if (tableContainer) tableContainer.style.display = 'block';
+    if (emptyState) emptyState.style.display = 'none';
+
+    tbody.innerHTML = data.map((m, i) => {
+      const isExec = m.is_executive || m.role === 'executive';
+      const yearLabel = m.is_associate ? 'Associate' : `Year ${m.year_of_study || 1}`;
+      const statusBadgeClass = m.status === 'active' ? 'badge-green' : (m.status === 'associate' ? 'badge-gold' : 'badge-red');
+
+      return `
+        <tr>
+          <td>${i + 1}</td>
+          <td>
+            <strong>${m.full_name}</strong>
+            ${isExec ? `<div style="font-size:0.72rem; color:var(--amber-700); font-weight:700;">👑 ${m.ec_position || 'Executive'}</div>` : ''}
+          </td>
+          <td><code>${m.reg_number || '—'}</code></td>
+          <td>${m.email}</td>
+          <td>${m.course || '—'}</td>
+          <td><span class="badge ${m.is_associate ? 'badge-gold' : 'badge-blue'}">${yearLabel}</span></td>
+          <td>
+            <span class="badge ${statusBadgeClass}">
+              <span class="badge-dot"></span>
+              <span>${m.status}</span>
+            </span>
+          </td>
+          <td>${fmtDate(m.joined_at)}</td>
+          <td>
+            <div class="btn-action-group">
+              <button class="action-btn btn-action-view" onclick="viewMember(${m.id})">
+                <span>Edit Profile</span>
+              </button>
+              <button class="action-btn btn-action-danger" onclick="confirmDeleteMember(${m.id}, '${m.full_name.replace(/'/g, "\\'")}')">
+                <span>Remove</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
   }
 
   function renderDashMembers() {
     const tbody = document.getElementById('dash-members-tbody');
     const recent = allData.members.slice(0, 5);
     document.getElementById('dash-member-count').textContent = allData.members.length;
-    if (!recent.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No members yet.</td></tr>'; return; }
-    tbody.innerHTML = recent.map(m => `<tr><td><strong>${m.full_name}</strong></td><td>${m.email}</td><td>${fmtDate(m.joined_at)}</td></tr>`).join('');
+    if (!recent.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No new members enrolled today. New registrations will appear here.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = recent.map(m => `
+      <tr>
+        <td><strong>${m.full_name}</strong></td>
+        <td>${m.email}</td>
+        <td>${fmtDate(m.joined_at)}</td>
+      </tr>
+    `).join('');
   }
 
-  async function deleteMember(id) {
-    if (!confirm('Remove this member from the database?')) return;
-    await fetch(`${API}/admin/members/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${TOKEN}` } });
-    allData.members = allData.members.filter(m => m.id !== id);
-    renderMembers(); renderDashMembers(); loadStats();
-    toast('Member removed.');
+  // Members Search with Debounce and Clear
+  const membersSearchInput = document.getElementById('members-search');
+  const membersClearBtn = document.getElementById('members-search-clear');
+  membersSearchInput.addEventListener('input', (e) => {
+    membersClearBtn.style.display = e.target.value ? 'block' : 'none';
+    renderMembers();
+  });
+  membersClearBtn.addEventListener('click', () => {
+    membersSearchInput.value = '';
+    membersClearBtn.style.display = 'none';
+    renderMembers();
+  });
+
+  // Members Filter Chips
+  document.querySelectorAll('#members-filter-bar .filter-btn-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#members-filter-bar .filter-btn-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeMemberFilter = btn.dataset.filter;
+      renderMembers();
+    });
+  });
+
+  // ── DESTRUCTIVE CONFIRMATION MODAL ──
+  let pendingDeleteId = null;
+  function confirmDeleteMember(id, name) {
+    pendingDeleteId = id;
+    document.getElementById('confirm-modal-title').textContent = `Remove ${name}?`;
+    document.getElementById('confirm-modal-desc').textContent = `This will permanently remove ${name} and their ministry associations from the database.`;
+    document.getElementById('confirm-modal').classList.add('active');
   }
 
-  document.getElementById('members-search').addEventListener('input', e => renderMembers(e.target.value.toLowerCase()));
+  document.getElementById('confirm-modal-cancel').addEventListener('click', () => {
+    document.getElementById('confirm-modal').classList.remove('active');
+    pendingDeleteId = null;
+  });
 
-  // ── PRAYERS ──
-  function renderPrayers(filter = '') {
+  document.getElementById('confirm-modal-proceed').addEventListener('click', async () => {
+    if (!pendingDeleteId) return;
+    const btn = document.getElementById('confirm-modal-proceed');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-spinner"></span><span>Deleting...</span>';
+
+    try {
+      await fetch(`${API}/admin/members/${pendingDeleteId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${TOKEN}` }
+      });
+      allData.members = allData.members.filter(m => m.id !== pendingDeleteId);
+      renderMembers();
+      renderDashMembers();
+      loadStats();
+      toast('Member removed from records.');
+    } catch {
+      toast('Could not delete member.', true);
+    }
+    btn.disabled = false;
+    btn.innerHTML = '<span>Confirm & Delete</span>';
+    document.getElementById('confirm-modal').classList.remove('active');
+    pendingDeleteId = null;
+  });
+
+  // ── PRAYERS DIRECTORY ──
+  let activePrayerFilter = 'all';
+
+  function renderPrayers() {
     const tbody = document.getElementById('prayers-tbody');
+    const searchVal = document.getElementById('prayers-search').value.toLowerCase().trim();
     let data = allData.prayers;
-    if (filter) data = data.filter(p => p.name?.toLowerCase().includes(filter) || p.category?.toLowerCase().includes(filter));
+
+    if (activePrayerFilter === 'pending') {
+      data = data.filter(p => p.status !== 'prayed');
+    } else if (activePrayerFilter === 'prayed') {
+      data = data.filter(p => p.status === 'prayed');
+    }
+
+    if (searchVal) {
+      data = data.filter(p =>
+        p.name?.toLowerCase().includes(searchVal) ||
+        p.category?.toLowerCase().includes(searchVal) ||
+        p.request?.toLowerCase().includes(searchVal)
+      );
+    }
+
     document.getElementById('prayers-count').textContent = data.length;
-    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No prayer requests yet.</td></tr>'; return; }
+    const tableContainer = document.getElementById('prayers-table-container');
+    const emptyState = document.getElementById('prayers-empty-state');
+
+    if (!data.length) {
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (emptyState) emptyState.style.display = 'flex';
+      return;
+    }
+
+    if (tableContainer) tableContainer.style.display = 'block';
+    if (emptyState) emptyState.style.display = 'none';
+
     tbody.innerHTML = data.map((p, i) => `
       <tr>
-        <td>${i+1}</td>
-        <td>${p.name || 'Anonymous'}</td>
+        <td>${i + 1}</td>
+        <td><strong>${p.name || 'Anonymous Petitioner'}</strong></td>
         <td><span class="badge badge-blue">${p.category}</span></td>
-        <td class="prayer-text-cell" title="${p.request?.replace(/"/g,"'")}">${p.request}</td>
-        <td>${p.is_anonymous ? '✅ Yes' : 'No'}</td>
-        <td><span class="badge badge-${p.status === 'prayed' ? 'green' : 'gold'}">${p.status}</span></td>
+        <td style="max-width:320px; line-height:1.5;">${p.request}</td>
+        <td>${p.is_anonymous ? '<span style="color:var(--emerald-700); font-weight:700;">✓ Yes</span>' : 'No'}</td>
+        <td>
+          <span class="badge ${p.status === 'prayed' ? 'badge-green' : 'badge-gold'}">
+            <span class="badge-dot"></span>
+            <span>${p.status}</span>
+          </span>
+        </td>
         <td>${fmtDate(p.submitted_at)}</td>
         <td>
-          ${p.status !== 'prayed' ? `<button class="action-btn btn-sm-green" onclick="markPrayed(${p.id})">Mark Prayed</button>` : '<span style="color:var(--green);font-size:0.75rem;">✓ Done</span>'}
+          ${p.status !== 'prayed'
+            ? `<button class="action-btn btn-action-success" onclick="markPrayed(${p.id}, this)">
+                <span>Mark Prayed</span>
+               </button>`
+            : '<span style="color:var(--emerald-700); font-weight:700; font-size:0.8rem;">✓ Prayed</span>'
+          }
         </td>
-      </tr>`).join('');
+      </tr>
+    `).join('');
   }
 
   function renderDashPrayers() {
     const tbody = document.getElementById('dash-prayers-tbody');
     const recent = allData.prayers.slice(0, 5);
     document.getElementById('dash-prayer-count').textContent = allData.prayers.length;
-    if (!recent.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No requests yet.</td></tr>'; return; }
-    tbody.innerHTML = recent.map(p => `<tr><td>${p.name || 'Anonymous'}</td><td>${p.category}</td><td><span class="badge badge-${p.status==='prayed'?'green':'gold'}">${p.status}</span></td></tr>`).join('');
+    if (!recent.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No recent prayer intercessions found. Submitted petitions will appear here.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = recent.map(p => `
+      <tr>
+        <td>${p.name || 'Anonymous'}</td>
+        <td><span class="badge badge-blue">${p.category}</span></td>
+        <td>
+          <span class="badge ${p.status === 'prayed' ? 'badge-green' : 'badge-gold'}">
+            ${p.status}
+          </span>
+        </td>
+      </tr>
+    `).join('');
   }
 
-  async function markPrayed(id) {
-    await fetch(`${API}/admin/prayers/${id}/status`, { method: 'PUT', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` }, body: JSON.stringify({ status: 'prayed' }) });
-    const p = allData.prayers.find(x => x.id === id);
-    if (p) p.status = 'prayed';
-    renderPrayers(); renderDashPrayers(); loadStats();
-    toast('Prayer request marked as prayed! 🙏');
+  async function markPrayed(id, btn) {
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="btn-spinner"></span>';
+    }
+    try {
+      await fetch(`${API}/admin/prayers/${id}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
+        body: JSON.stringify({ status: 'prayed' })
+      });
+      const p = allData.prayers.find(x => x.id === id);
+      if (p) p.status = 'prayed';
+      renderPrayers();
+      renderDashPrayers();
+      loadStats();
+      toast('Prayer petition marked as prayed! 🙏');
+    } catch {
+      toast('Failed to update prayer petition.', true);
+      if (btn) { btn.disabled = false; btn.innerHTML = '<span>Mark Prayed</span>'; }
+    }
   }
 
-  document.getElementById('prayers-search').addEventListener('input', e => renderPrayers(e.target.value.toLowerCase()));
+  // Prayers search & filter
+  const prayersSearchInput = document.getElementById('prayers-search');
+  const prayersClearBtn = document.getElementById('prayers-search-clear');
+  prayersSearchInput.addEventListener('input', (e) => {
+    prayersClearBtn.style.display = e.target.value ? 'block' : 'none';
+    renderPrayers();
+  });
+  prayersClearBtn.addEventListener('click', () => {
+    prayersSearchInput.value = '';
+    prayersClearBtn.style.display = 'none';
+    renderPrayers();
+  });
 
-  // ── EVENTS ──
-  function renderEvents(filter = '') {
+  document.querySelectorAll('#prayers-filter-bar .filter-btn-chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#prayers-filter-bar .filter-btn-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activePrayerFilter = btn.dataset.filter;
+      renderPrayers();
+    });
+  });
+
+  // ── EVENTS DIRECTORY ──
+  function renderEvents() {
     const tbody = document.getElementById('events-tbody');
+    const searchVal = document.getElementById('events-search').value.toLowerCase().trim();
     let data = allData.events;
-    if (filter) data = data.filter(e => e.full_name?.toLowerCase().includes(filter) || e.event_name?.toLowerCase().includes(filter));
+
+    if (searchVal) {
+      data = data.filter(e =>
+        e.full_name?.toLowerCase().includes(searchVal) ||
+        e.event_name?.toLowerCase().includes(searchVal) ||
+        e.email?.toLowerCase().includes(searchVal)
+      );
+    }
+
     document.getElementById('events-count').textContent = data.length;
-    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No event registrations yet.</td></tr>'; return; }
+    const tableContainer = document.getElementById('events-table-container');
+    const emptyState = document.getElementById('events-empty-state');
+
+    if (!data.length) {
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (emptyState) emptyState.style.display = 'flex';
+      return;
+    }
+
+    if (tableContainer) tableContainer.style.display = 'block';
+    if (emptyState) emptyState.style.display = 'none';
+
     tbody.innerHTML = data.map((e, i) => `
       <tr>
-        <td>${i+1}</td>
+        <td>${i + 1}</td>
         <td><strong>${e.full_name}</strong></td>
-        <td>${e.event_name}</td>
+        <td><span class="badge badge-blue">${e.event_name}</span></td>
         <td>${e.email}</td>
         <td>${e.phone || '—'}</td>
-        <td>${e.reg_number || '—'}</td>
+        <td><code>${e.reg_number || '—'}</code></td>
         <td>${fmtDate(e.registered_at)}</td>
-      </tr>`).join('');
+      </tr>
+    `).join('');
   }
 
-  document.getElementById('events-search').addEventListener('input', e => renderEvents(e.target.value.toLowerCase()));
+  const eventsSearchInput = document.getElementById('events-search');
+  const eventsClearBtn = document.getElementById('events-search-clear');
+  eventsSearchInput.addEventListener('input', (e) => {
+    eventsClearBtn.style.display = e.target.value ? 'block' : 'none';
+    renderEvents();
+  });
+  eventsClearBtn.addEventListener('click', () => {
+    eventsSearchInput.value = '';
+    eventsClearBtn.style.display = 'none';
+    renderEvents();
+  });
 
-  // ── MESSAGES ──
+  // ── MESSAGES DIRECTORY ──
   function renderMessages() {
     const tbody = document.getElementById('messages-tbody');
     const data = allData.messages;
     document.getElementById('messages-count').textContent = data.length;
-    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No messages yet.</td></tr>'; return; }
+    const tableContainer = document.getElementById('messages-table-container');
+    const emptyState = document.getElementById('messages-empty-state');
+
+    if (!data.length) {
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (emptyState) emptyState.style.display = 'flex';
+      return;
+    }
+
+    if (tableContainer) tableContainer.style.display = 'block';
+    if (emptyState) emptyState.style.display = 'none';
+
     tbody.innerHTML = data.map((m, i) => `
-      <tr style="${!m.read_status ? 'font-weight:600;' : ''}">
-        <td>${i+1}</td>
+      <tr style="${!m.read_status ? 'font-weight:700; background:#FFFDF5;' : ''}">
+        <td>${i + 1}</td>
         <td>${m.name}</td>
         <td>${m.email}</td>
         <td>${m.subject || '—'}</td>
-        <td class="prayer-text-cell" title="${m.message?.replace(/"/g,"'")}">${m.message}</td>
-        <td><span class="badge badge-${m.read_status ? 'green' : 'gold'}">${m.read_status ? 'Read' : 'Unread'}</span></td>
+        <td style="max-width:320px; line-height:1.5;">${m.message}</td>
+        <td>
+          <span class="badge ${m.read_status ? 'badge-green' : 'badge-gold'}">
+            ${m.read_status ? 'Read' : 'Unread'}
+          </span>
+        </td>
         <td>${fmtDate(m.sent_at)}</td>
-        <td>${!m.read_status ? `<button class="action-btn btn-sm-green" onclick="markRead(${m.id})">Mark Read</button>` : '—'}</td>
-      </tr>`).join('');
+        <td>
+          ${!m.read_status
+            ? `<button class="action-btn btn-action-success" onclick="markRead(${m.id}, this)">Mark Read</button>`
+            : '<span style="color:var(--text-muted); font-size:0.75rem;">✓ Completed</span>'
+          }
+        </td>
+      </tr>
+    `).join('');
   }
 
-  async function markRead(id) {
-    await fetch(`${API}/admin/messages/${id}/read`, { method: 'PUT', headers: { Authorization: `Bearer ${TOKEN}` } });
-    const m = allData.messages.find(x => x.id === id);
-    if (m) m.read_status = 1;
-    renderMessages(); loadStats();
-    toast('Message marked as read.');
+  async function markRead(id, btn) {
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="btn-spinner"></span>';
+    }
+    try {
+      await fetch(`${API}/admin/messages/${id}/read`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${TOKEN}` }
+      });
+      const m = allData.messages.find(x => x.id === id);
+      if (m) m.read_status = 1;
+      renderMessages();
+      loadStats();
+      toast('Message marked as read.');
+    } catch {
+      toast('Could not update message.', true);
+      if (btn) { btn.disabled = false; btn.innerHTML = 'Mark Read'; }
+    }
   }
 
-  // ── NEWSLETTER ──
+  // ── NEWSLETTER SUBSCRIBERS ──
   function renderNewsletter() {
     const tbody = document.getElementById('newsletter-tbody');
     const data = allData.subscribers;
     document.getElementById('newsletter-count').textContent = data.length;
-    if (!data.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="3">No subscribers yet.</td></tr>'; return; }
-    tbody.innerHTML = data.map((s, i) => `<tr><td>${i+1}</td><td>${s.email}</td><td>${fmtDate(s.subscribed_at)}</td></tr>`).join('');
+    const tableContainer = document.getElementById('newsletter-table-container');
+    const emptyState = document.getElementById('newsletter-empty-state');
+
+    if (!data.length) {
+      if (tableContainer) tableContainer.style.display = 'none';
+      if (emptyState) emptyState.style.display = 'flex';
+      return;
+    }
+
+    if (tableContainer) tableContainer.style.display = 'block';
+    if (emptyState) emptyState.style.display = 'none';
+    tbody.innerHTML = data.map((s, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td><strong>${s.email}</strong></td>
+        <td>${fmtDate(s.subscribed_at)}</td>
+      </tr>
+    `).join('');
   }
 
-  // ── MEMBER DETAIL MODAL ──
-  let currentMemberId = null;
-
+  // ── MEMBER EDIT MODAL ──
   function viewMember(id) {
     const m = allData.members.find(x => x.id === id);
     if (!m) return;
@@ -711,32 +2541,55 @@
     document.getElementById('m-phone').value = m.phone || '';
     document.getElementById('m-reg_number').value = m.reg_number || '—';
     document.getElementById('m-course').value = m.course || '';
-    document.getElementById('m-year_of_study').value = m.year_of_study || '';
-    document.getElementById('m-ministry').value = m.ministry || '';
-    document.getElementById('m-joined_at').value = fmtDate(m.joined_at);
+    document.getElementById('m-year_of_study').value = m.year_of_study !== undefined ? m.year_of_study : 1;
+    document.getElementById('m-course_duration').value = m.course_duration || 4;
+    document.getElementById('m-membership_category').value = m.membership_category || 'full';
+    document.getElementById('m-ec_position').value = m.ec_position || '';
     document.getElementById('m-status').value = m.status || 'active';
     document.getElementById('m-role').value = m.role || 'member';
     document.getElementById('m-admin_notes').value = m.admin_notes || '';
 
-    // Event registrations (nested via Laravel eager-loading)
+    // Render assigned ministries chips
+    const minDisplay = document.getElementById('m-ministries-display');
+    if (m.ministries && m.ministries.length) {
+      minDisplay.innerHTML = m.ministries.map(min => `
+        <span style="display:inline-flex; align-items:center; gap:6px; background:#F8FAFC; border:1px solid #CBD5E1; padding:4px 12px; border-radius:20px; font-size:0.78rem; font-weight:700; color:#0F172A;">
+          <span>${min.docket?.icon || '📂'}</span>
+          <span>${min.name}</span>
+          <small style="color:var(--text-muted); font-weight:500;">(${min.docket?.name || 'Docket'})</small>
+        </span>
+      `).join('');
+    } else {
+      minDisplay.innerHTML = '<span style="color:var(--text-muted); font-size:0.82rem;">No ministries currently enrolled.</span>';
+    }
+
+    // Event registrations
     const events = m.event_registrations || m.eventRegistrations || [];
     document.getElementById('m-events-count').textContent = events.length;
     const evList = document.getElementById('m-events-list');
     evList.innerHTML = events.length
-      ? events.map(ev => `<div class="modal-list-item"><strong>${ev.event_name}</strong> — <span class="badge badge-${ev.status==='cancelled'?'red':'green'}">${ev.status}</span><br/><span style="color:var(--slate);font-size:0.75rem;">${fmtDate(ev.registered_at)}</span></div>`).join('')
-      : '<div class="modal-empty">No event registrations yet.</div>';
+      ? events.map(ev => `
+          <div style="padding:8px 0; border-bottom:1px solid var(--surface-border); font-size:0.84rem;">
+            <strong>${ev.event_name}</strong> — <span class="badge ${ev.status==='cancelled'?'badge-red':'badge-green'}">${ev.status}</span>
+            <div style="color:var(--text-muted); font-size:0.75rem;">Registered ${fmtDate(ev.registered_at)}</div>
+          </div>
+        `).join('')
+      : '<div style="font-size:0.8rem; color:var(--text-muted); font-style:italic;">No event registrations on record.</div>';
 
     // Prayer requests
     const prayers = m.prayer_requests || m.prayerRequests || [];
     document.getElementById('m-prayers-count').textContent = prayers.length;
     const prList = document.getElementById('m-prayers-list');
     prList.innerHTML = prayers.length
-      ? prayers.map(p => `<div class="modal-list-item"><span class="badge badge-blue">${p.category}</span> <span class="badge badge-${p.status==='prayed'?'green':'gold'}">${p.status}</span><br/>${p.request}<br/><span style="color:var(--slate);font-size:0.75rem;">${fmtDate(p.submitted_at)}</span></div>`).join('')
-      : '<div class="modal-empty">No prayer requests yet.</div>';
-
-    // Newsletter
-    const nl = m.newsletter_subscription || m.newsletterSubscription;
-    document.getElementById('m-newsletter-status').textContent = nl?.is_subscribed ? 'Yes ✅' : 'No';
+      ? prayers.map(p => `
+          <div style="padding:8px 0; border-bottom:1px solid var(--surface-border); font-size:0.84rem;">
+            <span class="badge badge-blue">${p.category}</span>
+            <span class="badge ${p.status==='prayed'?'badge-green':'badge-gold'}">${p.status}</span>
+            <div style="margin-top:4px;">"${p.request}"</div>
+            <div style="color:var(--text-muted); font-size:0.75rem;">Submitted ${fmtDate(p.submitted_at)}</div>
+          </div>
+        `).join('')
+      : '<div style="font-size:0.8rem; color:var(--text-muted); font-style:italic;">No prayer requests recorded.</div>';
 
     document.getElementById('member-modal').classList.add('active');
   }
@@ -750,14 +2603,20 @@
     e.preventDefault();
     if (!currentMemberId) return;
 
+    const saveBtn = document.getElementById('m-save-btn');
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<span class="btn-spinner"></span><span>Saving Changes...</span>';
+
     const payload = {
       full_name: document.getElementById('m-full_name').value.trim(),
       phone: document.getElementById('m-phone').value.trim(),
       course: document.getElementById('m-course').value.trim(),
-      year_of_study: document.getElementById('m-year_of_study').value,
-      ministry: document.getElementById('m-ministry').value.trim(),
+      year_of_study: parseInt(document.getElementById('m-year_of_study').value),
+      course_duration: parseInt(document.getElementById('m-course_duration').value),
+      membership_category: document.getElementById('m-membership_category').value,
       status: document.getElementById('m-status').value,
       role: document.getElementById('m-role').value,
+      ec_position: document.getElementById('m-ec_position').value.trim() || null,
       admin_notes: document.getElementById('m-admin_notes').value.trim(),
     };
 
@@ -769,19 +2628,63 @@
       });
       const data = await res.json();
       if (res.ok) {
-        toast('Member updated successfully.');
-        // Update local cache
+        toast('Member record successfully updated.');
         const idx = allData.members.findIndex(x => x.id === currentMemberId);
-        if (idx !== -1) allData.members[idx] = { ...allData.members[idx], ...payload };
-        renderMembers(document.getElementById('members-search').value.toLowerCase());
+        if (idx !== -1) allData.members[idx] = { ...allData.members[idx], ...payload, ...data.member };
+        renderMembers();
         closeMemberModal();
       } else {
-        toast(errorMessage(data, 'Update failed.'), 'error');
+        toast(data.message || 'Update failed.', true);
       }
     } catch {
-      toast('Server error.', 'error');
+      toast('Server connection error.', true);
     }
+    saveBtn.disabled = false;
+    saveBtn.innerHTML = '<span>Save Member Record</span>';
+  });
+
+  // ── ACADEMIC YEAR ROLLOVER MODAL ──
+  const rolloverModal = document.getElementById('rollover-modal');
+  document.getElementById('btn-open-rollover-modal').addEventListener('click', () => {
+    document.getElementById('rollover-confirm-check').checked = false;
+    rolloverModal.classList.add('active');
+  });
+
+  function closeRolloverModal() {
+    rolloverModal.classList.remove('active');
+  }
+
+  document.getElementById('rollover-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const newLabel = document.getElementById('rollover-year-input').value.trim();
+    if (!newLabel) return;
+
+    const btn = document.getElementById('rollover-submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn-spinner"></span><span>Advancing Academic Year...</span>';
+
+    try {
+      const res = await fetch(`${API}/admin/academic-years/rollover`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` },
+        body: JSON.stringify({ new_label: newLabel })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast(`Success! Advanced: ${data.bumped_students} students, Graduated: ${data.new_associates} associates.`);
+        closeRolloverModal();
+        await loadAllData();
+        loadStats();
+      } else {
+        toast(data.message || 'Rollover failed.', true);
+      }
+    } catch {
+      toast('Could not contact server.', true);
+    }
+    btn.disabled = false;
+    btn.innerHTML = '<span>Execute Academic Rollover</span><span>⚡</span>';
   });
 </script>
+<script src="/js/admin-library.js" defer></script>
 </body>
 </html>

@@ -494,6 +494,44 @@
       transition: background 0.2s;
     }
     .event-register:hover { background: var(--green-mid); }
+    .event-register {
+      width: 100%;
+      border: 0;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .event-register.is-registered,
+    .event-register.is-registered:hover {
+      background: #2f6b4b;
+      cursor: default;
+    }
+    #event-registration-dialog {
+      width: min(520px, calc(100% - 32px));
+      max-width: none;
+      max-height: min(90vh, 760px);
+      padding: 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      color: #182338;
+      box-shadow: 0 24px 80px rgba(8, 15, 35, .28);
+    }
+    #event-registration-dialog::backdrop { background: rgba(8, 15, 35, .66); backdrop-filter: blur(3px); }
+    .event-dialog-content { padding: 30px; }
+    .event-dialog-eyebrow { margin: 0 0 8px; color: #8a6b27; font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .event-dialog-content h2 { margin: 0; color: #15233a; font: 600 25px/1.25 'Playfair Display', Georgia, serif; }
+    .event-dialog-description { margin: 9px 0 22px; color: #64748b; font-size: 13px; line-height: 1.6; }
+    .event-dialog-fields { display: grid; gap: 15px; }
+    .event-dialog-fields label { display: grid; gap: 6px; color: #334155; font-size: 12px; font-weight: 600; }
+    .event-dialog-fields input { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #0f172a; font: inherit; font-size: 14px; }
+    .event-dialog-fields input:focus-visible { outline: 3px solid rgba(201, 168, 76, .35); border-color: #9a793a; }
+    .event-dialog-note { min-height: 20px; margin: 12px 0 0; color: #64748b; font-size: 11px; }
+    .event-dialog-error { margin: 10px 0 0; color: #a12626; font-size: 12px; }
+    .event-dialog-error:empty { display: none; }
+    .event-dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+    .event-dialog-actions button { min-height: 42px; padding: 10px 16px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #334155; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+    .event-dialog-actions .event-dialog-submit { border-color: #18283d; background: #18283d; color: #fff; }
+    .event-dialog-actions .event-dialog-submit:hover { background: #30445f; }
+    .event-dialog-actions button:disabled { cursor: wait; opacity: .65; }
 
     /* ── MINISTRIES ── */
     #ministries {
@@ -1052,6 +1090,7 @@
     <li><a href="#sermons">Sermons</a></li>
     <li><a href="#prayer">Prayer</a></li>
     <li><a href="#blog">Blog</a></li>
+    <li><a href="/library">📚 Library</a></li>
     <li><a href="#join" class="nav-cta">Join CU</a></li>
   </ul>
 </nav>
@@ -1153,7 +1192,7 @@
         <h3>Friday Evening Fellowship</h3>
         <p>Our weekly gathering for worship, Word, and community. All students warmly welcome to attend and participate.</p>
         <div class="event-location">Main Chapel, Tharaka University</div>
-        <a href="#join" class="event-register">Register Free</a>
+        <button type="button" class="event-register">Register Free</button>
       </div>
     </div>
     <div class="event-card fade-in">
@@ -1168,7 +1207,7 @@
         <h3>End of Semester Night of Prayer</h3>
         <p>Come before the Lord as exams approach. A powerful night of intercession, worship, and declaration over the campus.</p>
         <div class="event-location">CU Prayer Room, Block C</div>
-        <a href="#join" class="event-register">Sign Up</a>
+        <button type="button" class="event-register">Sign Up</button>
       </div>
     </div>
     <div class="event-card fade-in">
@@ -1183,7 +1222,7 @@
         <h3>Campus Missions & Evangelism Day</h3>
         <p>A full day of outreach, training, and street evangelism. Learn how to share your faith boldly and effectively.</p>
         <div class="event-location">University Grounds & Surrounding Area</div>
-        <a href="#join" class="event-register">Register Now</a>
+        <button type="button" class="event-register">Register Now</button>
       </div>
     </div>
   </div>
@@ -1520,11 +1559,11 @@
         <input type="text" class="join-input" id="join-course" placeholder="Course / Department"/>
         <select class="join-input" id="join-year">
           <option value="">Year of Study</option>
-          <option>Year 1</option>
-          <option>Year 2</option>
-          <option>Year 3</option>
-          <option>Year 4</option>
-          <option>Year 5</option>
+          <option value="1">Year 1</option>
+          <option value="2">Year 2</option>
+          <option value="3">Year 3</option>
+          <option value="4">Year 4</option>
+          <option value="5">Year 5 (5-year course)</option>
         </select>
       </div>
       <div class="join-row">
@@ -1589,18 +1628,44 @@
   </div>
 </footer>
 
+<dialog id="event-registration-dialog" aria-labelledby="event-dialog-title" aria-describedby="event-dialog-description">
+  <form id="event-registration-form" class="event-dialog-content">
+    <p class="event-dialog-eyebrow">Save your place</p>
+    <h2 id="event-dialog-title">Register for this event</h2>
+    <p id="event-dialog-description" class="event-dialog-description"></p>
+    <div class="event-dialog-fields">
+      <label for="event-register-name">Full name
+        <input id="event-register-name" name="full_name" autocomplete="name" maxlength="255" required>
+      </label>
+      <label for="event-register-email">Email address
+        <input id="event-register-email" name="email" type="email" autocomplete="email" maxlength="255" required>
+      </label>
+      <label for="event-register-phone">Phone number <span>(optional)</span>
+        <input id="event-register-phone" name="phone" type="tel" autocomplete="tel" maxlength="20">
+      </label>
+    </div>
+    <p id="event-dialog-note" class="event-dialog-note" role="status"></p>
+    <p id="event-dialog-error" class="event-dialog-error" role="alert"></p>
+    <div class="event-dialog-actions">
+      <button type="button" id="event-dialog-cancel">Cancel</button>
+      <button type="submit" id="event-dialog-submit" class="event-dialog-submit">Confirm registration</button>
+    </div>
+  </form>
+</dialog>
+
 <script>
   // ── LARAVEL API BASE URL ──
   // Update this to your deployed Laravel backend's URL in production.
-  const API = 'http://localhost:8000/api';
+  const API = `${window.location.origin}/api`;
 
   // If the visitor is a logged-in member (token saved by member.html),
   // we attach it so prayer requests / event registrations / newsletter
   // signups made from the main site are automatically linked to their portal.
-  const MEMBER_TOKEN = localStorage.getItem('tucu_member_token');
+  let MEMBER_TOKEN = localStorage.getItem('tucu_member_token');
 
   function authHeaders(extra = {}) {
     const headers = { 'Content-Type': 'application/json', ...extra };
+    MEMBER_TOKEN = localStorage.getItem('tucu_member_token');
     if (MEMBER_TOKEN) headers['Authorization'] = `Bearer ${MEMBER_TOKEN}`;
     return headers;
   }
@@ -1763,51 +1828,86 @@
   });
 
   // ── EVENT REGISTRATION ──
-  document.querySelectorAll('.event-register').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const card = btn.closest('.event-card');
-      const event_name = card.querySelector('h3').textContent;
+  const eventDialog = document.getElementById('event-registration-dialog');
+  const eventForm = document.getElementById('event-registration-form');
+  const eventDialogDescription = document.getElementById('event-dialog-description');
+  const eventDialogNote = document.getElementById('event-dialog-note');
+  const eventDialogError = document.getElementById('event-dialog-error');
+  const eventDialogSubmit = document.getElementById('event-dialog-submit');
+  let selectedEventName = '';
+  let selectedEventButton = null;
 
-      let full_name = '';
-      let email = '';
-      let phone = '';
+  document.getElementById('event-dialog-cancel').addEventListener('click', () => eventDialog.close());
+  eventDialog.addEventListener('click', event => {
+    if (event.target === eventDialog) eventDialog.close();
+  });
+  document.querySelectorAll('.event-register').forEach(button => {
+    button.addEventListener('click', async () => {
+      const card = button.closest('.event-card');
+      selectedEventName = card.querySelector('h3').textContent.trim();
+      selectedEventButton = button;
+      eventDialogDescription.textContent = selectedEventName;
+      eventDialogNote.textContent = localStorage.getItem('tucu_member_token')
+        ? 'Loading your member details…'
+        : 'Enter your contact details to receive your registration confirmation.';
+      eventDialogError.textContent = '';
+      eventForm.reset();
+      eventDialog.showModal();
+      document.getElementById('event-register-name').focus();
 
-      // If logged in, we can register without prompting
-      if (!MEMBER_TOKEN) {
-        full_name = prompt('Your full name:');
-        if (!full_name) return;
-        email = prompt('Your email address:');
-        if (!email) return;
-        phone = prompt('Phone number (optional):') || '';
+      const token = localStorage.getItem('tucu_member_token');
+      const memberId = localStorage.getItem('tucu_member_id');
+      if (!token || !memberId || !/^\d+$/.test(memberId)) {
+        eventDialogNote.textContent = 'Enter your contact details to receive your registration confirmation.';
+        return;
       }
-
-      const origText = btn.textContent;
-      btn.textContent = 'Registering...';
-      btn.style.opacity = '0.7';
-
       try {
-        const res = await fetch(`${API}/events/register`, {
-          method: 'POST',
-          headers: authHeaders(),
-          body: JSON.stringify({ event_name, full_name, email, phone })
+        const response = await fetch(`${API}/members/${encodeURIComponent(memberId)}/profile`, {
+          headers: authHeaders({ Accept: 'application/json' })
         });
-        const data = await res.json();
-        if (res.ok) {
-          showToast(data.message);
-          btn.textContent = '✓ Registered';
-          btn.style.background = 'var(--green-light)';
-        } else {
-          showToast(errorMessage(data), 'error');
-          btn.textContent = origText;
-          btn.style.opacity = '1';
-        }
-      } catch {
-        showToast('Could not connect to server.', 'error');
-        btn.textContent = origText;
-        btn.style.opacity = '1';
+        const data = await response.json();
+        if (!response.ok) throw new Error(errorMessage(data, 'Your member details could not be loaded.'));
+        if (!eventDialog.open || localStorage.getItem('tucu_member_token') !== token || selectedEventButton !== button) return;
+        document.getElementById('event-register-name').value = data.member.full_name || '';
+        document.getElementById('event-register-email').value = data.member.email || '';
+        document.getElementById('event-register-phone').value = data.member.phone || '';
+        eventDialogNote.textContent = 'Your member details are ready. Confirm them below to link this registration to your account.';
+      } catch (error) {
+        if (!eventDialog.open || selectedEventButton !== button) return;
+        eventDialogNote.textContent = `We couldn’t load your saved details (${error.message}). You can still enter them below.`;
       }
     });
+  });
+  eventForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!eventForm.reportValidity()) return;
+    const payload = Object.fromEntries(new FormData(eventForm));
+    eventDialogError.textContent = '';
+    eventDialogSubmit.disabled = true;
+    eventDialogSubmit.textContent = 'Registering…';
+    try {
+      const response = await fetch(`${API}/events/register`, {
+        method: 'POST',
+        headers: authHeaders({ Accept: 'application/json' }),
+        body: JSON.stringify({...payload, event_name:selectedEventName})
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(errorMessage(data, 'Your registration could not be completed.'));
+      eventDialog.close();
+      if (selectedEventButton) {
+        selectedEventButton.textContent = '✓ Registered';
+        selectedEventButton.classList.add('is-registered');
+        selectedEventButton.disabled = true;
+      }
+      showToast(data.message);
+    } catch (error) {
+      eventDialogError.textContent = error instanceof TypeError
+        ? 'Could not connect to the server. Check your connection and try again.'
+        : error.message || 'Your registration could not be completed. Please try again.';
+    } finally {
+      eventDialogSubmit.disabled = false;
+      eventDialogSubmit.textContent = 'Confirm registration';
+    }
   });
 
   // ── FOOTER NEWSLETTER ──
